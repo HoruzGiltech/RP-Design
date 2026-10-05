@@ -3,8 +3,9 @@
 > **Qué** se construye y **cómo sabemos que está bien hecho**.
 > Fuente: `AGENTS.md`. Cualquier cambio de alcance se registra primero aquí.
 
-**Estado:** Aprobado (v2, 2026-10-05) — inventario validado contra la maqueta
+**Estado:** Aprobado (v3, 2026-10-05) — incluye RF-06 Animaciones
 **Maqueta:** `docs/maqueta-legible.html` (para leer y comparar) · `docs/maqueta-original.html` (archivo original del diseñador)
+**Referencia de animaciones:** https://sparquitectosve.com/ (solo el movimiento; el aspecto sigue siendo el de la maqueta)
 
 ---
 
@@ -32,8 +33,8 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 | # | Sección (ancla) | Tipo | Contenido en la maqueta | Campos editables |
 |---|---|---|---|---|
 | S1 | Encabezado | Única (en SiteSettings) | Logo circular "RP", "RP DISEÑO" / "INTERIOR · ARQUITECTURA", menú Servicios · Proyectos · Proceso y botón "Cotiza tu proyecto" | Logo (imagen opcional; si no hay, se dibuja el círculo con las iniciales), iniciales, nombre, subtítulo, texto del botón. Los enlaces del menú son fijos |
-| S2 | Portada `#inicio` | Única | Antetítulo "ESTUDIO DE DISEÑO DE INTERIORES · CARACAS", H1, párrafo, botones "Agenda una visita" y "Ver proyectos", foto principal | Antetítulo, título, párrafo, textos de los 2 botones, imagen principal y su `alt` |
-| S3 | Franja de especialidades | Lista | Diseño residencial · Diseño comercial · Renders 3D · Ejecución de obra | Texto de cada ítem y orden |
+| S2 | Portada `#inicio` | Única | Antetítulo "ESTUDIO DE DISEÑO DE INTERIORES · CARACAS", H1, párrafo, botones "Agenda una visita" y "Ver proyectos", foto principal | Antetítulo, título, párrafo, textos de los 2 botones, imagen principal y su `alt`, **video opcional** (RF-06.5) |
+| S3 | Franja de especialidades | Lista | Diseño residencial · Diseño comercial · Renders 3D · Ejecución de obra | Texto de cada ítem y orden. Se muestra como cinta en movimiento (RF-06.4) |
 | S4 | Servicios `#servicios` | Única + lista | Título "Un solo equipo para todo tu proyecto", intro y 3 tarjetas numeradas 01–03 | Título, intro. Por tarjeta: título y descripción. **El número (01, 02…) se genera según el orden** |
 | S5 | Proyectos `#proyectos` | Única + dinámica | Fondo oscuro, título "Proyectos recientes", enlace "Ver más en Instagram", 3 tarjetas (foto, categoría, título, resumen) | Título, texto del enlace a Instagram, texto del botón "Ver todos". Las tarjetas salen de los proyectos destacados (RF-01) |
 | S6 | Proceso `#proceso` | Única + lista | Título "Ve tu espacio antes de construirlo", intro, video recorrido y 4 entregables A–D | Título, intro, video y su poster. Por entregable: título y descripción. **La letra (A, B…) se genera según el orden** |
@@ -52,6 +53,7 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 - Páginas `/proyectos` y `/proyectos/<slug>`, que se diseñan con el mismo estilo de S5 (fondo oscuro, tarjetas iguales).
 - Campos **correo**, **área** y **m²** y el **estimado** en el formulario de S7 (RF-03).
 - **Menú hamburguesa** en móvil: la maqueta solo hace que el menú pase a varias líneas.
+- **Animaciones** (RF-06): la maqueta es estática; el movimiento se toma de la página de referencia.
 
 ---
 
@@ -152,6 +154,35 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 - [ ] CA-05.3 Con la base de datos recién creada, el sitio carga sin errores y muestra **los mismos textos de la maqueta** (datos iniciales). Donde la maqueta no tiene imagen se muestra un recuadro gris neutro, sin el texto `[FOTO…]`.
 - [ ] CA-05.4 Cambiar el color de acento en el panel cambia los botones principales y los números de Servicios.
 
+### RF-06 — Animaciones
+
+La maqueta no tiene movimiento. Se toma como referencia https://sparquitectosve.com/ y se adapta al estilo de la maqueta (sobrio, recto, sin sombras). **La maqueta sigue mandando en colores, tipografías, espaciados y distribución**; de la referencia solo se toma cómo aparecen y reaccionan los elementos.
+
+| ID | En la referencia | En RP Design |
+|---|---|---|
+| RF-06.1 | Títulos y textos aparecen subiendo con fundido al entrar en pantalla | Igual, en el antetítulo, título e intro de cada sección (S2, S4, S5, S6, S7) y en las páginas de proyectos |
+| RF-06.2 | Los botones entran desde un lado | Los dos botones de la Portada entran desde la derecha, después del título |
+| RF-06.3 | Las 3 tarjetas entran desde la izquierda, desde abajo y desde la derecha | Igual en las tarjetas de Servicios en escritorio. En móvil, y en las tarjetas de Proyectos y los pasos de Proceso, entran desde abajo, una tras otra |
+| RF-06.4 | Carrusel que avanza solo y se pausa al pasar el cursor | La franja de especialidades (S3) pasa a ser una cinta continua que se pausa con el cursor o el foco |
+| RF-06.5 | Portada con video de fondo en bucle, sin sonido | La Portada acepta un **video opcional** que se reproduce en bucle y sin sonido dentro del mismo recuadro de la foto. La foto queda como vista previa |
+| RF-06.6 | Fondo que hace zoom mientras se baja la página | Zoom suave ligado al scroll en la imagen de la Portada y en la portada del detalle de proyecto |
+| RF-06.7 | En la galería, una capa oscura aparece sobre la foto al pasar el cursor | Igual en las tarjetas de proyecto: capa oscura con "Ver proyecto" y un zoom leve de la foto |
+| RF-06.8 | — | Las animaciones de entrada ocurren **una sola vez** por elemento |
+| RF-06.9 | — | Con "reducir movimiento" activo en el sistema, no hay desplazamientos, cinta, zoom ni video automático: todo se ve en su estado final |
+
+**No se toma de la referencia:**
+- Tarjetas que se voltean al pasar el cursor: esconden el texto del servicio y no funcionan en pantallas táctiles.
+- Video de fondo detrás del formulario de contacto: baja el contraste del formulario y pesa en móvil.
+- Formulario por pasos: el de RP Design es corto y ya está definido en RF-03.
+
+**Criterios de aceptación**
+- [ ] CA-06.1 Al bajar por el inicio, cada sección aparece con su animación una vez y no se repite al volver a subir.
+- [ ] CA-06.2 Con "reducir movimiento" activo, todo el contenido es visible y nada se mueve solo.
+- [ ] CA-06.3 Ningún contenido queda oculto si la animación no llega a ejecutarse.
+- [ ] CA-06.4 La cinta de especialidades se detiene con el cursor encima o con el foco del teclado, y un lector de pantalla lee cada especialidad una sola vez.
+- [ ] CA-06.5 Sin video en la Portada, se muestra la imagen (o el recuadro gris) como hasta ahora.
+- [ ] CA-06.6 Las animaciones no mueven el resto de la página (sin saltos de diseño) y Lighthouse Performance se mantiene ≥ 85 en móvil.
+
 ---
 
 ## 5. Requisitos no funcionales
@@ -183,5 +214,6 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 - Conversión automática a bolívares.
 - Sitio en varios idiomas.
 - Blog, pagos en línea o cuentas de usuario para visitantes.
+- Librerías de animación (GSAP, AOS, Swiper, Framer Motion): las animaciones de RF-06 se hacen con CSS.
 - Secciones **Nosotros** y **Testimonios**: no están en la maqueta. **Pendiente de preguntar al cliente** (T-1.4b); si las quiere, se diseñan y se agregan como un cambio de alcance.
 - Compra del dominio y despliegue (se hacen en la fase 5).

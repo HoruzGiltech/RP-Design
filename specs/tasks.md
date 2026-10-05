@@ -17,6 +17,9 @@
 - [x] **T-1.5** ✋ **Aprobación del cliente/desarrollador** de las tres specs. *No se programa nada antes de esto.* (Aprobadas el 2026-10-05.)
 - [x] **T-1.6** Alinear `AGENTS.md` y `CLAUDE.md` con las specs (apps `core` y `site_content`, rutas de la maqueta, Nosotros/Testimonios como pregunta abierta) y documentar el uso de las skills en `design.md` §3.5.
 
+- [x] **T-1.7** Agregar RF-06 Animaciones (referencia: sparquitectosve.com) a `requirements.md`, `design.md` §3.0 y §3.6, y a `AGENTS.md`.
+- [x] **T-1.8** ✋ **Aprobación** de RF-06 y del video opcional de la Portada. (Aprobado el 2026-10-05.)
+
 ---
 
 ## Fase 2 — Backend
@@ -51,7 +54,7 @@
 - [ ] **T-2.12** Admin de áreas (precios editables en la lista) y de cotizaciones (solo lectura salvo el estado, con filtros, búsqueda y enlace a WhatsApp). *(RF-04.4, RF-04.7)*
 
 ### 2E. App `site_content`
-- [ ] **T-2.13** Modelos `SiteSettings` (incluye `accent_color`) y las secciones únicas `HeroSection`, `ServicesSection`, `ProjectsSection`, `ProcessSection`, `ContactSection`, `FooterSection` y `SeoSettings`. *(RF-05, RF-04.5)*
+- [ ] **T-2.13** Modelos `SiteSettings` (incluye `accent_color`) y las secciones únicas `HeroSection` (con `video` opcional, RF-06.5), `ServicesSection`, `ProjectsSection`, `ProcessSection`, `ContactSection`, `FooterSection` y `SeoSettings`. *(RF-05, RF-04.5)*
 - [ ] **T-2.14** Modelos de lista `Specialty`, `Service` y `ProcessStep`.
 - [ ] **T-2.14b** Migración de datos con **todos los textos y datos de contacto de la maqueta** (design §2.3). *(CA-05.3, D-14)*
   - Verificación: con una BD nueva, `GET /api/site/` devuelve los mismos textos que `docs/maqueta-legible.html`.
@@ -89,14 +92,16 @@
 
 - [ ] **T-3.1** Proyecto Vite + React + React Router, servicio `frontend` en Docker Compose, ESLint y `frontend/.env.example`.
   - Verificación: `npm run dev` muestra la página y `npm run lint` pasa.
-- [ ] **T-3.2** `styles/tokens.css` (todos los tokens de design §3.0) y `global.css`, más las fuentes con `@fontsource`. *(RNF-02, D-16)*
+- [ ] **T-3.2** `styles/tokens.css` (todos los tokens de design §3.0, incluidos los de movimiento) y `global.css`, más las fuentes con `@fontsource`. *(RNF-02, D-16)*
 - [ ] **T-3.3** `api/client.js`, `api/endpoints.js`, `useFetch` y `SiteContext`.
   - Verificación: en consola se ve el JSON de `/api/site/`.
-- [ ] **T-3.4** Componentes `ui/`: Button, Spinner, ErrorMessage y Section.
+- [ ] **T-3.4** Componentes `ui/`: Button (con `scale(0.97)` al pulsar), Spinner, ErrorMessage y Section.
+- [ ] **T-3.4b** `hooks/useReveal.js`, `ui/Reveal` y `styles/motion.css` con la regla de `prefers-reduced-motion`. *(RF-06.1, RF-06.8, RF-06.9, CA-06.3)*
+  - Verificación: un elemento de prueba aparece una sola vez al entrar en pantalla; con "reducir movimiento" se ve desde el inicio.
 - [ ] **T-3.5** Layout: Header (logo y menú responsive con hamburguesa) y Footer. *(S1, S8)*
-- [ ] **T-3.6** Hero. *(S2)*
-- [ ] **T-3.7** FeaturedProjects (fondo oscuro, enlace a Instagram y botón "Ver todos") y ProjectCard; la sección se oculta si hay 0 destacados. *(S5, RF-01.1, CA-01.2)*
-- [ ] **T-3.8** SpecialtiesStrip, Services (números 01, 02… calculados) y Process (letras A, B… calculadas y video); se ocultan si están vacíos o desactivados. *(S3, S4, S6, CA-05.2, D-13)*
+- [ ] **T-3.6** Hero, con entrada del título y los botones, video opcional y zoom ligado al scroll. *(S2, RF-06.1, RF-06.2, RF-06.5, RF-06.6, CA-06.5)*
+- [ ] **T-3.7** FeaturedProjects (fondo oscuro, enlace a Instagram y botón "Ver todos") y ProjectCard (capa "Ver proyecto" al pasar el cursor y entrada escalonada); la sección se oculta si hay 0 destacados. *(S5, RF-01.1, CA-01.2, RF-06.3, RF-06.7)*
+- [ ] **T-3.8** SpecialtiesStrip (cinta con `ui/Marquee`), Services (entrada izquierda / abajo / derecha) (números 01, 02… calculados) y Process (letras A, B… calculadas y video); se ocultan si están vacíos o desactivados. *(S3, S4, S6, CA-05.2, D-13, RF-06.3, RF-06.4, CA-06.4)*
 - [ ] **T-3.8b** `MediaPlaceholder` en sus variantes clara y oscura, y color de acento aplicado desde `settings.accent_color`. *(CA-05.3, CA-05.4)*
 - [ ] **T-3.8c** Contact: columna de datos (WhatsApp, correo, Instagram y ciudad desde SiteSettings) y espacio para la calculadora. *(S7)*
 - [ ] **T-3.9** `ProjectsPage` con ProjectGrid y miniaturas con `loading="lazy"`. *(RF-01.2, CA-02.3)*
@@ -105,6 +110,7 @@
 - [ ] **T-3.12** `useDocumentTitle` en cada página, con los datos de `SeoSettings`.
 - [ ] **T-3.13** Revisión responsive: 360, 768, 1280 y 1920 px. *(RNF-01)*
   - Verificación: capturas en cada ancho comparadas con `docs/maqueta-legible.html`.
+- [ ] **T-3.13b** Revisión de animaciones con Playwright: recorrido normal y con `prefers-reduced-motion` emulado. *(CA-06.1, CA-06.2, CA-06.6)*
 
 - [ ] **T-3.14** ✋ **Revisión de fin de fase:** `npm run lint` y `npm run build` pasan; demo navegando todo el sitio con datos reales cargados desde el panel.
 

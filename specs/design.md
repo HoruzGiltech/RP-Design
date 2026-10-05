@@ -3,7 +3,7 @@
 > **Cómo** se construye lo que pide `requirements.md`.
 > Cada decisión lleva su motivo. Si algo cambia, se actualiza aquí antes de programarlo.
 
-**Estado:** Aprobado (v2, 2026-10-05) — modelos de contenido y tokens alineados con la maqueta
+**Estado:** Aprobado (v3, 2026-10-05) — incluye §3.6 Animaciones y el video de la Portada
 
 ---
 
@@ -142,7 +142,7 @@ Texto inicial de `price_note`:
 
 | Modelo | Sección | Campos (valor inicial) |
 |---|---|---|
-| `HeroSection` | S2 | `eyebrow` ("ESTUDIO DE DISEÑO DE INTERIORES · CARACAS"), `title` ("Transformamos tus espacios, del plano a la obra."), `body`, `primary_cta_text` ("Agenda una visita" → `#contacto`), `secondary_cta_text` ("Ver proyectos" → `#proyectos`), `image` (opcional), `image_alt` |
+| `HeroSection` | S2 | `eyebrow` ("ESTUDIO DE DISEÑO DE INTERIORES · CARACAS"), `title` ("Transformamos tus espacios, del plano a la obra."), `body`, `primary_cta_text` ("Agenda una visita" → `#contacto`), `secondary_cta_text` ("Ver proyectos" → `#proyectos`), `image` (opcional), `image_alt`, `video` (opcional, `mp4`/`webm`, mismas validaciones de §2.6; RF-06.5) |
 | `ServicesSection` | S4 | `title` ("Un solo equipo para todo tu proyecto"), `intro` |
 | `ProjectsSection` | S5 | `title` ("Proyectos recientes"), `instagram_link_text` ("Ver más en Instagram"), `view_all_text` ("Ver todos los proyectos") |
 | `ProcessSection` | S6 | `title` ("Ve tu espacio antes de construirlo"), `intro`, `video` (opcional), `video_poster` (opcional) |
@@ -388,6 +388,18 @@ La maqueta usa estilos en línea. Estos son sus valores, que van a `styles/token
 - La grilla de servicios usa `gap: 1px` sobre un fondo `--color-border` para dibujar las líneas entre tarjetas.
 - Encabezado `sticky`, con borde inferior de 1px.
 
+**Movimiento** (no vienen de la maqueta, que es estática; ver §3.6)
+
+| Variable | Valor | Uso |
+|---|---|---|
+| `--ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | Todas las entradas y los hover. Nunca `ease-in` |
+| `--motion-fast` | `160ms` | Pulsación de botones |
+| `--motion-hover` | `200ms` | Hover de enlaces, botones y capa de las tarjetas |
+| `--motion-reveal` | `500ms` | Entrada de elementos al aparecer en pantalla |
+| `--motion-stagger` | `80ms` | Retraso entre un elemento y el siguiente |
+| `--reveal-distance` | `24px` | Recorrido de la entrada |
+| `--marquee-duration` | `30s` | Una vuelta de la cinta de especialidades |
+
 > **Decisión:** las fuentes se incluyen con `@fontsource/archivo` y `@fontsource/archivo-narrow` (en el propio sitio) en lugar de pedirlas a Google Fonts. Así se ahorra una conexión externa y no se depende de un tercero.
 
 ### 3.1 Rutas (React Router)
@@ -409,9 +421,11 @@ frontend/src/
 ├── api/endpoints.js         # getSite(), getProjects(), getProject(slug), getQuoteAreas(), createQuote()
 ├── context/SiteContext.jsx  # carga /api/site/ una vez y lo comparte
 ├── hooks/useFetch.js        # { data, loading, error }
+├── hooks/useReveal.js       # avisa cuando un elemento entra en pantalla (IntersectionObserver)
 ├── utils/currency.js        # formatUSD() — mismo formato que el backend
 ├── utils/estimate.js        # calculateEstimate() — solo para mostrar en vivo
 ├── styles/tokens.css        # colores, tipografías y espaciados de la maqueta
+├── styles/motion.css        # clases de entrada, cinta y zoom; regla de prefers-reduced-motion
 ├── styles/global.css
 ├── components/
 │   ├── layout/   Header, Footer, Layout
@@ -419,7 +433,7 @@ frontend/src/
 │   ├── projects/ ProjectCard, ProjectGrid, MediaGallery, Lightbox
 │   ├── quote/    QuoteCalculator, EstimateDisplay
 │   ├── media/    MediaPlaceholder (recuadro gris cuando no hay imagen; variante clara y oscura)
-│   └── ui/       Button, Spinner, ErrorMessage, Section
+│   └── ui/       Button, Spinner, ErrorMessage, Section, Reveal, Marquee
 └── pages/        HomePage, ProjectsPage, ProjectDetailPage, NotFoundPage
 ```
 
@@ -439,7 +453,7 @@ frontend/src/
 
 **`MediaGallery` + `Lightbox`**
 - Las imágenes muestran la miniatura y, al hacer clic, se abren en grande. Se cierra con `Esc` y se navega con las flechas.
-- Videos: `<video controls preload="metadata" poster=...>`, sin `autoplay`. En el Hero se permite `autoplay muted loop playsInline`.
+- Videos: `<video controls preload="metadata" poster=...>`, sin `autoplay`. Solo el video de la Portada usa `autoplay muted loop playsInline`, sin controles (§3.6).
 
 **SEO por página:** un hook pequeño, `useDocumentTitle`, actualiza `document.title` y la meta descripción. No hace falta una librería.
 
@@ -462,6 +476,32 @@ El proyecto tiene 5 skills instaladas en `.claude/skills/`. **La maqueta manda**
 | `stop-slop` | Textos que escribe el agente: mensajes de error y validación, ayudas del panel, README y la guía del cliente (T-5.9) | No toca los textos del cliente, que salen de la maqueta o quedan como `[TEXTO PENDIENTE]` |
 
 Si una skill propone algo que cambia la spec (un componente nuevo, una dependencia o un token), primero se actualiza la spec y se avisa.
+
+### 3.6 Animaciones
+
+Referencia: https://sparquitectosve.com/ (hecha con Elementor). El inventario se sacó de su código, no de verla en un navegador: entradas `fadeInUp`, `fadeInRight` y `slideInLeft/Up/Right`, carrusel con avance automático, video de fondo, zoom de fondo ligado al scroll y capa con fundido en la galería. Aquí se reproducen esos efectos con el estilo de la maqueta.
+
+| Requisito | Dónde | Cómo |
+|---|---|---|
+| RF-06.1 | Antetítulo, título e intro de cada sección | `<Reveal>`: de `opacity: 0; translateY(var(--reveal-distance))` al estado final |
+| RF-06.2 | Botones de la Portada | `<Reveal from="right">` con retraso, después del título |
+| RF-06.3 | Tarjetas de Servicios, Proyectos y pasos de Proceso | `<Reveal>` con `delay = índice × --motion-stagger`. En Servicios, desde 900 px de ancho: la primera tarjeta entra desde la izquierda, la última desde la derecha y las del medio desde abajo |
+| RF-06.4 | Franja de especialidades | `<Marquee>`: la lista se repite dos veces dentro de una pista que se mueve con `@keyframes` (`translateX(0)` → `-50%`). La copia lleva `aria-hidden`. Se pausa con `:hover` y `:focus-within` |
+| RF-06.5 | Portada | Si `hero.video` existe: `<video autoplay muted loop playsInline poster={hero.image}>` en el recuadro de la imagen. Si no, la imagen |
+| RF-06.6 | Imagen de la Portada y portada del detalle | Animación CSS ligada al scroll (`animation-timeline: view()`), de `scale(1)` a `scale(1.08)`, dentro de un contenedor con `overflow: hidden` |
+| RF-06.7 | `ProjectCard` | Capa `--color-dark` al 55 % con "Ver proyecto", que aparece con `opacity` en `:hover` y `:focus-visible`; la foto pasa a `scale(1.04)` |
+
+**Reglas**
+- Solo se animan `transform` y `opacity`. Así no hay saltos de diseño ni se recalcula la página (CA-06.6).
+- `useReveal` usa `IntersectionObserver` y deja de observar tras la primera aparición (RF-06.8).
+- El estado oculto solo se aplica cuando `useReveal` ya está activo. Si el navegador no tiene `IntersectionObserver`, `<Reveal>` muestra el contenido tal cual (CA-06.3).
+- `motion.css` termina con `@media (prefers-reduced-motion: reduce)`: sin `transform`, sin cinta y sin zoom. `Hero` consulta la misma preferencia y, si está activa, muestra la imagen en lugar del video (RF-06.9).
+- El zoom ligado al scroll va dentro de `@supports (animation-timeline: view())`. Donde no hay soporte (hoy Firefox), la imagen queda fija.
+- Los hover van dentro de `@media (hover: hover)` para que en pantallas táctiles no quede la capa pegada tras tocar.
+- Botones: `transform: scale(0.97)` en `:active`.
+- El video de la Portada se sube ya comprimido y corto. Se carga con `preload="metadata"` y la imagen como `poster`, para que el primer pintado no dependa del video.
+
+> **Decisión:** las animaciones se hacen con CSS y un hook de unas 20 líneas, sin GSAP, AOS, Swiper ni Framer Motion. Son efectos simples y una librería sumaría peso y algo más que aprender.
 
 ---
 
@@ -490,6 +530,7 @@ Hay volúmenes para los datos de Postgres y para `media/`.
 | Validación de archivos | Tests con un archivo falso y uno demasiado grande |
 | Roles | Tests: el Viewer recibe 403 al crear, editar o borrar; el Admin puede todo |
 | Frontend | `formatUSD` y `calculateEstimate` con Vitest; `npm run lint` y `npm run build` |
+| Animaciones | Revisión con Playwright: con `prefers-reduced-motion` emulado todo el contenido es visible; sin él, los elementos terminan en su estado final al bajar la página |
 
 ---
 
@@ -513,3 +554,8 @@ Hay volúmenes para los datos de Postgres y para `media/`.
 | D-14 | Datos iniciales con los textos de la maqueta | El sitio se ve igual a la maqueta desde el primer arranque |
 | D-15 | Color de acento configurable (4 opciones) | La maqueta ya lo prevé como opción del diseño |
 | D-16 | Fuentes con `@fontsource` | Sin dependencia de Google Fonts |
+| D-17 | Animaciones tomadas de sparquitectosve.com, con el aspecto de la maqueta | La maqueta es estática; la referencia aporta el movimiento |
+| D-18 | Animaciones con CSS e `IntersectionObserver`, sin librerías | Efectos simples; menos peso y menos dependencias |
+| D-19 | No se adoptan las tarjetas que se voltean ni el video de fondo en Contacto | Esconden contenido, fallan en táctil o bajan el contraste del formulario |
+| D-20 | La franja de especialidades pasa a ser una cinta en movimiento | Es el equivalente del carrusel automático de la referencia; cambia la distribución de la maqueta en S3 |
+| D-21 | Video opcional en la Portada, dentro del recuadro de la foto | Equivale al video de fondo de la referencia sin cambiar la distribución de la maqueta |

@@ -25,6 +25,8 @@ Actúa como **desarrollador fullstack senior** que escribe código **simple, cla
 - Es la fuente de verdad estética: colores, tipografías, espaciados y estilo de componentes.
 - Los *design tokens* ya están extraídos en `specs/design.md` §3.0. Van a `frontend/src/styles/tokens.css` y se reutilizan siempre. No copies el HTML tal cual a React: conviértelo en componentes.
 
+**Referencia de animaciones:** https://sparquitectosve.com/. De ahí se toma **solo el movimiento** (cómo aparecen y reaccionan los elementos), adaptado al estilo de la maqueta. Los colores, tipografías, espaciados y la distribución siguen saliendo de la maqueta. El detalle está en `specs/requirements.md` RF-06 y `specs/design.md` §3.6.
+
 **Partes del sistema:**
 1. **Sitio público** (React): inicio, proyectos, detalle de proyecto, calculadora/contacto.
 2. **Panel de administración** (Django Admin) para que el cliente mantenga su contenido sin tocar código.
@@ -133,6 +135,15 @@ El cliente puede:
 - [ ] Cambiar un texto o una imagen en el panel se ve en el sitio al recargar, sin redeploy.
 - [ ] Si una sección está oculta o vacía, el sitio no muestra un bloque roto.
 
+### RF-06 — Animaciones
+- Entradas al aparecer en pantalla (títulos, botones y tarjetas), cinta de especialidades en movimiento, video opcional en la Portada, zoom ligado al scroll y capa al pasar el cursor sobre las tarjetas de proyecto.
+- Se hacen con **CSS e `IntersectionObserver`**, sin librerías de animación. Solo se animan `transform` y `opacity`.
+- Con "reducir movimiento" activo en el sistema, nada se mueve solo y todo el contenido es visible.
+
+**Criterios de aceptación**
+- [ ] Cada animación de entrada ocurre una sola vez y ningún contenido queda oculto si no llega a ejecutarse.
+- [ ] Las animaciones no provocan saltos de diseño ni bajan Lighthouse Performance de 85 en móvil.
+
 ---
 
 ## 5. Stack técnico
@@ -220,6 +231,7 @@ Una tarea está terminada cuando:
 - [ ] `manage.py test`, `npm run lint` y `npm run build` pasan sin errores.
 - [ ] Se ve bien en móvil y escritorio y se parece a la maqueta.
 - [ ] Imágenes con `alt`, formulario usable con teclado.
+- [ ] Las animaciones respetan `prefers-reduced-motion`.
 - [ ] `specs/tasks.md` actualizado.
 
 ---
@@ -254,6 +266,7 @@ Al terminar cada tarea o fase, responde con:
 | WhatsApp | Enlace `wa.me`, y el mensaje se guarda en la base de datos |
 | Dominio | Aún no comprado; se define en la fase de despliegue |
 | Roles del panel | Admin (todo) y Viewer (solo lectura); por ahora un solo usuario Admin |
+| Animaciones | Referencia: sparquitectosve.com, adaptada a la maqueta. Solo CSS, sin librerías |
 
 ## 11. Fases del proyecto
 
