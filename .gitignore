@@ -1,0 +1,39 @@
+# Secretos: nunca se suben. Solo se versiona .env.example
+.env
+.env.*
+!.env.example
+
+# Archivos subidos por el cliente y datos locales
+media/
+staticfiles/
+*.sqlite3
+*.dump
+*.sql
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+*.log
+
+# Skills de terceros: se reinstalan desde skills-lock.json
+.claude/skills/
+.claude/settings.local.json
+.agents/
+
+# Capturas y salidas de Playwright
+.playwright-cli/
+test-results/
+
+# Sistema y editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

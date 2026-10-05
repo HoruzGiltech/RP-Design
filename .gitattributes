@@ -1,0 +1,2 @@
+# Saltos de linea LF en todos los archivos de texto: los scripts que corren en Docker (Linux) fallan con CRLF
+* text=auto eol=lf
