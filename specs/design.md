@@ -30,7 +30,7 @@
 
 | App | Responsabilidad |
 |---|---|
-| `core` | Clases base (`SingletonModel`, `OrderedModel`), validadores de archivos, procesamiento de imágenes, grupos y permisos |
+| `core` | Clases base (`SingletonModel`, `OrderedModel`), validadores de archivos, procesamiento de imágenes, nombres de archivos subidos, grupos y permisos |
 | `projects` | Proyectos y su multimedia |
 | `quotes` | Áreas, precios y cotizaciones; cálculo y enlace de WhatsApp |
 | `site_content` | Configuración general y secciones editables del sitio |
@@ -209,7 +209,7 @@ Hola RP Design, quiero una cotización:
 1. **Extensión** en la lista permitida.
 2. **Tamaño** ≤ `MAX_IMAGE_MB` / `MAX_VIDEO_MB` (de `.env`).
 3. **Contenido real**: imágenes con `Pillow.Image.verify()`; videos leyendo los primeros bytes con la librería `filetype`.
-4. **Renombrado**: `projects/<año>/<uuid>.<ext>`. Nunca se usa el nombre original.
+4. **Renombrado** (`core/uploads.py`, función `build_unique_path`): `projects/<año>/<uuid>.<ext>`. Nunca se usa el nombre original.
 
 > **Decisión:** se eligió `filetype` (Python puro) en lugar de `python-magic`, porque esta última necesita instalar `libmagic` en el sistema y complica Docker y Railway.
 

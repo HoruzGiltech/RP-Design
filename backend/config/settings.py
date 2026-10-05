@@ -98,6 +98,12 @@ STORAGES = {
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
 }
 
+# Archivos que sube el cliente (fotos y videos)
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
+MAX_IMAGE_MB = env.int("MAX_IMAGE_MB", default=5)
+MAX_VIDEO_MB = env.int("MAX_VIDEO_MB", default=50)
+
 # Solo estos sitios pueden llamar a la API desde el navegador (el frontend)
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 

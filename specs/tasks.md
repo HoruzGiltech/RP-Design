@@ -35,9 +35,9 @@
 ### 2B. App `core`
 - [x] **T-2.4** Clases base `TimeStampedModel`, `OrderedModel`, `VisibleModel` y `SingletonModel`. *(RF-05.2)*
   - Verificación: test de que `SingletonModel` siempre tiene `pk=1` y `delete()` no lo borra.
-- [ ] **T-2.5** Validadores de archivos: extensión, tamaño y contenido real. *(RF-02.3, RF-02.4, CA-02.1, CA-02.2)*
+- [x] **T-2.5** Validadores de archivos: extensión, tamaño y contenido real. *(RF-02.3, RF-02.4, CA-02.1, CA-02.2)*
   - Verificación: tests con un `.exe` renombrado y con un archivo que supera el límite.
-- [ ] **T-2.6** Procesamiento de imágenes: EXIF, 1920 px, miniatura de 600 px y renombrado con uuid. *(RF-02.5)*
+- [x] **T-2.6** Procesamiento de imágenes: EXIF, 1920 px, miniatura de 600 px y renombrado con uuid. *(RF-02.5)*
   - Verificación: test de que, tras subir una imagen de 4000 px, la guardada mide ≤ 1920 px y existe la miniatura.
 
 ### 2C. App `projects`
