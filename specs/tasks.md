@@ -33,7 +33,7 @@
   - Verificación: el login del panel aparece en español y `/admin/` da 404.
 
 ### 2B. App `core`
-- [ ] **T-2.4** Clases base `TimeStampedModel`, `OrderedModel`, `VisibleModel` y `SingletonModel`. *(RF-05.2)*
+- [x] **T-2.4** Clases base `TimeStampedModel`, `OrderedModel`, `VisibleModel` y `SingletonModel`. *(RF-05.2)*
   - Verificación: test de que `SingletonModel` siempre tiene `pk=1` y `delete()` no lo borra.
 - [ ] **T-2.5** Validadores de archivos: extensión, tamaño y contenido real. *(RF-02.3, RF-02.4, CA-02.1, CA-02.2)*
   - Verificación: tests con un `.exe` renombrado y con un archivo que supera el límite.
