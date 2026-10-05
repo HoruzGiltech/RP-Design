@@ -35,8 +35,10 @@ INSTALLED_APPS = [
     # Librerías
     "rest_framework",
     "corsheaders",
+    "adminsortable2",
     # Apps del proyecto
     "core",
+    "projects",
 ]
 
 MIDDLEWARE = [

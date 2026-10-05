@@ -41,10 +41,10 @@
   - Verificación: test de que, tras subir una imagen de 4000 px, la guardada mide ≤ 1920 px y existe la miniatura.
 
 ### 2C. App `projects`
-- [ ] **T-2.7** Modelos `Project` y `ProjectMedia` y su migración.
-- [ ] **T-2.8** Validar el máximo de 3 destacados en `clean()`. *(CA-01.1)*
+- [x] **T-2.7** Modelos `Project` y `ProjectMedia` y su migración.
+- [x] **T-2.8** Validar el máximo de 3 destacados en `clean()`. *(CA-01.1)*
   - Verificación: test de que el 4.º destacado lanza `ValidationError` con un mensaje en español.
-- [ ] **T-2.9** Admin de proyectos: ordenable, inline de media ordenable, vista previa y filtros. *(RF-04.2, RF-04.3)*
+- [~] **T-2.9** Admin de proyectos: ordenable, inline de media ordenable, vista previa y filtros. *(RF-04.2, RF-04.3)* Falta solo la verificación manual de arrastrar.
   - Verificación manual: crear un proyecto con 3 imágenes y 1 video, reordenarlos arrastrando y comprobar que el orden se guarda.
 
 ### 2D. App `quotes`
