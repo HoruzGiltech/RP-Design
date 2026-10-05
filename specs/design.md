@@ -299,7 +299,10 @@ ADMIN_URL=panel-rp/
 FRONTEND_URL=http://localhost:5173
 CORS_ALLOWED_ORIGINS=http://localhost:5173
 
-# Base de datos
+# Base de datos (los POSTGRES_* crean la base en Docker; DATABASE_URL la usa Django)
+POSTGRES_USER=rp
+POSTGRES_PASSWORD=rp
+POSTGRES_DB=rpdesign
 DATABASE_URL=postgres://rp:rp@db:5432/rpdesign
 
 # Límites

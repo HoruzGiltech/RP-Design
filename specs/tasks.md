@@ -27,9 +27,9 @@
 ### 2A. Base del proyecto
 - [x] **T-2.1** Crear la estructura de carpetas, `.gitignore` (incluye `.env`, `media/`, `node_modules/`, `__pycache__/`, `*.sqlite3`) y `.env.example`. Las carpetas `backend/` y `frontend/` aparecen en T-2.2 y T-3.1, porque git no guarda carpetas vacías.
   - Verificación: `git status` no muestra `.env`.
-- [ ] **T-2.2** `docker-compose.yml` con `db` y `backend`; proyecto Django `config/` que lee `.env` con `django-environ`.
+- [x] **T-2.2** `docker-compose.yml` con `db` y `backend`; proyecto Django `config/` que lee `.env` con `django-environ`.
   - Verificación: `docker compose up` levanta el servicio y `http://localhost:8000/<ADMIN_URL>` muestra el login.
-- [ ] **T-2.3** Configurar el idioma `es`, la zona horaria `America/Caracas`, DRF, CORS, whitenoise y `ADMIN_URL` desde `.env`.
+- [x] **T-2.3** Configurar el idioma `es`, la zona horaria `America/Caracas`, DRF, CORS, whitenoise y `ADMIN_URL` desde `.env`.
   - Verificación: el login del panel aparece en español y `/admin/` da 404.
 
 ### 2B. App `core`
