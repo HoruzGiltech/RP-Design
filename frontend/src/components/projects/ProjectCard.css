@@ -43,6 +43,12 @@
 }
 
 .project-card__title {
+  /* Mismo aspecto sea h2 o h3: el nivel cambia según la página, el diseño no */
+  font-family: var(--font-body);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
   color: var(--color-on-dark);
 }
 

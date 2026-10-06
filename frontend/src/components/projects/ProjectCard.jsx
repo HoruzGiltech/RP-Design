@@ -9,9 +9,11 @@ import './ProjectCard.css'
  * Toda la tarjeta es un enlace a la página del proyecto.
  * Está pensada para ir sobre fondo oscuro (inicio y /proyectos).
  *
- * index: posición en la cuadrícula, para que las tarjetas entren una tras otra.
+ * index:   posición en la cuadrícula, para que las tarjetas entren una tras otra.
+ * titleAs: nivel del título ("h2" o "h3"). Depende de la página: los títulos deben
+ *          bajar de nivel en orden (h1, h2, h3), sin saltarse ninguno.
  */
-export default function ProjectCard({ project, index = 0 }) {
+export default function ProjectCard({ project, index = 0, titleAs: Title = 'h3' }) {
   return (
     <Reveal as="article" index={index} className="project-card">
       <Link to={`/proyectos/${project.slug}`} className="project-card__link">
@@ -34,7 +36,7 @@ export default function ProjectCard({ project, index = 0 }) {
         </div>
 
         {project.category && <p className="project-card__category">{project.category}</p>}
-        <h3 className="project-card__title">{project.title}</h3>
+        <Title className="project-card__title">{project.title}</Title>
         <p className="project-card__summary">{project.summary}</p>
       </Link>
     </Reveal>

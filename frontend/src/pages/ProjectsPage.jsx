@@ -33,5 +33,6 @@ function ProjectsContent({ projects, loading, error, onRetry }) {
   if (projects.length === 0) {
     return <p className="projects-page__empty">Todavía no hay proyectos publicados.</p>
   }
-  return <ProjectGrid projects={projects} />
+  // En esta página las tarjetas van justo debajo del h1, así que sus títulos son h2
+  return <ProjectGrid projects={projects} titleAs="h2" />
 }
