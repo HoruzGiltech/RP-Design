@@ -126,7 +126,7 @@
 - [x] **T-4.4** Envío: POST, botón deshabilitado mientras se envía, `location.assign(whatsapp_url)` y pantalla de éxito con "Abrir WhatsApp". *(RF-03.9, CA-03.5)*
 - [x] **T-4.5** Manejo de errores 400 (por campo) y 429 (mensaje amable).
 - [x] **T-4.6** Honeypot en el formulario.
-- [~] **T-4.7** Prueba completa de punta a punta (pasos 1 a 5 verificados con Playwright en escritorio; **falta la prueba en un celular real**):
+- [x] **T-4.7** Prueba completa de punta a punta (pasos 1 a 5 verificados con Playwright en escritorio; prueba en celular real hecha por el desarrollador el 2026-10-06):
   1. Configurar en el panel el número de WhatsApp y el precio de Cocina a 100 USD.
   2. En el sitio: Cocina, 12,5 m² → se muestra "USD 1.250,00".
   3. Enviar → se abre WhatsApp con el mensaje completo.
