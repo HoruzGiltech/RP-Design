@@ -141,7 +141,13 @@
 - [x] **T-4.12** Frontend: páginas `/terminos` y `/privacidad`, enlaces y crédito en el pie, y casilla en el formulario. *(RF-07.4, RF-07.5)*
 - [ ] **T-4.13** El cliente o su abogado escriben los textos legales en el panel. *(RF-07.3, CA-07.4)* Bloquea la publicación del sitio, no el desarrollo.
 
-- [ ] **T-4.8** ✋ **Revisión de fin de fase** y revisión de accesibilidad: formulario con teclado, contraste y `alt`. *(RNF-04)*
+- [x] **T-4.8** ✋ **Revisión de fin de fase** y revisión de accesibilidad: formulario con teclado, contraste y `alt`. *(RNF-04)* (Aprobada el 2026-10-06.)
+
+---
+
+## Fase 4C — Cambios del cliente (specs-001)
+
+> Las tareas de esta fase están en `specs-001/tasks.md`. **El despliegue no empieza hasta cerrarla.**
 
 ---
 
