@@ -1,4 +1,7 @@
-import { getProjects } from '../api/endpoints'
+import { useSearchParams } from 'react-router-dom'
+
+import { getProjectCategories, getProjects } from '../api/endpoints'
+import CategoryFilter from '../components/projects/CategoryFilter'
 import ProjectGrid from '../components/projects/ProjectGrid'
 import ErrorMessage from '../components/ui/ErrorMessage'
 import Reveal from '../components/ui/Reveal'
@@ -9,18 +12,41 @@ import { useFetch } from '../hooks/useFetch'
 import './ProjectsPage.css'
 
 const PAGE_TITLE = 'Proyectos'
+// Nombre del parámetro en la dirección: /proyectos?categoria=residencial
+const CATEGORY_PARAM = 'categoria'
 
-/** /proyectos: todos los proyectos publicados, en el orden del panel. */
+/**
+ * /proyectos: todos los proyectos publicados, o solo los de una categoría
+ * si la dirección trae ?categoria=<slug> (specs-001, RF-09).
+ */
 export default function ProjectsPage() {
-  const { data: projects, loading, error, reload } = useFetch(getProjects)
+  const [searchParams] = useSearchParams()
+  const requestedSlug = searchParams.get(CATEGORY_PARAM)
 
-  useDocumentTitle(PAGE_TITLE)
+  const { data: categories } = useFetch(getProjectCategories)
+  // [requestedSlug]: al cambiar de categoría se piden los proyectos de la nueva
+  const {
+    data: projects,
+    loading,
+    error,
+    reload,
+  } = useFetch(() => getProjects(requestedSlug), [requestedSlug])
+
+  // Si la categoría de la dirección no existe, la página se comporta como "Todos"
+  const activeCategory = (categories ?? []).find((category) => category.slug === requestedSlug)
+  const title = activeCategory ? activeCategory.name : PAGE_TITLE
+
+  useDocumentTitle(activeCategory ? `${activeCategory.name} | ${PAGE_TITLE}` : PAGE_TITLE)
 
   return (
     <Section variant="dark" className="projects-page">
-      <Reveal as="h1" className="projects-page__title">
-        {PAGE_TITLE}
+      {/* key: al cambiar de categoría, el título vuelve a entrar con su animación */}
+      <Reveal as="h1" key={title} className="projects-page__title">
+        {title}
       </Reveal>
+      {categories && categories.length > 0 && (
+        <CategoryFilter categories={categories} activeSlug={activeCategory?.slug ?? null} />
+      )}
       <ProjectsContent projects={projects} loading={loading} error={error} onRetry={reload} />
     </Section>
   )

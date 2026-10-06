@@ -20,6 +20,8 @@
   --color-white: #ffffff;
   /* Errores del formulario. No viene de la maqueta, que no tiene estados de error */
   --color-error: #a4281b;
+  /* Verde de la marca WhatsApp, solo para su botón flotante */
+  --color-whatsapp: #25d366;
 
   /* --- Colores sobre fondo oscuro (Proyectos y pie de página) --- */
   --color-dark: #111111;
@@ -83,7 +85,8 @@
   --col-wide: 340px;
 
   /* Alturas de fotos y videos en escritorio (en móvil se usa aspect-ratio) */
-  --media-hero: 520px;
+  /* Alto máximo del hero del inicio */
+  --media-hero-max: 760px;
   --media-project: 420px;
   --media-process: 300px;
 
@@ -95,4 +98,8 @@
   --motion-stagger: 80ms;
   --reveal-distance: 24px;
   --marquee-duration: 30s;
+  /* Hero: fundido entre portadas y tiempo que se ve cada una.
+     --slide-duration debe coincidir con SLIDE_INTERVAL_MS de components/home/Hero.jsx */
+  --motion-slide: 900ms;
+  --slide-duration: 6s;
 }

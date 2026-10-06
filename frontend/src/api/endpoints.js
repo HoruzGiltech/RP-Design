@@ -7,14 +7,23 @@ export function getSite() {
   return apiGet('/site/')
 }
 
-/** Todos los proyectos publicados, en el orden del panel. */
-export function getProjects() {
-  return apiGet('/projects/')
+/**
+ * Proyectos publicados, en el orden del panel.
+ * Con `categorySlug`, solo los de esa categoría.
+ */
+export function getProjects(categorySlug) {
+  if (!categorySlug) return apiGet('/projects/')
+  return apiGet(`/projects/?category=${encodeURIComponent(categorySlug)}`)
 }
 
-/** Los proyectos destacados del inicio (máximo 3). */
-export function getFeaturedProjects() {
-  return apiGet('/projects/?featured=true')
+/** Los proyectos cuya portada va en el hero del inicio (máximo 6). */
+export function getHeroProjects() {
+  return apiGet('/projects/?hero=true')
+}
+
+/** Categorías que tienen proyectos publicados, con su portada y su cantidad. */
+export function getProjectCategories() {
+  return apiGet('/project-categories/')
 }
 
 /** Detalle de un proyecto con su galería. Lanza un ApiError 404 si no existe. */

@@ -1,0 +1,83 @@
+/*
+  Botón flotante de WhatsApp. Es redondo y verde a propósito: es el icono que
+  todo el mundo reconoce. Junto con el logo del encabezado, es la única pieza
+  redonda del sitio.
+*/
+.whatsapp-button {
+  position: fixed;
+  right: var(--space-24);
+  /* env(): en celulares con barra de gestos, el botón queda por encima de ella */
+  bottom: calc(var(--space-24) + env(safe-area-inset-bottom, 0px));
+  /* Encima del contenido y del encabezado (10); el visor de imágenes va aparte y lo tapa */
+  z-index: 15;
+  display: grid;
+  place-content: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid color-mix(in srgb, var(--color-dark) 15%, transparent);
+  border-radius: 50%;
+  background: var(--color-whatsapp);
+  color: var(--color-white);
+  animation: whatsapp-button-in var(--motion-reveal) var(--ease-out) backwards;
+  /* Aparece un momento después de cargar, para no competir con el hero */
+  animation-delay: 600ms;
+  transition:
+    opacity var(--motion-hover) var(--ease-out),
+    transform var(--motion-hover) var(--ease-out);
+}
+
+.whatsapp-button__icon {
+  width: 30px;
+  height: 30px;
+  fill: currentColor;
+}
+
+.whatsapp-button:active {
+  transform: scale(0.97);
+}
+
+/* Oculto mientras la sección Contacto está a la vista */
+.whatsapp-button.is-hidden {
+  opacity: 0;
+  transform: scale(0.9);
+  /* Invisible no debe poder pulsarse */
+  pointer-events: none;
+}
+
+/* Sobre fondo oscuro, el borde de foco oscuro no se vería: va doble */
+.whatsapp-button:focus-visible {
+  outline: 2px solid var(--color-dark);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px var(--color-bg);
+}
+
+@media (hover: hover) {
+  .whatsapp-button:hover {
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 767px) {
+  .whatsapp-button {
+    right: var(--space-16);
+    bottom: calc(var(--space-16) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@keyframes whatsapp-button-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-button {
+    animation: none;
+    transition: none;
+  }
+
+  .whatsapp-button:hover {
+    transform: none;
+  }
+}

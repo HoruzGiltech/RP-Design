@@ -58,20 +58,20 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
 
 ## Fase C — Frontend
 
-- [ ] **S1-C1** `api/endpoints.js` y `utils/whatsapp.js` (`buildWhatsAppLink`) con sus tests en Vitest. `ContactInfo` pasa a usar la utilidad. *(RF-11.1, CA-11.1)*
+- [x] **S1-C1** `api/endpoints.js` y `utils/whatsapp.js` (`buildWhatsAppLink`) con sus tests en Vitest. `ContactInfo` pasa a usar la utilidad. *(RF-11.1, CA-11.1)*
   - Verificación: en Contacto se lee "WhatsApp: +58 412 730 5964".
-- [ ] **S1-C2** `ProjectCard` y `ProjectDetailPage` con `category` como objeto. *(RF-09.10)*
-- [ ] **S1-C3** `hooks/useSlideshow.js`: portada activa, intervalo, pausa por pestaña oculta, por cursor y por foco. *(RF-08.3, RF-08.5)*
-- [ ] **S1-C4** Hero nuevo: distribución a todo el ancho, capa oscura, texto, portadas, nombre del proyecto con enlace, controles e indicadores. Tokens nuevos. *(RF-08.2 a RF-08.7)*
+- [x] **S1-C2** `ProjectCard` y `ProjectDetailPage` con `category` como objeto. *(RF-09.10)*
+- [x] **S1-C3** `hooks/useSlideshow.js`: portada activa, intervalo, pausa por pestaña oculta, por cursor y por foco. *(RF-08.3, RF-08.5)*
+- [x] **S1-C4** Hero nuevo: distribución a todo el ancho, capa oscura, texto, portadas, nombre del proyecto con enlace, controles e indicadores. Tokens nuevos. *(RF-08.2 a RF-08.7)*
   - Verificación con Playwright: 3 portadas rotan; 1 queda fija y sin controles.
-- [ ] **S1-C5** Animación del hero en `motion.css` (fundido y zoom lento) y comportamiento con movimiento reducido. Título principal oculto cuando el título está vacío. *(RF-08.3, CA-08.5 a CA-08.8)*
-- [ ] **S1-C6** Respaldo del hero con la imagen o el video de la Portada cuando no hay proyectos marcados. *(RF-08.9, CA-08.1)*
-- [ ] **S1-C7** `ProjectCategories` y `CategoryCard` en el inicio; se borra `FeaturedProjects`. *(RF-09.3, RF-09.6, RF-09.7, CA-09.2)*
-- [ ] **S1-C8** `/proyectos` con `?categoria=` y `CategoryFilter`; título de la página y de la pestaña según la categoría. *(RF-09.4, RF-09.5, CA-09.3, CA-09.4)*
+- [x] **S1-C5** Animación del hero en `motion.css` (fundido y zoom lento) y comportamiento con movimiento reducido. Título principal oculto cuando el título está vacío. *(RF-08.3, CA-08.5 a CA-08.8)*
+- [x] **S1-C6** Respaldo del hero con la imagen o el video de la Portada cuando no hay proyectos marcados. *(RF-08.9, CA-08.1)*
+- [x] **S1-C7** `ProjectCategories` y `CategoryCard` en el inicio; se borra `FeaturedProjects`. *(RF-09.3, RF-09.6, RF-09.7, CA-09.2)*
+- [x] **S1-C8** `/proyectos` con `?categoria=` y `CategoryFilter`; título de la página y de la pestaña según la categoría. *(RF-09.4, RF-09.5, CA-09.3, CA-09.4)*
   - Verificación con Playwright: inicio → categoría → filtro → botón atrás.
-- [ ] **S1-C9** `WhatsAppButton` en `Layout`, con el ajuste de espacios para que no tape nada. *(RF-12, CA-12.1 a CA-12.4)*
+- [x] **S1-C9** `WhatsAppButton` en `Layout`, con el ajuste de espacios para que no tape nada. *(RF-12, CA-12.1 a CA-12.4)*
   - Verificación con Playwright a 360 px: no tapa el envío del formulario ni el pie; queda por debajo del visor.
-- [ ] **S1-C10** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de lo nuevo: contraste del texto sobre las portadas, teclado en los controles del hero, nombres accesibles. *(RNF-09, RNF-10)*
+- [x] **S1-C10** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de lo nuevo: contraste del texto sobre las portadas, teclado en los controles del hero, nombres accesibles. *(RNF-09, RNF-10)*
 
 - [ ] **S1-C11** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio con datos cargados desde el panel y prueba en un celular real.
 
@@ -79,6 +79,6 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
 
 ## Fase D — Cierre
 
-- [ ] **S1-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
-- [ ] **S1-D2** Anotar en `specs/requirements.md` y `specs/design.md` qué apartados quedaron sustituidos por specs-001, para que nadie programe sobre la versión vieja.
+- [x] **S1-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
+- [x] **S1-D2** Anotar en `specs/requirements.md` y `specs/design.md` qué apartados quedaron sustituidos por specs-001, para que nadie programe sobre la versión vieja.
 - [ ] **S1-D3** ✋ Aprobación final. Después sigue la Fase 5 (despliegue) de `specs/tasks.md`.

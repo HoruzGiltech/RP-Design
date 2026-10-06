@@ -47,6 +47,13 @@
   transition: color var(--motion-hover) var(--ease-out);
 }
 
+/* En pantallas angostas se deja sitio abajo para el botón flotante de WhatsApp */
+@media (max-width: 767px) {
+  .footer__inner {
+    padding-bottom: 96px;
+  }
+}
+
 @media (hover: hover) {
   .footer__link:hover {
     color: var(--color-on-dark);

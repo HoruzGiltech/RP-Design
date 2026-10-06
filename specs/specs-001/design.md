@@ -210,9 +210,10 @@ Distribución: sección a todo el ancho, fondo `--color-dark`, alto `min(78vh, 7
 
 - **Capa oscura:** un degradado de `--color-dark` sobre la foto, más denso abajo y a la izquierda, donde va el texto. Garantiza contraste AA sea cual sea la foto.
 - **Texto:** los tokens `--color-on-dark*` que ya usa la sección Proyectos. No hacen falta colores nuevos.
+- **Botones del hero:** el principal se invierte sobre fondo oscuro (fondo claro, texto oscuro), porque el color de acento por defecto es negro y no se vería.
 - **Nombre y categoría del proyecto:** un enlace a `/proyectos/<slug>` en la parte inferior. Cambia junto con la portada.
 - **Controles:** anterior, siguiente y pausa, como botones de texto o signo simples sobre fondo oscuro (el mismo estilo que los del visor de imágenes). Indicadores: barras rectas, no puntos redondos.
-- **Imágenes:** todas las portadas están en la página una encima de otra; solo la activa tiene `opacity: 1`. La primera lleva `fetchPriority="high"`; las demás, `loading="lazy"`.
+- **Imágenes:** en la página solo están la portada activa, la que sale y la siguiente, una encima de otra; solo la activa tiene `opacity: 1`. Así las demás fotos grandes no se descargan hasta que les toca. La primera lleva `fetchPriority="high"`.
 - **Título principal:** si `hero.title` está vacío, se pone un `<h1>` solo para lectores de pantalla con `seo.site_title` (CA-08.7).
 
 **Rotación** (`useSlideshow`):
@@ -265,7 +266,7 @@ const { index, isPlaying, goTo, next, previous, toggle, pause, resume } = useSli
 - Aspecto (P-3): el icono clásico. Círculo con fondo `--color-whatsapp` (`#25D366`, el verde de la marca) y el logotipo en blanco. Es redondo a propósito, como excepción a la regla de la maqueta, para que se reconozca al instante.
 - El blanco sobre ese verde no llega al contraste que se le pide a un texto, pero aquí la forma y el color del logotipo son los que lo identifican; además lleva nombre accesible y un borde fino oscuro para separarlo de fondos claros.
 - `z-index` por encima del contenido y del encabezado, y **por debajo** del visor de imágenes (`<dialog>` modal).
-- Para no tapar contenido (CA-12.3): el pie de página gana espacio inferior en móvil, y el formulario de cotización deja margen a la derecha de su botón de envío en pantallas angostas.
+- Para no tapar contenido (CA-12.3): el botón **se oculta mientras la sección Contacto está a la vista** (`IntersectionObserver`), porque ahí ya están el formulario y el enlace de WhatsApp. Además, el pie de página gana espacio inferior en móvil y los controles del hero se alinean a la izquierda en pantallas angostas.
 - Animación: aparece con un fundido al cargar; al pasar el cursor crece a `scale(1.05)`; al pulsar, `scale(0.97)`.
 - No se dibuja si `show_whatsapp_button` es `false` o si no hay número.
 

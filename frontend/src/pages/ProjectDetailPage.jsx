@@ -49,7 +49,7 @@ function ProjectDetail({ project }) {
         </Link>
         {project.category && (
           <Reveal as="p" className="project-detail__category">
-            {project.category}
+            {project.category.name}
           </Reveal>
         )}
         <Reveal as="h1" index={1} className="project-detail__title">

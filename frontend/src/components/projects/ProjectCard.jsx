@@ -35,7 +35,9 @@ export default function ProjectCard({ project, index = 0, titleAs: Title = 'h3' 
           </span>
         </div>
 
-        {project.category && <p className="project-card__category">{project.category}</p>}
+        {project.category && (
+          <p className="project-card__category">{project.category.name}</p>
+        )}
         <Title className="project-card__title">{project.title}</Title>
         <p className="project-card__summary">{project.summary}</p>
       </Link>

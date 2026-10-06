@@ -1,4 +1,5 @@
 import { useSite } from '../../context/SiteContext'
+import { buildWhatsAppLink } from '../../utils/whatsapp'
 import './ContactInfo.css'
 
 /** Datos de contacto. Salen de "Configuración general" del panel. */
@@ -11,7 +12,7 @@ export default function ContactInfo() {
       {settings.whatsapp_number && (
         <a
           className="contact-info__whatsapp"
-          href={`https://wa.me/${settings.whatsapp_number}`}
+          href={buildWhatsAppLink(settings.whatsapp_number)}
           target="_blank"
           rel="noopener noreferrer"
         >

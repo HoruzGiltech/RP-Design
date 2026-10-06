@@ -1,0 +1,35 @@
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-24);
+  border-bottom: 1px solid var(--color-dark-surface);
+}
+
+.category-filter__link {
+  display: inline-flex;
+  align-items: center;
+  /* Altura cómoda para tocar con el dedo */
+  min-height: 48px;
+  /* La línea de abajo se reserva siempre, para que el texto no salte al elegir */
+  border-bottom: 2px solid transparent;
+  /* Se monta sobre la línea del contenedor */
+  margin-bottom: -1px;
+  color: var(--color-on-dark-secondary);
+  font-size: var(--text-nav);
+  text-decoration: none;
+  transition:
+    color var(--motion-hover) var(--ease-out),
+    border-color var(--motion-hover) var(--ease-out);
+}
+
+.category-filter__link[aria-current='page'] {
+  border-bottom-color: var(--color-on-dark);
+  color: var(--color-on-dark);
+  font-weight: 600;
+}
+
+@media (hover: hover) {
+  .category-filter__link:hover {
+    color: var(--color-on-dark);
+  }
+}

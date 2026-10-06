@@ -5,6 +5,13 @@
 
 **Estado:** Aprobado (v3, 2026-10-05) — incluye §3.6 Animaciones y el video de la Portada
 
+> ⚠️ **Parte de este documento quedó sustituida por `specs/specs-001/design.md`** (cambios del cliente, ya implementados). Lo que cambió:
+> - **§2.3 `Project`:** `category` es una relación con `ProjectCategory`; `slug` no es editable; `is_featured` y `featured_order` ya no existen (los reemplazan `show_in_hero`, `hero_order` e `is_category_cover`).
+> - **§2.3 `SiteSettings`:** ya no existe `whatsapp_display`; se agregan `whatsapp_greeting` y `show_whatsapp_button`. `HeroSection.title` puede estar vacío.
+> - **§2.7 API:** `?featured=true` se reemplaza por `?hero=true`; se agregan `?category=<slug>` y `/api/project-categories/`.
+> - **§3.2 y §3.3 Frontend:** `FeaturedProjects` se reemplaza por `ProjectCategories`; `Hero` se reescribió; se agregan `WhatsAppButton`, `CategoryCard`, `CategoryFilter` y `useSlideshow`.
+> - **§3.0 Tokens:** `--media-hero` se reemplaza por `--media-hero-max`; se agregan `--color-whatsapp`, `--motion-slide` y `--slide-duration`.
+
 ---
 
 ## 1. Arquitectura

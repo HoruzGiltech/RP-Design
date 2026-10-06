@@ -8,6 +8,7 @@ import ErrorMessage from '../ui/ErrorMessage'
 import Spinner from '../ui/Spinner'
 import Footer from './Footer'
 import Header from './Header'
+import WhatsAppButton from './WhatsAppButton'
 import './Layout.css'
 
 const MAIN_ID = 'contenido'
@@ -45,6 +46,7 @@ function SiteFrame() {
         <Outlet />
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   )
 }

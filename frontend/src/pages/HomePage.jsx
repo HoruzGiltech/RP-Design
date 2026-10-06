@@ -1,7 +1,7 @@
 import Contact from '../components/home/Contact'
-import FeaturedProjects from '../components/home/FeaturedProjects'
 import Hero from '../components/home/Hero'
 import Process from '../components/home/Process'
+import ProjectCategories from '../components/home/ProjectCategories'
 import Services from '../components/home/Services'
 import SpecialtiesStrip from '../components/home/SpecialtiesStrip'
 import QuoteCalculator from '../components/quote/QuoteCalculator'
@@ -20,7 +20,7 @@ export default function HomePage() {
       <Hero />
       <SpecialtiesStrip />
       <Services />
-      <FeaturedProjects />
+      <ProjectCategories />
       <Process />
       <Contact>
         <QuoteCalculator />

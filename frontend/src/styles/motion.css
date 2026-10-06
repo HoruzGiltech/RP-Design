@@ -34,6 +34,39 @@
   transform: none;
 }
 
+/* --- Hero: fundido entre portadas y zoom lento (specs-001) --- */
+
+.hero__slide {
+  transition: opacity var(--motion-slide) var(--ease-out);
+  /* La portada que sale se queda con el zoom final mientras se desvanece: no da un salto */
+  transform: scale(1.06);
+}
+
+/* La portada activa crece muy despacio durante todo el tiempo que se ve */
+.hero__slide.is-active {
+  animation: hero-slide-zoom var(--slide-duration) linear both;
+}
+
+@keyframes hero-slide-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+/* El nombre del proyecto aparece con un fundido corto al cambiar de portada */
+.hero__project {
+  animation: hero-project-in 300ms var(--ease-out);
+}
+
+@keyframes hero-project-in {
+  from {
+    opacity: 0;
+  }
+}
+
 /* --- Zoom suave ligado al scroll (foto de la Portada y portada del proyecto) --- */
 
 /*
@@ -70,6 +103,18 @@
   }
 
   .zoom-on-scroll {
+    animation: none;
+  }
+
+  /* Hero: las portadas cambian al instante, sin fundido ni zoom */
+  .hero__slide,
+  .hero__slide.is-active {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  .hero__project {
     animation: none;
   }
 }

@@ -136,6 +136,26 @@ docker compose exec backend python -c "import secrets; print(secrets.token_urlsa
 
 En local no hace falta: con `DJANGO_DEBUG=True` la clave de ejemplo se acepta.
 
+## 10. El sitio no carga desde otro equipo o el celular (o deja de cargar de un día para otro)
+
+**Cuándo aparece:** al abrir `http://<IP-de-la-computadora>:5173/` desde el celular, o cuando el sitio se queda en "Cargando…" o muestra "No pudimos conectar con el servidor".
+
+**Causa:** para probar desde el celular, la IP de la computadora en la red local está escrita en dos archivos: `.env` (`DJANGO_ALLOWED_HOSTS` y `CORS_ALLOWED_ORIGINS`) y `frontend/.env` (`VITE_API_URL`). El router puede asignar otra IP al reiniciarse, y entonces esos archivos apuntan a una dirección que ya no existe.
+
+**Solución:**
+
+1. Mira la IP actual con `ipconfig` (línea "Dirección IPv4" del adaptador Wi-Fi).
+2. Cámbiala en los dos archivos.
+3. Recrea los contenedores para que lean los archivos nuevos:
+
+```bash
+docker compose up -d --force-recreate backend frontend
+```
+
+Para trabajar solo en la computadora, se puede volver a `http://localhost:8000/api` en `frontend/.env`.
+
+Si la IP es correcta y aun así el celular no abre el sitio, revisa que la VPN esté pausada y que el firewall de Windows permita Docker en redes privadas.
+
 ---
 
 ## Cómo agregar un problema nuevo

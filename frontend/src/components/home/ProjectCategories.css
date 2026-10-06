@@ -1,10 +1,10 @@
-.featured-projects {
+.project-categories {
   display: flex;
   flex-direction: column;
   gap: var(--space-48);
 }
 
-.featured-projects__header {
+.project-categories__header {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -12,19 +12,19 @@
   gap: var(--space-24);
 }
 
-.featured-projects__instagram {
+.project-categories__instagram {
   color: var(--color-on-dark);
   font-size: var(--text-nav);
 }
 
 /* El mensaje de error hereda los colores del fondo oscuro */
-.featured-projects .error-message {
+.project-categories .error-message {
   margin-inline: 0;
   padding: 0;
   color: var(--color-on-dark-secondary);
 }
 
-.featured-projects .error-message .button {
+.project-categories .error-message .button {
   border-color: var(--color-on-dark);
   color: var(--color-on-dark);
 }

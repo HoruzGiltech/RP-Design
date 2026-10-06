@@ -7,6 +7,14 @@
 **Maqueta:** `docs/maqueta-legible.html` (para leer y comparar) · `docs/maqueta-original.html` (archivo original del diseñador)
 **Referencia de animaciones:** https://sparquitectosve.com/ (solo el movimiento; el aspecto sigue siendo el de la maqueta)
 
+> ⚠️ **Parte de este documento quedó sustituida por `specs/specs-001/requirements.md`** (cambios del cliente, ya implementados). No programes sobre estos apartados sin leer el paquete:
+> - **S2 Portada** y **RF-06.2, RF-06.5, RF-06.6 en la Portada** → hero con portadas de proyectos que rotan (RF-08).
+> - **S5 Proyectos**, **RF-01.1**, **CA-01.1** y **CA-01.2** (los 3 destacados) → tarjetas de categorías (RF-09). Ya no existen los "destacados".
+> - **Campo de texto "categoría"** del proyecto → relación con la lista de categorías (RF-09.2).
+> - **Dirección web editable** del proyecto → se genera sola (RF-10).
+> - **"WhatsApp como se muestra"** de RF-04.5 → se calcula en formato internacional (RF-11).
+> - Se agrega el **botón flotante de WhatsApp** (RF-12).
+
 ---
 
 ## 1. Objetivo
