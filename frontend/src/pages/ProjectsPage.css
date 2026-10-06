@@ -1,0 +1,37 @@
+.projects-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-48);
+  /* Que el fondo oscuro llene la pantalla aunque haya pocos proyectos */
+  min-height: 70vh;
+}
+
+/* Mismo tamaño que los títulos de sección del inicio */
+.projects-page__title {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--tracking-h2);
+}
+
+.projects-page__empty {
+  font-size: var(--text-lead-small);
+  color: var(--color-on-dark-secondary);
+}
+
+/* Carga y error sobre fondo oscuro */
+.projects-page .spinner,
+.projects-page .error-message {
+  margin-inline: 0;
+  padding-inline: 0;
+  align-items: flex-start;
+  color: var(--color-on-dark-secondary);
+}
+
+.projects-page .spinner__bar {
+  background: var(--color-dark-surface);
+}
+
+.projects-page .error-message .button {
+  border-color: var(--color-on-dark);
+  color: var(--color-on-dark);
+}

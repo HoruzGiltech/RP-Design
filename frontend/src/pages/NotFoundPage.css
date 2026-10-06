@@ -1,0 +1,24 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-28);
+}
+
+/* Un título de error no necesita el tamaño de la Portada */
+.not-found__title {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--tracking-h2);
+}
+
+.not-found__message {
+  font-size: var(--text-lead);
+  color: var(--color-text-secondary);
+}
+
+.not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12);
+}

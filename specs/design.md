@@ -405,7 +405,7 @@ La maqueta usa estilos en línea. Estos son sus valores, que van a `styles/token
 - **Sin bordes redondeados ni sombras.** Todo es recto; la única excepción es el círculo del logo (`border-radius: 50%`, 44px).
 - Botón principal: fondo de acento, texto blanco, `16px 28px`, 600. Botón secundario: borde de 1px `--color-text`, `15px 28px`.
 - Inputs: `padding 14px`, borde de 1px `--color-border-input`, fondo blanco, `font: inherit`.
-- La grilla de servicios usa `gap: 1px` sobre un fondo `--color-border` para dibujar las líneas entre tarjetas.
+- La grilla de servicios dibuja las líneas con el contorno (`outline`) de cada tarjeta y `gap: 1px`. La maqueta usa un fondo `--color-border`, pero eso deja un bloque gris cuando sobra una celda (3 tarjetas en 2 columnas).
 - Encabezado `sticky`, con borde inferior de 1px.
 
 **Movimiento** (no vienen de la maqueta, que es estática; ver §3.6)
@@ -429,7 +429,7 @@ La maqueta usa estilos en línea. Estos son sus valores, que van a `styles/token
 | `/` | `HomePage`: Hero, SpecialtiesStrip, Services, FeaturedProjects, Process y Contact (con la calculadora) |
 | `/proyectos` | `ProjectsPage`: cuadrícula completa |
 | `/proyectos/:slug` | `ProjectDetailPage` |
-| `*` | `NotFoundPage` |
+| `*` | `NotFoundPage` (también se muestra en `/proyectos/<slug>` si el proyecto no existe o es borrador) |
 
 Los enlaces del menú a secciones del inicio usan anclas (`/#servicios`). Un enlace del menú no se muestra si su sección está oculta.
 
@@ -480,6 +480,7 @@ frontend/src/
 
 **`MediaGallery` + `Lightbox`**
 - Las imágenes muestran la miniatura y, al hacer clic, se abren en grande. Se cierra con `Esc` y se navega con las flechas.
+- `Lightbox` usa la etiqueta `<dialog>` del navegador (`showModal()`): trae resueltos el cierre con `Esc`, el foco dentro del visor y su devolución a la miniatura. El visor solo recorre imágenes; los videos se reproducen en la galería.
 - Videos: `<video controls preload="metadata" poster=...>`, sin `autoplay`. Solo el video de la Portada usa `autoplay muted loop playsInline`, sin controles (§3.6).
 
 **SEO por página:** un hook pequeño, `useDocumentTitle`, actualiza `document.title` y la meta descripción. No hace falta una librería.

@@ -1,0 +1,89 @@
+/* Mientras el visor está abierto, la página de atrás no se desplaza */
+html:has(.lightbox[open]) {
+  overflow: hidden;
+}
+
+.lightbox {
+  /* El diálogo ocupa toda la pantalla; por defecto el navegador lo hace pequeño y centrado */
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: var(--space-16);
+  border: 0;
+  background: var(--color-dark);
+  color: var(--color-on-dark);
+}
+
+.lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  animation: lightbox-in var(--motion-hover) var(--ease-out);
+}
+
+.lightbox__image {
+  /* Ocupa el espacio que dejan los botones, sin deformarse */
+  flex: 1;
+  min-height: 0;
+  max-width: 100%;
+  object-fit: contain;
+  animation: lightbox-in var(--motion-hover) var(--ease-out);
+}
+
+.lightbox__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-24);
+}
+
+.lightbox__counter {
+  font-size: var(--text-label);
+  color: var(--color-on-dark-muted);
+  /* Los números no "bailan" al cambiar de 9 a 10 */
+  font-variant-numeric: tabular-nums;
+}
+
+.lightbox__button {
+  min-height: 48px;
+  padding: var(--space-12) var(--space-16);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-on-dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color var(--motion-hover) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out);
+}
+
+.lightbox__button:active {
+  transform: scale(0.97);
+}
+
+.lightbox__close {
+  align-self: flex-end;
+}
+
+@media (hover: hover) {
+  .lightbox__button:hover {
+    border-color: var(--color-on-dark);
+  }
+}
+
+/* Entra con un fundido y creciendo apenas: nada aparece "de la nada" */
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox[open],
+  .lightbox__image {
+    animation: none;
+  }
+}

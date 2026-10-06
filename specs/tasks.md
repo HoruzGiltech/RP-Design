@@ -105,13 +105,13 @@
 - [x] **T-3.8** SpecialtiesStrip (cinta con `ui/Marquee`), Services (entrada izquierda / abajo / derecha) (números 01, 02… calculados) y Process (letras A, B… calculadas y video); se ocultan si están vacíos o desactivados. *(S3, S4, S6, CA-05.2, D-13, RF-06.3, RF-06.4, CA-06.4)*
 - [x] **T-3.8b** `MediaPlaceholder` en sus variantes clara y oscura, y color de acento aplicado desde `settings.accent_color`. *(CA-05.3, CA-05.4)*
 - [x] **T-3.8c** Contact: columna de datos (WhatsApp, correo, Instagram y ciudad desde SiteSettings) y espacio para la calculadora. *(S7)*
-- [ ] **T-3.9** `ProjectsPage` con ProjectGrid y miniaturas con `loading="lazy"`. *(RF-01.2, CA-02.3)*
-- [ ] **T-3.10** `ProjectDetailPage` con MediaGallery y Lightbox (teclado: Esc y flechas). *(RF-01.3, RF-02.6)*
-- [ ] **T-3.11** `NotFoundPage` y manejo de slugs inexistentes. *(CA-01.5)*
-- [ ] **T-3.12** `useDocumentTitle` en cada página, con los datos de `SeoSettings`.
-- [ ] **T-3.13** Revisión responsive: 360, 768, 1280 y 1920 px. *(RNF-01)*
+- [x] **T-3.9** `ProjectsPage` con ProjectGrid y miniaturas con `loading="lazy"`. *(RF-01.2, CA-02.3)*
+- [x] **T-3.10** `ProjectDetailPage` con MediaGallery y Lightbox (teclado: Esc y flechas). *(RF-01.3, RF-02.6)*
+- [x] **T-3.11** `NotFoundPage` y manejo de slugs inexistentes. *(CA-01.5)*
+- [x] **T-3.12** `useDocumentTitle` en cada página, con los datos de `SeoSettings`.
+- [x] **T-3.13** Revisión responsive: 360, 768, 1280 y 1920 px. *(RNF-01)*
   - Verificación: capturas en cada ancho comparadas con `docs/maqueta-legible.html`.
-- [ ] **T-3.13b** Revisión de animaciones con Playwright: recorrido normal y con `prefers-reduced-motion` emulado. *(CA-06.1, CA-06.2, CA-06.6)*
+- [x] **T-3.13b** Revisión de animaciones con Playwright: recorrido normal y con `prefers-reduced-motion` emulado. *(CA-06.1, CA-06.2, CA-06.6)*
 
 - [ ] **T-3.14** ✋ **Revisión de fin de fase:** `npm run lint` y `npm run build` pasan; demo navegando todo el sitio con datos reales cargados desde el panel.
 

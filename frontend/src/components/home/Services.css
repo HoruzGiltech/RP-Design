@@ -17,15 +17,18 @@
 }
 
 /*
-  Las líneas entre tarjetas no son bordes: la grilla tiene el color de la
-  línea de fondo y 1px de separación, y cada tarjeta tapa el resto.
+  Las líneas entre tarjetas son el contorno (outline) de cada una. Entre dos
+  tarjetas hay 1px de separación, y los dos contornos caen en ese mismo píxel:
+  por eso la línea no se ve doble.
+  (La maqueta pinta el fondo de la grilla con el color de la línea, pero así
+  una celda vacía se ve como un bloque gris: pasa con 3 tarjetas en 2 columnas.)
 */
 .services__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(var(--col-services), 100%), 1fr));
   gap: 1px;
-  background: var(--color-border);
-  border: 1px solid var(--color-border);
+  /* Deja sitio al contorno de las tarjetas del borde */
+  padding: 1px;
   /* Una tarjeta que entra desde un lado no debe provocar scroll horizontal */
   overflow: hidden;
 }
@@ -36,6 +39,7 @@
   gap: var(--space-16);
   padding: 40px var(--space-32);
   background: var(--color-bg);
+  outline: 1px solid var(--color-border);
 }
 
 .services__number {
