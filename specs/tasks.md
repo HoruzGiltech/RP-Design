@@ -54,11 +54,12 @@
 - [x] **T-2.12** Admin de áreas (precios editables en la lista) y de cotizaciones (solo lectura salvo el estado, con filtros, búsqueda y enlace a WhatsApp). *(RF-04.4, RF-04.7)*
 
 ### 2E. App `site_content`
-- [ ] **T-2.13** Modelos `SiteSettings` (incluye `accent_color`) y las secciones únicas `HeroSection` (con `video` opcional, RF-06.5), `ServicesSection`, `ProjectsSection`, `ProcessSection`, `ContactSection`, `FooterSection` y `SeoSettings`. *(RF-05, RF-04.5)*
-- [ ] **T-2.14** Modelos de lista `Specialty`, `Service` y `ProcessStep`.
-- [ ] **T-2.14b** Migración de datos con **todos los textos y datos de contacto de la maqueta** (design §2.3). *(CA-05.3, D-14)*
+- [x] **T-2.13** Modelos `SiteSettings` (incluye `accent_color`) y las secciones únicas `HeroSection` (con `video` opcional, RF-06.5), `ServicesSection`, `ProjectsSection`, `ProcessSection`, `ContactSection`, `FooterSection` y `SeoSettings`. *(RF-05, RF-04.5)*
+- [x] **T-2.14** Modelos de lista `Specialty`, `Service` y `ProcessStep`.
+- [x] **T-2.14b** Migración de datos con **todos los textos y datos de contacto de la maqueta** (design §2.3). *(CA-05.3, D-14)*
   - Verificación: con una BD nueva, `GET /api/site/` devuelve los mismos textos que `docs/maqueta-legible.html`.
-- [ ] **T-2.15** Admin: las secciones únicas sin "Agregar" ni "Eliminar"; las listas ordenables con `is_visible`. *(RF-05.2 a RF-05.4)*
+  - Hecho con tests sobre la base de datos (`site_content/tests/test_models.py`). La comprobación por `GET /api/site/` se repite en T-2.18, cuando exista el endpoint.
+- [x] **T-2.15** Admin: las secciones únicas sin "Agregar" ni "Eliminar"; las listas ordenables con `is_visible`. *(RF-05.2 a RF-05.4)*
   - Verificación manual: no se puede crear un segundo Hero.
 
 ### 2F. Roles

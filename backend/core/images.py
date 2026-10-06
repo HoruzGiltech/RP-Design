@@ -9,6 +9,8 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from PIL import Image, ImageOps
 
+from core.uploads import file_has_changed
+
 OPTIMIZED_MAX_SIDE = 1920
 THUMBNAIL_MAX_SIDE = 600
 QUALITY = 82
@@ -46,6 +48,20 @@ def resize_image(file, max_side):
 
     extension = EXTENSION_BY_FORMAT[image_format]
     return ContentFile(buffer.getvalue(), name=f"image.{extension}")
+
+
+def optimize_image_field(instance, field_name):
+    """
+    Si la imagen de ese campo es nueva, la reemplaza por su versión optimizada.
+
+    Se llama desde save() del modelo, antes de guardar el registro.
+    """
+    if not file_has_changed(instance, field_name):
+        return
+    field_file = getattr(instance, field_name)
+    optimized = build_optimized(field_file.file)
+    # save=False: solo guarda el archivo; el registro lo guarda save() después
+    field_file.save(optimized.name, optimized, save=False)
 
 
 def build_optimized(file):

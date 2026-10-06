@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "core",
     "projects",
     "quotes",
+    "site_content",
 ]
 
 MIDDLEWARE = [

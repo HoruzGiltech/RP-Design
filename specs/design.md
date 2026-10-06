@@ -148,7 +148,7 @@ Texto inicial de `price_note`:
 | `ProcessSection` | S6 | `title` ("Ve tu espacio antes de construirlo"), `intro`, `video` (opcional), `video_poster` (opcional) |
 | `ContactSection` | S7 | `title` ("Cuéntanos sobre tu espacio"), `intro` ("Te respondemos con los próximos pasos…"), `submit_text` ("Enviar por WhatsApp") |
 | `FooterSection` | S8 | `name` ("RP DISEÑO INTERIOR"), `tagline` ("Arquitectura · Interiorismo · Remodelaciones — Caracas") |
-| `SeoSettings` | S9 | `site_title` ("RP Diseño Interior"), `meta_description`, `share_image` (no tiene `is_visible`) |
+| `SeoSettings` | S9 | `site_title` ("RP Diseño Interior"), `meta_description` (vacía al inicio: la maqueta no trae una), `share_image` (no tiene `is_visible`) |
 
 **Listas** (`OrderedModel` + `VisibleModel`):
 
@@ -259,7 +259,7 @@ Los dos throttles, `public: 120/min` y `quotes: 5/hour`, se configuran en `REST_
 | RemodelArea | Lista editable (`list_editable = price_per_m2, is_active`) y ordenable |
 | Quote | Solo lectura salvo `status`; filtros por estado, área y fecha; búsqueda por nombre, correo y teléfono; enlace "Abrir WhatsApp" con el cliente |
 | Singletons | Sin botón "Agregar" ni "Eliminar"; desde el menú se entra directo al formulario de edición |
-| Specialty, Service, ProcessStep | Ordenables y con `is_visible` en la lista. `Service` y `ProcessStep` también se pueden editar como inline dentro de su sección |
+| Specialty, Service, ProcessStep | Ordenables y con `is_visible` en la lista. Cada lista tiene su propia entrada en el menú del panel |
 
 - Interfaz en español (`LANGUAGE_CODE = "es"`), con título "Panel RP Design".
 - URL: `/<ADMIN_URL>/`, tomada de `.env`.
