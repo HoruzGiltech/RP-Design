@@ -1,0 +1,15 @@
+/*
+  Fuentes de la maqueta, servidas desde el propio sitio (sin pedirlas a Google Fonts).
+  Solo se cargan los pesos que se usan y el juego de caracteres latino,
+  que incluye las tildes y la ñ.
+*/
+
+/* Archivo: texto general */
+@import '@fontsource/archivo/latin-400.css';
+@import '@fontsource/archivo/latin-500.css';
+@import '@fontsource/archivo/latin-600.css';
+@import '@fontsource/archivo/latin-800.css';
+
+/* Archivo Narrow: títulos, números y franja */
+@import '@fontsource/archivo-narrow/latin-500.css';
+@import '@fontsource/archivo-narrow/latin-700.css';

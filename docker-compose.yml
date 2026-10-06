@@ -30,6 +30,19 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      # node_modules vive en un volumen aparte: los paquetes de Linux del contenedor
+      # no son los mismos que los de Windows, y no deben mezclarse.
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
   media_data:
+  frontend_node_modules:

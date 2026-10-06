@@ -1,0 +1,15 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+
+// El orden importa: primero las fuentes y los tokens, después los estilos que los usan
+import './styles/fonts.css'
+import './styles/tokens.css'
+import './styles/global.css'
+
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)

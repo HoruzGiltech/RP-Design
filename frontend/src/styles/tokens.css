@@ -1,0 +1,96 @@
+/*
+  Design tokens: los valores de diseño del sitio en un solo lugar.
+
+  Salen de la maqueta (docs/maqueta-legible.html) y están documentados en
+  specs/design.md §3.0. Ningún componente escribe un color o un tamaño suelto:
+  siempre usa una de estas variables.
+*/
+
+:root {
+  /* --- Colores sobre fondo claro --- */
+  --color-bg: #f4f3f0;
+  --color-bg-alt: #e8e6e1;
+  --color-placeholder: #dedbd5;
+  --color-border: #d6d3cd;
+  --color-border-input: #a8a59e;
+  --color-text: #111111;
+  --color-text-secondary: #3a3935;
+  --color-text-muted: #5a5853;
+  --color-link-hover: #555555;
+  --color-white: #ffffff;
+
+  /* --- Colores sobre fondo oscuro (Proyectos y pie de página) --- */
+  --color-dark: #111111;
+  --color-dark-surface: #2b2a28;
+  --color-on-dark: #f4f3f0;
+  --color-on-dark-secondary: #c9c6bf;
+  --color-on-dark-muted: #a8a59e;
+
+  /* Color de acento: el cliente lo elige en el panel y el sitio lo sobrescribe al cargar */
+  --color-accent: #111111;
+
+  /* --- Tipografía --- */
+  --font-body: 'Archivo', system-ui, sans-serif;
+  --font-display: 'Archivo Narrow', sans-serif;
+
+  --text-h1: clamp(48px, 7vw, 92px);
+  --text-h2: clamp(36px, 5vw, 60px);
+  --text-h3: 22px;
+  --text-h3-large: 24px;
+  --text-service-number: 56px;
+  --text-process-letter: 20px;
+  --text-strip: 20px;
+  --text-lead: 18px;
+  --text-lead-small: 17px;
+  --text-body: 16px;
+  --text-nav: 15px;
+  --text-label: 14px;
+  --text-eyebrow: 13px;
+
+  --leading-h1: 0.95;
+  --leading-h2: 1;
+  --leading-body: 1.6;
+
+  --tracking-h1: -2px;
+  --tracking-h2: -1px;
+  --tracking-eyebrow: 3px;
+  --tracking-category: 2px;
+
+  /* --- Espaciado --- */
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-64: 64px;
+
+  /* --- Layout --- */
+  --container-max: 1240px;
+  --gutter: 24px;
+  --section-py: 112px;
+  --hero-pt: 72px;
+  --hero-pb: 56px;
+  --logo-size: 44px;
+
+  /* Ancho mínimo de columna de cada grilla: repeat(auto-fit, minmax(N, 1fr)) */
+  --col-strip: 200px;
+  --col-services: 280px;
+  --col-hero: 320px;
+  --col-wide: 340px;
+
+  /* Alturas de fotos y videos en escritorio (en móvil se usa aspect-ratio) */
+  --media-hero: 520px;
+  --media-project: 420px;
+  --media-process: 300px;
+
+  /* --- Movimiento (specs/design.md §3.6) --- */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --motion-fast: 160ms;
+  --motion-hover: 200ms;
+  --motion-reveal: 500ms;
+  --motion-stagger: 80ms;
+  --reveal-distance: 24px;
+  --marquee-duration: 30s;
+}

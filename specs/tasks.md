@@ -91,10 +91,10 @@
 
 ## Fase 3 — Frontend
 
-- [ ] **T-3.1** Proyecto Vite + React + React Router, servicio `frontend` en Docker Compose, ESLint y `frontend/.env.example`.
+- [x] **T-3.1** Proyecto Vite + React + React Router, servicio `frontend` en Docker Compose, linter (oxlint, el que trae hoy la plantilla de Vite) y `frontend/.env.example`.
   - Verificación: `npm run dev` muestra la página y `npm run lint` pasa.
-- [ ] **T-3.2** `styles/tokens.css` (todos los tokens de design §3.0, incluidos los de movimiento) y `global.css`, más las fuentes con `@fontsource`. *(RNF-02, D-16)*
-- [ ] **T-3.3** `api/client.js`, `api/endpoints.js`, `useFetch` y `SiteContext`.
+- [x] **T-3.2** `styles/tokens.css` (todos los tokens de design §3.0, incluidos los de movimiento) y `global.css`, más las fuentes con `@fontsource`. *(RNF-02, D-16)*
+- [x] **T-3.3** `api/client.js`, `api/endpoints.js`, `useFetch` y `SiteContext`.
   - Verificación: en consola se ve el JSON de `/api/site/`.
 - [ ] **T-3.4** Componentes `ui/`: Button (con `scale(0.97)` al pulsar), Spinner, ErrorMessage y Section.
 - [ ] **T-3.4b** `hooks/useReveal.js`, `ui/Reveal` y `styles/motion.css` con la regla de `prefers-reduced-motion`. *(RF-06.1, RF-06.8, RF-06.9, CA-06.3)*
