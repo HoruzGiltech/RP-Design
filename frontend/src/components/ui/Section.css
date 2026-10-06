@@ -1,0 +1,19 @@
+.section__inner {
+  padding-block: var(--section-py);
+}
+
+.section--alt {
+  background: var(--color-bg-alt);
+}
+
+.section--dark {
+  background: var(--color-dark);
+  color: var(--color-on-dark);
+}
+
+/* En pantallas pequeñas, 112px arriba y abajo es demasiado aire */
+@media (max-width: 767px) {
+  .section__inner {
+    padding-block: var(--space-64);
+  }
+}

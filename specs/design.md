@@ -431,7 +431,11 @@ La maqueta usa estilos en línea. Estos son sus valores, que van a `styles/token
 | `/proyectos/:slug` | `ProjectDetailPage` |
 | `*` | `NotFoundPage` |
 
-Los enlaces del menú a secciones del inicio usan anclas (`/#servicios`).
+Los enlaces del menú a secciones del inicio usan anclas (`/#servicios`). Un enlace del menú no se muestra si su sección está oculta.
+
+`Layout` espera a que llegue `/api/site/` (muestra `Spinner` o `ErrorMessage` con "Reintentar"). Así las páginas y componentes de dentro usan `useSite()` sabiendo que el contenido ya existe.
+
+**Menú móvil** (por debajo de 768 px): botón hamburguesa con `aria-expanded` y `aria-controls`; el menú se despliega bajo el encabezado, con enlaces de 52 px de alto. Se cierra al elegir un enlace o con `Esc`. Hay un enlace "Saltar al contenido" visible solo con el foco del teclado.
 
 ### 3.2 Estructura
 
@@ -441,6 +445,8 @@ frontend/src/
 ├── api/endpoints.js         # getSite(), getProjects(), getProject(slug), getQuoteAreas(), createQuote()
 ├── context/SiteContext.jsx  # carga /api/site/ una vez y lo comparte
 ├── hooks/useFetch.js        # { data, loading, error }
+├── hooks/useFavicon.js      # icono de la pestaña: el logo del panel o el círculo con iniciales
+├── hooks/useScrollToHash.js # baja al ancla de la URL (/#servicios) o sube al cambiar de página
 ├── hooks/useReveal.js       # avisa cuando un elemento entra en pantalla (IntersectionObserver)
 ├── utils/currency.js        # formatUSD() — mismo formato que el backend
 ├── utils/estimate.js        # calculateEstimate() — solo para mostrar en vivo

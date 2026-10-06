@@ -32,7 +32,7 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 
 | # | Sección (ancla) | Tipo | Contenido en la maqueta | Campos editables |
 |---|---|---|---|---|
-| S1 | Encabezado | Única (en SiteSettings) | Logo circular "RP", "RP DISEÑO" / "INTERIOR · ARQUITECTURA", menú Servicios · Proyectos · Proceso y botón "Cotiza tu proyecto" | Logo (imagen opcional; si no hay, se dibuja el círculo con las iniciales), iniciales, nombre, subtítulo, texto del botón. Los enlaces del menú son fijos |
+| S1 | Encabezado | Única (en SiteSettings) | Logo circular "RP", "RP DISEÑO" / "INTERIOR · ARQUITECTURA", menú Servicios · Proyectos · Proceso y botón "Cotiza tu proyecto" | Logo (imagen opcional; si no hay, se dibuja el círculo con las iniciales), iniciales, nombre, subtítulo, texto del botón. Los enlaces del menú son fijos. El **icono de la pestaña (favicon)** usa el mismo logo; si no hay, el círculo con las iniciales |
 | S2 | Portada `#inicio` | Única | Antetítulo "ESTUDIO DE DISEÑO DE INTERIORES · CARACAS", H1, párrafo, botones "Agenda una visita" y "Ver proyectos", foto principal | Antetítulo, título, párrafo, textos de los 2 botones, imagen principal y su `alt`, **video opcional** (RF-06.5) |
 | S3 | Franja de especialidades | Lista | Diseño residencial · Diseño comercial · Renders 3D · Ejecución de obra | Texto de cada ítem y orden. Se muestra como cinta en movimiento (RF-06.4) |
 | S4 | Servicios `#servicios` | Única + lista | Título "Un solo equipo para todo tu proyecto", intro y 3 tarjetas numeradas 01–03 | Título, intro. Por tarjeta: título y descripción. **El número (01, 02…) se genera según el orden** |

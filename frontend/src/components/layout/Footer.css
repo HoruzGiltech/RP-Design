@@ -1,0 +1,19 @@
+.footer {
+  background: var(--color-dark);
+  color: var(--color-on-dark-muted);
+  font-size: var(--text-label);
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-block: 40px;
+}
+
+.footer__name {
+  color: var(--color-on-dark);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}

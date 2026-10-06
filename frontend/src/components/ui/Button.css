@@ -1,0 +1,72 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Altura mínima cómoda para tocar con el dedo */
+  min-height: 48px;
+  padding: 16px 28px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  /* Solo se animan las propiedades que cambian, nunca "all" */
+  transition:
+    background-color var(--motion-hover) var(--ease-out),
+    color var(--motion-hover) var(--ease-out),
+    opacity var(--motion-hover) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out);
+}
+
+/* Al pulsar, el botón se hunde un poco: confirma que el clic se registró */
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:disabled,
+.button[aria-disabled='true'] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button--small {
+  min-height: 44px;
+  padding: 12px 20px;
+}
+
+/* --- Principal: fondo de acento --- */
+.button--primary {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* --- Secundario: solo borde --- */
+.button--secondary {
+  background: transparent;
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.button--secondary.button--on-dark {
+  border-color: var(--color-on-dark);
+  color: var(--color-on-dark);
+}
+
+/* Los hover solo aplican con mouse: en pantallas táctiles se quedarían "pegados" */
+@media (hover: hover) {
+  .button--primary:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  .button--secondary:hover:not(:disabled) {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .button--secondary.button--on-dark:hover:not(:disabled) {
+    background: var(--color-on-dark);
+    color: var(--color-dark);
+  }
+}

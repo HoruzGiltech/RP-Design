@@ -1,0 +1,198 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-block: 18px;
+}
+
+/* --- Marca: logo + nombre --- */
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* El círculo del logo es el único borde redondeado de todo el sitio */
+.header__logo-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  border-radius: 50%;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+}
+
+.header__logo-image {
+  width: auto;
+  height: var(--logo-size);
+}
+
+.header__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.header__brand-name {
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.header__brand-subtitle {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--color-text-muted);
+}
+
+/* --- Menú en escritorio --- */
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-28);
+  font-size: var(--text-nav);
+}
+
+.header__link {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .header__link:hover {
+    color: var(--color-link-hover);
+  }
+}
+
+/* El botón hamburguesa solo existe en móvil */
+.header__toggle {
+  display: none;
+}
+
+/* --- Menú en móvil: botón hamburguesa y panel desplegable --- */
+
+@media (max-width: 767px) {
+  .header__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Tamaño cómodo para tocar con el dedo */
+    width: 48px;
+    height: 48px;
+    margin-right: -12px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  /* Tres rayas dibujadas con un elemento y sus dos pseudo-elementos */
+  .header__toggle-icon,
+  .header__toggle-icon::before,
+  .header__toggle-icon::after {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-text);
+    transition: transform var(--motion-hover) var(--ease-out);
+  }
+
+  .header__toggle-icon {
+    position: relative;
+  }
+
+  .header__toggle-icon::before,
+  .header__toggle-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .header__toggle-icon::before {
+    transform: translateY(-7px);
+  }
+
+  .header__toggle-icon::after {
+    transform: translateY(7px);
+  }
+
+  /* Abierto: las rayas forman una X */
+  .header__toggle[aria-expanded='true'] .header__toggle-icon {
+    background: transparent;
+  }
+
+  .header__toggle[aria-expanded='true'] .header__toggle-icon::before {
+    transform: rotate(45deg);
+  }
+
+  .header__toggle[aria-expanded='true'] .header__toggle-icon::after {
+    transform: rotate(-45deg);
+  }
+
+  .header__nav {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    /* Ocupa toda la fila de abajo, a lo ancho */
+    flex-basis: 100%;
+    padding-bottom: var(--space-12);
+    font-size: var(--text-lead-small);
+  }
+
+  .header__nav.is-open {
+    display: flex;
+    animation: header-menu-in var(--motion-hover) var(--ease-out);
+  }
+
+  .header__link {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .header__cta {
+    margin-top: var(--space-12);
+  }
+}
+
+@keyframes header-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header__nav.is-open {
+    animation: none;
+  }
+
+  .header__toggle-icon,
+  .header__toggle-icon::before,
+  .header__toggle-icon::after {
+    transition: none;
+  }
+}

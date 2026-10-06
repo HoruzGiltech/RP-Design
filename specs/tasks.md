@@ -96,10 +96,10 @@
 - [x] **T-3.2** `styles/tokens.css` (todos los tokens de design §3.0, incluidos los de movimiento) y `global.css`, más las fuentes con `@fontsource`. *(RNF-02, D-16)*
 - [x] **T-3.3** `api/client.js`, `api/endpoints.js`, `useFetch` y `SiteContext`.
   - Verificación: en consola se ve el JSON de `/api/site/`.
-- [ ] **T-3.4** Componentes `ui/`: Button (con `scale(0.97)` al pulsar), Spinner, ErrorMessage y Section.
-- [ ] **T-3.4b** `hooks/useReveal.js`, `ui/Reveal` y `styles/motion.css` con la regla de `prefers-reduced-motion`. *(RF-06.1, RF-06.8, RF-06.9, CA-06.3)*
+- [x] **T-3.4** Componentes `ui/`: Button (con `scale(0.97)` al pulsar), Spinner, ErrorMessage y Section.
+- [x] **T-3.4b** `hooks/useReveal.js`, `ui/Reveal` y `styles/motion.css` con la regla de `prefers-reduced-motion`. *(RF-06.1, RF-06.8, RF-06.9, CA-06.3)*
   - Verificación: un elemento de prueba aparece una sola vez al entrar en pantalla; con "reducir movimiento" se ve desde el inicio.
-- [ ] **T-3.5** Layout: Header (logo y menú responsive con hamburguesa) y Footer. *(S1, S8)*
+- [x] **T-3.5** Layout: Header (logo y menú responsive con hamburguesa) y Footer. *(S1, S8)* Incluye el favicon con el logo (`useFavicon`).
 - [ ] **T-3.6** Hero, con entrada del título y los botones, video opcional y zoom ligado al scroll. *(S2, RF-06.1, RF-06.2, RF-06.5, RF-06.6, CA-06.5)*
 - [ ] **T-3.7** FeaturedProjects (fondo oscuro, enlace a Instagram y botón "Ver todos") y ProjectCard (capa "Ver proyecto" al pasar el cursor y entrada escalonada); la sección se oculta si hay 0 destacados. *(S5, RF-01.1, CA-01.2, RF-06.3, RF-06.7)*
 - [ ] **T-3.8** SpecialtiesStrip (cinta con `ui/Marquee`), Services (entrada izquierda / abajo / derecha) (números 01, 02… calculados) y Process (letras A, B… calculadas y video); se ocultan si están vacíos o desactivados. *(S3, S4, S6, CA-05.2, D-13, RF-06.3, RF-06.4, CA-06.4)*

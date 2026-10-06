@@ -1,0 +1,45 @@
+/*
+  Animaciones del sitio (specs/design.md §3.6).
+
+  Reglas:
+  - Solo se animan transform y opacity: no mueven el resto de la página.
+  - La regla del final desactiva todo si el visitante pidió menos movimiento.
+*/
+
+/* --- Entrada al aparecer en pantalla (componente <Reveal>) --- */
+
+.reveal {
+  opacity: 0;
+  transition:
+    opacity var(--motion-reveal) var(--ease-out),
+    transform var(--motion-reveal) var(--ease-out);
+  /* En un grupo, cada elemento espera un poco más que el anterior */
+  transition-delay: calc(var(--reveal-index, 0) * var(--motion-stagger));
+}
+
+.reveal--from-bottom {
+  transform: translateY(var(--reveal-distance));
+}
+
+.reveal--from-left {
+  transform: translateX(calc(var(--reveal-distance) * -1));
+}
+
+.reveal--from-right {
+  transform: translateX(var(--reveal-distance));
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- Menos movimiento: todo se muestra en su estado final, sin transición --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

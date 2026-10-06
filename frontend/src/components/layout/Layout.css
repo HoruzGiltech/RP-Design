@@ -1,0 +1,31 @@
+/* El pie queda abajo aunque la página tenga poco contenido */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout__main {
+  flex: 1;
+}
+
+/* El foco llega aquí al usar "Saltar al contenido"; no necesita borde */
+.layout__main:focus {
+  outline: none;
+}
+
+/* Oculto hasta que recibe el foco del teclado */
+.layout__skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  padding: var(--space-12) var(--space-16);
+  background: var(--color-text);
+  color: var(--color-bg);
+  transform: translateY(-100%);
+}
+
+.layout__skip-link:focus {
+  transform: none;
+}
