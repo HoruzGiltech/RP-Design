@@ -1,0 +1,156 @@
+/* Caja del formulario: clara, con borde, como en la maqueta */
+.quote-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 36px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+/* --- Campo: etiqueta, control y error --- */
+
+.quote-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quote-field__label {
+  font-size: var(--text-label);
+  font-weight: 600;
+}
+
+.quote-field__hint {
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+}
+
+.quote-field__control {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--color-border-input);
+  /* Sin esquinas redondeadas: en iOS los campos las traen por defecto */
+  border-radius: 0;
+  background: var(--color-white);
+  /* 16px como mínimo: con menos, iOS hace zoom al tocar el campo */
+  font-size: var(--text-body);
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+
+textarea.quote-field__control {
+  resize: vertical;
+}
+
+.quote-field__control:focus-visible {
+  border-color: var(--color-text);
+  outline-offset: 0;
+}
+
+.quote-field__control[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.quote-field__error,
+.quote-form__error {
+  font-size: var(--text-label);
+  color: var(--color-error);
+}
+
+.quote-form__error {
+  font-size: var(--text-body);
+}
+
+.quote-form__error a {
+  color: inherit;
+}
+
+/* --- Estimado --- */
+
+.quote-estimate {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 18px;
+  border-block: 1px solid var(--color-border);
+}
+
+.quote-estimate__label {
+  font-size: var(--text-label);
+  font-weight: 600;
+}
+
+.quote-estimate__amount {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  /* Las cifras ocupan todas el mismo ancho: el monto no "baila" al cambiar */
+  font-variant-numeric: tabular-nums;
+}
+
+.quote-estimate__note {
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+}
+
+/* --- Botón de envío: a todo el ancho --- */
+
+.quote-form__submit {
+  width: 100%;
+}
+
+/*
+  Campo trampa para bots: fuera de la pantalla, pero presente en la página.
+  (No se usa display: none porque algunos bots lo detectan y se lo saltan.)
+*/
+.quote-form__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* --- Pantalla de éxito --- */
+
+.quote-success {
+  align-items: flex-start;
+}
+
+.quote-success__title {
+  font-size: var(--text-h3-large);
+}
+
+.quote-success__title:focus {
+  outline: none;
+}
+
+.quote-success__text {
+  color: var(--color-text-secondary);
+}
+
+.quote-success__reset {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Carga y error dentro de la columna del formulario */
+.contact .spinner,
+.contact .error-message {
+  margin-inline: 0;
+  padding: 36px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+@media (max-width: 767px) {
+  .quote-form {
+    padding: var(--space-24);
+  }
+}

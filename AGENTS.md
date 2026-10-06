@@ -196,6 +196,7 @@ docker compose exec backend python manage.py migrate
 docker compose exec backend python manage.py createsuperuser
 docker compose exec backend python manage.py test      # tests backend
 cd frontend && npm run lint && npm run build           # verificar frontend
+cd frontend && npm test                                # tests frontend (Vitest)
 ```
 
 ### Errores del entorno
@@ -232,7 +233,7 @@ cd frontend && npm run lint && npm run build           # verificar frontend
 Una tarea está terminada cuando:
 - [ ] Cumple sus criterios de aceptación de `specs/requirements.md`.
 - [ ] Tiene tests para la lógica importante (cálculo de precio, límite de 3 destacados, validaciones, rate limit).
-- [ ] `manage.py test`, `npm run lint` y `npm run build` pasan sin errores.
+- [ ] `manage.py test`, `npm test`, `npm run lint` y `npm run build` pasan sin errores.
 - [ ] Se ve bien en móvil y escritorio y se parece a la maqueta.
 - [ ] Imágenes con `alt`, formulario usable con teclado.
 - [ ] Las animaciones respetan `prefers-reduced-motion`.

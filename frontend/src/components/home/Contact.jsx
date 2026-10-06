@@ -6,7 +6,7 @@ import './Contact.css'
 
 /**
  * Sección Contacto: a la izquierda los datos, a la derecha el formulario.
- * `children` es el formulario de cotización, que llega en la Fase 4 (T-4.2).
+ * `children` es el formulario de cotización (components/quote/QuoteCalculator).
  */
 export default function Contact({ children }) {
   const { data: site } = useSite()

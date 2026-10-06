@@ -119,13 +119,13 @@
 
 ## Fase 4 — Calculadora y WhatsApp
 
-- [ ] **T-4.1** `utils/currency.js` y `utils/estimate.js`, con tests en Vitest (mismos casos que el backend). *(RF-03.4, RF-03.6)*
-- [ ] **T-4.2** Formulario `QuoteCalculator`: campos, validación y campo "Especifique" para "Otro". *(RF-03.1, RF-03.2, CA-03.6)*
-- [ ] **T-4.3** `EstimateDisplay`: estimado en vivo, "A cotizar" y `price_note`. *(RF-03.5, RF-03.7)*
-- [ ] **T-4.4** Envío: POST, botón deshabilitado mientras se envía, `location.assign(whatsapp_url)` y pantalla de éxito con "Abrir WhatsApp". *(RF-03.9, CA-03.5)*
-- [ ] **T-4.5** Manejo de errores 400 (por campo) y 429 (mensaje amable).
-- [ ] **T-4.6** Honeypot en el formulario.
-- [ ] **T-4.7** Prueba completa de punta a punta:
+- [x] **T-4.1** `utils/currency.js` y `utils/estimate.js`, con tests en Vitest (mismos casos que el backend). *(RF-03.4, RF-03.6)*
+- [x] **T-4.2** Formulario `QuoteCalculator`: campos, validación y campo "Especifique" para "Otro". *(RF-03.1, RF-03.2, CA-03.6)*
+- [x] **T-4.3** `EstimateDisplay`: estimado en vivo, "A cotizar" y `price_note`. *(RF-03.5, RF-03.7)*
+- [x] **T-4.4** Envío: POST, botón deshabilitado mientras se envía, `location.assign(whatsapp_url)` y pantalla de éxito con "Abrir WhatsApp". *(RF-03.9, CA-03.5)*
+- [x] **T-4.5** Manejo de errores 400 (por campo) y 429 (mensaje amable).
+- [x] **T-4.6** Honeypot en el formulario.
+- [~] **T-4.7** Prueba completa de punta a punta (pasos 1 a 5 verificados con Playwright en escritorio; **falta la prueba en un celular real**):
   1. Configurar en el panel el número de WhatsApp y el precio de Cocina a 100 USD.
   2. En el sitio: Cocina, 12,5 m² → se muestra "USD 1.250,00".
   3. Enviar → se abre WhatsApp con el mensaje completo.

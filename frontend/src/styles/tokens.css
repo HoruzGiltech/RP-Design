@@ -18,6 +18,8 @@
   --color-text-muted: #5a5853;
   --color-link-hover: #555555;
   --color-white: #ffffff;
+  /* Errores del formulario. No viene de la maqueta, que no tiene estados de error */
+  --color-error: #a4281b;
 
   /* --- Colores sobre fondo oscuro (Proyectos y pie de página) --- */
   --color-dark: #111111;

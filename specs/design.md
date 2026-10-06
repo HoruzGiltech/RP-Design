@@ -449,7 +449,8 @@ frontend/src/
 ├── hooks/useScrollToHash.js # baja al ancla de la URL (/#servicios) o sube al cambiar de página
 ├── hooks/useReveal.js       # avisa cuando un elemento entra en pantalla (IntersectionObserver)
 ├── utils/currency.js        # formatUSD() — mismo formato que el backend
-├── utils/estimate.js        # calculateEstimate() — solo para mostrar en vivo
+├── utils/estimate.js        # calculateEstimate() — solo para mostrar en vivo; parseDecimal() acepta coma o punto
+├── utils/quoteValidation.js # validateQuote() — las mismas reglas del backend, para avisar rápido
 ├── styles/fonts.css         # pesos de Archivo y Archivo Narrow que se usan
 ├── styles/tokens.css        # colores, tipografías y espaciados de la maqueta
 ├── styles/motion.css        # clases de entrada, cinta y zoom; regla de prefers-reduced-motion
@@ -458,7 +459,7 @@ frontend/src/
 │   ├── layout/   Header, Footer, Layout
 │   ├── home/     Hero, SpecialtiesStrip, Services, FeaturedProjects, Process, Contact, ContactInfo
 │   ├── projects/ ProjectCard, ProjectGrid, MediaGallery, Lightbox
-│   ├── quote/    QuoteCalculator, EstimateDisplay
+│   ├── quote/    QuoteCalculator, EstimateDisplay, Field, QuoteSuccess
 │   ├── media/    MediaPlaceholder (recuadro gris cuando no hay imagen; variante clara y oscura)
 │   └── ui/       Button, Spinner, ErrorMessage, Section, Reveal, Marquee
 └── pages/        HomePage, ProjectsPage, ProjectDetailPage, NotFoundPage
@@ -474,6 +475,10 @@ frontend/src/
 - Si se elige un área con `is_other`, aparece el campo "Especifique".
 - Incluye el honeypot `website`, oculto con CSS (no con `type="hidden"`), con `tabIndex={-1}` y `autoComplete="off"`.
 - Al enviar: deshabilita el botón, hace el POST y luego `window.location.assign(whatsapp_url)`. También muestra una pantalla de éxito con el botón **"Abrir WhatsApp"** como respaldo (CA-03.5).
+- Los metros cuadrados aceptan coma o punto decimal (`12,5`), con teclado numérico en el celular; al backend se envían con punto.
+- El estimado en vivo se calcula con centésimas enteras y redondea como el backend, para que el monto mostrado coincida con el guardado.
+- Al fallar la validación, el foco va al primer campo con error. Cada error está unido a su campo con `aria-describedby`.
+- Color de los errores: `--color-error` (`#A4281B`). No viene de la maqueta, que no tiene estados de error.
 - Errores `400`: los muestra junto a cada campo. `429`: "Has enviado muchas solicitudes, intenta más tarde o escríbenos directo por WhatsApp".
 
 > **Decisión:** se navega con `location.assign` (misma pestaña) en lugar de `window.open`, porque los navegadores bloquean las ventanas nuevas que se abren después de una petición asíncrona.
@@ -557,7 +562,7 @@ Hay volúmenes para los datos de Postgres y para `media/`.
 | Rate limit | El test hace 6 POST y espera `429` en el último |
 | Validación de archivos | Tests con un archivo falso y uno demasiado grande |
 | Roles | Tests: el Viewer recibe 403 al crear, editar o borrar; el Admin puede todo |
-| Frontend | `formatUSD` y `calculateEstimate` con Vitest; `npm run lint` y `npm run build` |
+| Frontend | `formatUSD`, `calculateEstimate`, `parseDecimal` y `validateQuote` con Vitest (`npm test`); `npm run lint` y `npm run build` |
 | Animaciones | Revisión con Playwright: con `prefers-reduced-motion` emulado todo el contenido es visible; sin él, los elementos terminan en su estado final al bajar la página |
 
 ---
