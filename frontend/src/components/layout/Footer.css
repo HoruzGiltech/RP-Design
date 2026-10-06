@@ -6,14 +6,49 @@
 
 .footer__inner {
   display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  padding-block: 40px;
+}
+
+/* Cada fila reparte sus elementos de lado a lado, como en la maqueta */
+.footer__row {
+  display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
-  padding-block: 40px;
+}
+
+/* Segunda fila: enlaces legales y crédito, separados por una línea */
+.footer__row--secondary {
+  padding-top: var(--space-24);
+  border-top: 1px solid var(--color-dark-surface);
 }
 
 .footer__name {
   color: var(--color-on-dark);
   font-weight: 800;
   letter-spacing: 0.5px;
+}
+
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-24);
+}
+
+.footer__link {
+  display: inline-flex;
+  align-items: center;
+  /* Altura cómoda para tocar con el dedo */
+  min-height: 44px;
+  color: var(--color-on-dark-muted);
+  transition: color var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .footer__link:hover {
+    color: var(--color-on-dark);
+  }
 }

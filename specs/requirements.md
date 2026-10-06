@@ -39,7 +39,7 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 | S5 | Proyectos `#proyectos` | Única + dinámica | Fondo oscuro, título "Proyectos recientes", enlace "Ver más en Instagram", 3 tarjetas (foto, categoría, título, resumen) | Título, texto del enlace a Instagram, texto del botón "Ver todos". Las tarjetas salen de los proyectos destacados (RF-01) |
 | S6 | Proceso `#proceso` | Única + lista | Título "Ve tu espacio antes de construirlo", intro, video recorrido y 4 entregables A–D | Título, intro, video y su poster. Por entregable: título y descripción. **La letra (A, B…) se genera según el orden** |
 | S7 | Contacto `#contacto` | Única + RF-03 | Título "Cuéntanos sobre tu espacio", intro, datos de contacto y formulario | Título, intro, texto del botón de envío. Los datos de contacto salen de SiteSettings |
-| S8 | Pie de página | Única | "RP DISEÑO INTERIOR", "Arquitectura · Interiorismo · Remodelaciones — Caracas", © año | Nombre y lema. **El año se calcula solo** |
+| S8 | Pie de página | Única | "RP DISEÑO INTERIOR", "Arquitectura · Interiorismo · Remodelaciones — Caracas", © año | Nombre y lema. **El año se calcula solo**. Segunda fila: enlaces a las páginas legales (RF-07) y el crédito fijo "Desarrollado por Giltechnology" |
 | S9 | SEO | Única (no visible) | — | Título del sitio, descripción, imagen para compartir |
 
 **Datos reales que trae la maqueta** (se cargan como datos iniciales, **no** van escritos en el código):
@@ -98,7 +98,7 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 
 | ID | Requisito |
 |---|---|
-| RF-03.1 | Campos obligatorios: nombre, correo, teléfono, área, m². Campo opcional: mensaje |
+| RF-03.1 | Campos obligatorios: nombre, correo, teléfono, área, m² y la **casilla de aceptación de la política de privacidad** (RF-07.4). Campo opcional: mensaje |
 | RF-03.2 | Áreas: baño, cocina, sala, patio, piscina y otro. Si se elige "otro", aparece un campo obligatorio para especificarla |
 | RF-03.3 | Las áreas y su **precio por m² en USD** se gestionan en el panel |
 | RF-03.4 | El estimado se calcula en vivo como `m² × precio_por_m²` |
@@ -153,6 +153,25 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 - [ ] CA-05.2 Una sección oculta o vacía no deja un bloque roto ni un título suelto.
 - [ ] CA-05.3 Con la base de datos recién creada, el sitio carga sin errores y muestra **los mismos textos de la maqueta** (datos iniciales). Donde la maqueta no tiene imagen se muestra un recuadro gris neutro, sin el texto `[FOTO…]`.
 - [ ] CA-05.4 Cambiar el color de acento en el panel cambia los botones principales y los números de Servicios.
+
+### RF-07 — Páginas legales
+
+| ID | Requisito |
+|---|---|
+| RF-07.1 | Dos páginas: `/terminos` (Términos y condiciones) y `/privacidad` (Política de privacidad, que incluye el tratamiento de datos y el uso de cookies) |
+| RF-07.2 | Cada página tiene título, introducción y una lista de apartados (subtítulo y texto) que el cliente agrega, edita y ordena en el panel. Las páginas no se pueden crear ni eliminar |
+| RF-07.3 | Los textos legales **no se inventan**: la estructura inicial trae los subtítulos como guía y `[TEXTO PENDIENTE]` en cada texto. Los escribe el cliente o su abogado |
+| RF-07.4 | El formulario de cotización tiene una casilla obligatoria "Acepto la política de privacidad…" con enlace a `/privacidad`. Sin marcarla no se envía, y el backend guarda la fecha de aceptación con cada cotización |
+| RF-07.5 | El pie de página enlaza a las dos páginas y muestra el crédito "Desarrollado por Giltechnology" (texto fijo, sin enlace por ahora) |
+| RF-07.6 | Cada página muestra la fecha de su última actualización, que cambia sola al editarla |
+
+**Criterios de aceptación**
+- [ ] CA-07.1 Con la base de datos recién creada existen las dos páginas, con sus apartados y `[TEXTO PENDIENTE]`.
+- [ ] CA-07.2 Un cambio en el panel se ve en la página al recargar, y la fecha de actualización cambia.
+- [ ] CA-07.3 Si alguien envía la cotización sin la aceptación (también por fuera del formulario), el backend la rechaza.
+- [ ] CA-07.4 Antes de publicar el sitio no queda ningún `[TEXTO PENDIENTE]` en las páginas legales.
+
+**Cookies:** el sitio público no usa cookies propias ni de terceros (no hay analítica ni publicidad), así que no lleva aviso de cookies. Las únicas cookies son las del panel, para la sesión del cliente. Si más adelante se agrega analítica, habrá que añadir el aviso y actualizar la política.
 
 ### RF-06 — Animaciones
 

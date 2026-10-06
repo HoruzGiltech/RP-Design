@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -53,7 +54,10 @@ class QuoteCreateView(APIView):
 
     def _build_quote(self, data):
         """Calcula el precio aquí, en el servidor, y arma el mensaje con ese precio."""
+        # privacy_accepted no es un campo de Quote: se cambia por la fecha de aceptación
+        data.pop("privacy_accepted")
         quote = Quote(**data)
+        quote.privacy_accepted_at = timezone.now()
         quote.price_per_m2_snapshot = quote.area.price_per_m2
         quote.estimated_price = calculate_estimate(quote.area, quote.square_meters)
         quote.whatsapp_message = build_whatsapp_message(quote)

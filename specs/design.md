@@ -110,6 +110,7 @@ Las 6 áreas iniciales se crean con una **migración de datos**, sin precio.
 | `message` | Text, opcional | Máx. 1000 caracteres |
 | `whatsapp_message` | Text | Texto exacto que se envió |
 | `status` | Choice | `new` / `contacted` / `closed`; por defecto `new` |
+| `privacy_accepted_at` | DateTime, opcional | Fecha en que la persona aceptó la política de privacidad. La pone el backend al guardar |
 
 > **Decisión:** se guarda una copia del precio por m² (`price_per_m2_snapshot`) para que las cotizaciones viejas no cambien de valor cuando el cliente actualice sus precios.
 
@@ -157,6 +158,16 @@ Texto inicial de `price_note`:
 | `Specialty` | S3 | `text` | Diseño residencial, Diseño comercial, Renders 3D, Ejecución de obra |
 | `Service` | S4 | `title`, `description` | Levantamiento de espacio, Proyecto de diseño, Ejecución de obra (con los textos de la maqueta) |
 | `ProcessStep` | S6 | `title`, `description` | Renders 3D, Video recorridos, Planimetría, Ejecución de obra (con los textos de la maqueta) |
+
+**Páginas legales** (RF-07)
+
+| Modelo | Campos | Datos iniciales |
+|---|---|---|
+| `LegalPage` | `slug` (`terminos` o `privacidad`, no editable), `title`, `intro`, `updated_at` | Las dos páginas, con `[TEXTO PENDIENTE]` en la introducción |
+| `LegalSection` (`OrderedModel`) | `page` (FK), `title`, `body` | Subtítulos de guía con `[TEXTO PENDIENTE]` en cada texto |
+
+- Las páginas las crea la migración `site_content.0005`; en el panel no se agregan ni se eliminan. Los apartados se editan y ordenan dentro de su página.
+- Guardar un apartado actualiza `updated_at` de su página.
 
 - El número de cada servicio (01, 02…) y la letra de cada paso (A, B…) **no se guardan**: el frontend los calcula según su posición entre los elementos visibles. Así, al reordenar u ocultar uno, no hay que renumerar a mano.
 - Una **migración de datos** carga todos los textos y datos de contacto de la maqueta. Así el sitio se ve igual que la maqueta desde el primer arranque (CA-05.3), y el cliente solo tiene que subir sus fotos.
@@ -225,9 +236,10 @@ Base: `/api/`. Solo JSON. Todas las URLs de archivos son absolutas.
 
 | Método | Ruta | Descripción | Throttle |
 |---|---|---|---|
-| GET | `/api/site/` | Todo el contenido del sitio en **una sola llamada**: `settings`, `hero`, `specialties[]`, `services` (con `items[]`), `projects_section`, `process` (con `steps[]`), `contact`, `footer`, `seo` | `public` |
+| GET | `/api/site/` | Todo el contenido del sitio en **una sola llamada**: `settings`, `hero`, `specialties[]`, `services` (con `items[]`), `projects_section`, `process` (con `steps[]`), `contact`, `footer`, `seo`, `legal_pages[]` (solo `slug` y `title`, para el pie) | `public` |
 | GET | `/api/projects/` | Proyectos publicados (tarjeta: slug, title, summary, category, cover_thumbnail, cover_alt). Acepta `?featured=true` | `public` |
 | GET | `/api/projects/<slug>/` | Detalle con `media[]` ordenada | `public` |
+| GET | `/api/legal/<slug>/` | Página legal con `sections[]` ordenados y `updated_at` | `public` |
 | GET | `/api/quote-areas/` | Áreas activas: `id`, `name`, `price_per_m2`, `is_other` | `public` |
 | POST | `/api/quotes/` | Crea la cotización | `quotes` |
 
@@ -237,7 +249,7 @@ Petición:
 ```json
 { "name": "Ana Pérez", "email": "ana@mail.com", "phone": "+58 412-1234567",
   "area": 2, "area_other": "", "square_meters": "12.5", "message": "",
-  "website": "" }
+  "privacy_accepted": true, "website": "" }
 ```
 Respuesta `201`:
 ```json
@@ -248,6 +260,7 @@ Respuesta `400`: `{ "campo": ["mensaje en español"] }`. Respuesta `429`: límit
 
 - `website` es el **honeypot**: si viene con algo, se responde `201` con un enlace falso y **no se guarda nada**. Así el bot no sabe que fue detectado.
 - Si se envía `estimated_price` en la petición, se ignora.
+- `privacy_accepted` debe ser `true`; si falta o es `false`, responde `400`. El backend guarda la fecha en `privacy_accepted_at`.
 
 Los dos throttles, `public: 120/min` y `quotes: 5/hour`, se configuran en `REST_FRAMEWORK` y se pueden cambiar desde `.env`.
 
@@ -429,6 +442,7 @@ La maqueta usa estilos en línea. Estos son sus valores, que van a `styles/token
 | `/` | `HomePage`: Hero, SpecialtiesStrip, Services, FeaturedProjects, Process y Contact (con la calculadora) |
 | `/proyectos` | `ProjectsPage`: cuadrícula completa |
 | `/proyectos/:slug` | `ProjectDetailPage` |
+| `/terminos` y `/privacidad` | `LegalPage` (una sola columna de lectura, fondo claro) |
 | `*` | `NotFoundPage` (también se muestra en `/proyectos/<slug>` si el proyecto no existe o es borrador) |
 
 Los enlaces del menú a secciones del inicio usan anclas (`/#servicios`). Un enlace del menú no se muestra si su sección está oculta.
@@ -462,7 +476,7 @@ frontend/src/
 │   ├── quote/    QuoteCalculator, EstimateDisplay, Field, SquareMetersSlider, QuoteSuccess
 │   ├── media/    MediaPlaceholder (recuadro gris cuando no hay imagen; variante clara y oscura)
 │   └── ui/       Button, Spinner, ErrorMessage, Section, Reveal, Marquee
-└── pages/        HomePage, ProjectsPage, ProjectDetailPage, NotFoundPage
+└── pages/        HomePage, ProjectsPage, ProjectDetailPage, LegalPage, NotFoundPage
 ```
 
 > **Decisión:** se usa `fetch` + un hook propio (`useFetch`) en lugar de React Query o Axios. Para unas 5 llamadas de solo lectura es suficiente y más fácil de entender. El estado global solo guarda el contenido del sitio (Context API), sin Redux.
@@ -593,6 +607,9 @@ Hay volúmenes para los datos de Postgres y para `media/`.
 | D-19 | No se adoptan las tarjetas que se voltean ni el video de fondo en Contacto | Esconden contenido, fallan en táctil o bajan el contraste del formulario |
 | D-20 | La franja de especialidades pasa a ser una cinta en movimiento | Es el equivalente del carrusel automático de la referencia; cambia la distribución de la maqueta en S3 |
 | D-21 | Video opcional en la Portada, dentro del recuadro de la foto | Equivale al video de fondo de la referencia sin cambiar la distribución de la maqueta |
+| D-25 | Páginas legales solo con la estructura y `[TEXTO PENDIENTE]` | Un texto legal no se inventa: lo escribe el cliente o su abogado (decisión del desarrollador, 2026-10-06) |
+| D-26 | Sin aviso de cookies | El sitio público no usa cookies; se explica en la política de privacidad |
+| D-27 | Crédito "Desarrollado por Giltechnology" fijo en el código | No es contenido del cliente; es la única excepción a RF-05.5 |
 | D-24 | Metros cuadrados con control deslizante y máximo de 500 m² por defecto | Pedido del desarrollador (2026-10-06). Con el tope anterior de 10000 el control sería imposible de usar. Quien necesite más de 500 m² lo conversa con RP Design; el cliente puede cambiar el tope en el panel |
 | D-23 | oxlint como linter del frontend, en lugar de ESLint | Es el que trae hoy la plantilla oficial de Vite; `npm run lint` funciona igual y no hay que configurar nada |
 | D-22 | Django 5.2 LTS en lugar de 6.1 | `django-admin-sortable2` aún no soporta 6.1 (fallaban las acciones de las listas), y la LTS tiene soporte hasta abril de 2028 |

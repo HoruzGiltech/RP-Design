@@ -21,7 +21,8 @@ function formatMaximum(number) {
 /**
  * Revisa los valores del formulario.
  *
- * values:           { name, phone, email, area, area_other, square_meters, message }
+ * values:           { name, phone, email, area, area_other, square_meters, message,
+ *                     privacy_accepted }
  * selectedArea:     el área elegida (objeto de la API) o undefined
  * maxSquareMeters:  máximo de m² configurado en el panel
  *
@@ -68,6 +69,10 @@ export function validateQuote(values, selectedArea, maxSquareMeters) {
 
   if (values.message.length > MAX_MESSAGE_LENGTH) {
     errors.message = `El mensaje no puede pasar de ${formatMaximum(MAX_MESSAGE_LENGTH)} caracteres.`
+  }
+
+  if (!values.privacy_accepted) {
+    errors.privacy_accepted = 'Debes aceptar la política de privacidad.'
   }
 
   return errors

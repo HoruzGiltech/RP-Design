@@ -49,6 +49,7 @@ class QuoteCreateApiTests(TestCase):
             "square_meters": "12.5",
             "message": "Quiero cambiar los gabinetes.",
             "website": "",
+            "privacy_accepted": True,
         }
         data.update(fields)
         return data
@@ -170,7 +171,8 @@ class QuoteCreateApiTests(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            set(response.json()), {"name", "email", "phone", "area", "square_meters"}
+            set(response.json()),
+            {"name", "email", "phone", "area", "square_meters", "privacy_accepted"},
         )
         self.assertIn("requerido", response.json()["name"][0])
 
@@ -209,6 +211,28 @@ class QuoteCreateApiTests(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("message", response.json())
+
+    # --- Política de privacidad ---
+
+    def test_acceptance_date_is_saved_with_the_quote(self):
+        self.post()
+
+        self.assertIsNotNone(Quote.objects.get().privacy_accepted_at)
+
+    def test_quote_is_rejected_without_accepting_the_privacy_policy(self):
+        for value in [False, None]:
+            with self.subTest(privacy_accepted=value):
+                response = self.post(privacy_accepted=value)
+
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("privacy_accepted", response.json())
+
+        self.assertEqual(Quote.objects.count(), 0)
+
+    def test_message_explains_that_the_policy_must_be_accepted(self):
+        response = self.post(privacy_accepted=False)
+
+        self.assert_field_error(response, "privacy_accepted", "política de privacidad")
 
     # --- Honeypot ---
 
@@ -252,6 +276,7 @@ class ThrottleTests(TestCase):
             "phone": "+584121234567",
             "area": area.pk,
             "square_meters": "10",
+            "privacy_accepted": True,
         }
 
     def post_quote(self, ip="10.0.0.1"):

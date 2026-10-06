@@ -66,6 +66,11 @@ class Quote(TimeStampedModel):
     message = models.TextField("mensaje", max_length=1000, blank=True)
     whatsapp_message = models.TextField("mensaje de WhatsApp")
     status = models.CharField("estado", max_length=10, choices=STATUS_CHOICES, default=NEW)
+    # Prueba de que la persona aceptó el tratamiento de sus datos, y cuándo.
+    # Vacío solo en cotizaciones anteriores a que existiera la casilla.
+    privacy_accepted_at = models.DateTimeField(
+        "aceptó la política de privacidad", null=True, blank=True
+    )
 
     class Meta:
         ordering = ["-created_at"]

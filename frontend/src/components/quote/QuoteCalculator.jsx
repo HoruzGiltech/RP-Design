@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { createQuote, getQuoteAreas } from '../../api/endpoints'
 import { useSite } from '../../context/SiteContext'
@@ -25,12 +26,22 @@ const EMPTY_FORM = {
   area_other: '',
   square_meters: INITIAL_SQUARE_METERS,
   message: '',
+  privacy_accepted: false,
   // Campo trampa para bots (honeypot). Una persona nunca lo ve ni lo llena.
   website: '',
 }
 
 // Orden de los campos en pantalla: sirve para llevar el foco al primero con error
-const FIELD_ORDER = ['name', 'phone', 'email', 'area', 'area_other', 'square_meters', 'message']
+const FIELD_ORDER = [
+  'name',
+  'phone',
+  'email',
+  'area',
+  'area_other',
+  'square_meters',
+  'message',
+  'privacy_accepted',
+]
 
 const BAD_REQUEST = 400
 const TOO_MANY_REQUESTS = 429
@@ -58,8 +69,10 @@ export default function QuoteCalculator() {
   const squareMeters = parseDecimal(values.square_meters)
 
   function handleChange(event) {
-    const { name, value } = event.target
-    setValues((current) => ({ ...current, [name]: value }))
+    const { name, type, checked, value } = event.target
+    // Una casilla no tiene texto: su valor es si está marcada o no
+    const newValue = type === 'checkbox' ? checked : value
+    setValues((current) => ({ ...current, [name]: newValue }))
     // Al corregir un campo, su mensaje de error desaparece
     if (errors[name]) {
       setErrors((current) => ({ ...current, [name]: undefined }))
@@ -202,6 +215,32 @@ export default function QuoteCalculator() {
         onChange={handleChange}
         error={errors.message}
       />
+
+      <div className="quote-consent">
+        <input
+          className="quote-consent__checkbox"
+          id="quote-privacy_accepted"
+          name="privacy_accepted"
+          type="checkbox"
+          checked={values.privacy_accepted}
+          onChange={handleChange}
+          aria-invalid={errors.privacy_accepted ? 'true' : undefined}
+          aria-describedby={errors.privacy_accepted ? 'quote-privacy_accepted-error' : undefined}
+        />
+        <label className="quote-consent__label" htmlFor="quote-privacy_accepted">
+          Acepto la{' '}
+          {/* Se abre en otra pestaña para no perder lo que ya se escribió en el formulario */}
+          <Link to="/privacidad" target="_blank" rel="noopener noreferrer">
+            política de privacidad
+          </Link>{' '}
+          y el tratamiento de mis datos para recibir la cotización.
+        </label>
+        {errors.privacy_accepted && (
+          <span className="quote-field__error quote-consent__error" id="quote-privacy_accepted-error">
+            {errors.privacy_accepted}
+          </span>
+        )}
+      </div>
 
       {/*
         Campo trampa (honeypot): los bots llenan todos los campos que encuentran.

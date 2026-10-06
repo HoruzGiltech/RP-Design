@@ -1,0 +1,53 @@
+/* Página de lectura: una sola columna con un ancho de línea cómodo */
+.legal-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-48);
+  max-width: 820px;
+}
+
+.legal-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+/* Un título legal no necesita el tamaño de la Portada */
+.legal-page__title {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--tracking-h2);
+}
+
+.legal-page__date {
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+}
+
+.legal-page__intro {
+  font-size: var(--text-lead);
+  color: var(--color-text-secondary);
+  white-space: pre-line;
+}
+
+.legal-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding-top: var(--space-32);
+  border-top: 1px solid var(--color-border);
+}
+
+.legal-page__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-h3-large);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.legal-page__text {
+  color: var(--color-text-secondary);
+  /* Respeta los saltos de línea que el cliente escribió en el panel */
+  white-space: pre-line;
+}

@@ -4,6 +4,8 @@ from site_content.models import (
     ContactSection,
     FooterSection,
     HeroSection,
+    LegalPage,
+    LegalSection,
     ProcessSection,
     ProcessStep,
     ProjectsSection,
@@ -111,3 +113,26 @@ class ProcessStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProcessStep
         fields = ["id", "title", "description"]
+
+
+class LegalPageLinkSerializer(serializers.ModelSerializer):
+    """Lo mínimo para armar los enlaces del pie de página."""
+
+    class Meta:
+        model = LegalPage
+        fields = ["slug", "title"]
+
+
+class LegalSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LegalSection
+        fields = ["id", "title", "body"]
+
+
+class LegalPageSerializer(serializers.ModelSerializer):
+    # Los apartados llegan ya ordenados: LegalSection se ordena por "order"
+    sections = LegalSectionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = LegalPage
+        fields = ["slug", "title", "intro", "updated_at", "sections"]

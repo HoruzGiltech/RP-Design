@@ -46,6 +46,7 @@ class QuoteAdmin(admin.ModelAdmin):
         "estimate_display",
         "message",
         "whatsapp_message",
+        "privacy_accepted_at",
     )
     readonly_fields = tuple(field for field in fields if field != "status")
 

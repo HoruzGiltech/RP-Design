@@ -1,3 +1,4 @@
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -6,6 +7,7 @@ from site_content.models import (
     ContactSection,
     FooterSection,
     HeroSection,
+    LegalPage,
     ProcessSection,
     ProcessStep,
     ProjectsSection,
@@ -58,5 +60,18 @@ class SiteContentView(APIView):
                 "contact": section(serializers.ContactSectionSerializer, ContactSection),
                 "footer": section(serializers.FooterSectionSerializer, FooterSection),
                 "seo": section(serializers.SeoSettingsSerializer, SeoSettings),
+                # Solo título y dirección, para los enlaces del pie de página
+                "legal_pages": serializers.LegalPageLinkSerializer(
+                    LegalPage.objects.all(), many=True
+                ).data,
             }
         )
+
+
+class LegalPageView(generics.RetrieveAPIView):
+    """GET /api/legal/<slug>/ -> una página legal con sus apartados."""
+
+    serializer_class = serializers.LegalPageSerializer
+    throttle_scope = "public"
+    lookup_field = "slug"
+    queryset = LegalPage.objects.prefetch_related("sections")

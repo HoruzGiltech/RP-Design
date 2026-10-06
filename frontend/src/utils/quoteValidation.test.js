@@ -15,6 +15,7 @@ function validValues(changes = {}) {
     area_other: '',
     square_meters: '12,5',
     message: '',
+    privacy_accepted: true,
     ...changes,
   }
 }
@@ -65,6 +66,12 @@ describe('validateQuote', () => {
   it('los metros cuadrados no pueden pasar del máximo del panel', () => {
     expect(validate({ square_meters: '10000' })).toEqual({})
     expect(validate({ square_meters: '10001' }).square_meters).toBe('El máximo es 10.000 m².')
+  })
+
+  it('exige aceptar la política de privacidad', () => {
+    expect(validate({ privacy_accepted: false }).privacy_accepted).toContain(
+      'política de privacidad',
+    )
   })
 
   it('el mensaje no puede pasar de 1000 caracteres', () => {

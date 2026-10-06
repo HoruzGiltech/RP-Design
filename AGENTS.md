@@ -144,6 +144,16 @@ El cliente puede:
 - [ ] Cada animación de entrada ocurre una sola vez y ningún contenido queda oculto si no llega a ejecutarse.
 - [ ] Las animaciones no provocan saltos de diseño ni bajan Lighthouse Performance de 85 en móvil.
 
+### RF-07 — Páginas legales
+- Dos páginas editables desde el panel: `/terminos` y `/privacidad` (esta incluye tratamiento de datos y cookies).
+- Los textos legales **no se inventan**: la estructura trae `[TEXTO PENDIENTE]` hasta que el cliente o su abogado los escriban.
+- El formulario de cotización exige aceptar la política de privacidad, y el backend guarda la fecha de aceptación.
+- El pie enlaza a las dos páginas y muestra "Desarrollado por Giltechnology".
+
+**Criterios de aceptación**
+- [ ] El backend rechaza una cotización sin la aceptación de la política de privacidad.
+- [ ] Antes de publicar, no queda ningún `[TEXTO PENDIENTE]` en las páginas legales.
+
 ---
 
 ## 5. Stack técnico
@@ -272,6 +282,8 @@ Al terminar cada tarea o fase, responde con:
 | Dominio | Aún no comprado; se define en la fase de despliegue |
 | Roles del panel | Admin (todo) y Viewer (solo lectura); por ahora un solo usuario Admin |
 | Animaciones | Referencia: sparquitectosve.com, adaptada a la maqueta. Solo CSS, sin librerías |
+| Páginas legales | Términos y Privacidad, editables en el panel y con `[TEXTO PENDIENTE]` hasta que el cliente dé los textos. Sin aviso de cookies: el sitio no las usa |
+| Crédito | "Desarrollado por Giltechnology" fijo en el pie, sin enlace por ahora |
 
 ## 11. Fases del proyecto
 
@@ -284,5 +296,6 @@ Al terminar cada tarea o fase, responde con:
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 
 1. ¿El cliente quiere secciones **Nosotros** y **Testimonios**? No están en la maqueta; hoy están fuera de alcance (`specs/requirements.md` §6).
+2. Los **textos legales** (Términos y Privacidad) los debe entregar el cliente o su abogado. Hasta entonces las páginas muestran `[TEXTO PENDIENTE]`; bloquea la publicación, no el desarrollo.
 
 No bloquea la Fase 2.

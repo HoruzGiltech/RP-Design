@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from site_content.models import HeroSection, Service, SiteSettings
+from site_content.models import HeroSection, LegalPage, Service, SiteSettings
 
 SINGLETON_MODELS = [
     "sitesettings",
@@ -105,3 +105,47 @@ class SiteContentAdminTests(TestCase):
         )
 
         self.assertTrue(Service.objects.filter(title="Asesoría").exists())
+
+    def test_legal_pages_are_listed_but_cannot_be_added_or_deleted(self):
+        page = LegalPage.objects.get(slug="privacidad")
+
+        pages = self.client.get(reverse("admin:site_content_legalpage_changelist"))
+        add = self.client.get(reverse("admin:site_content_legalpage_add"))
+        delete = self.client.post(
+            reverse("admin:site_content_legalpage_delete", args=[page.pk]), {"post": "yes"}
+        )
+
+        self.assertContains(pages, "Política de privacidad")
+        self.assertEqual(add.status_code, 403)
+        self.assertEqual(delete.status_code, 403)
+        self.assertEqual(LegalPage.objects.count(), 2)
+
+    def test_legal_page_text_and_sections_can_be_edited(self):
+        page = LegalPage.objects.get(slug="terminos")
+        section = page.sections.first()
+
+        response = self.client.post(
+            reverse("admin:site_content_legalpage_change", args=[page.pk]),
+            {
+                "title": "Términos del servicio",
+                "intro": "Introducción nueva",
+                "sections-TOTAL_FORMS": 2,
+                "sections-INITIAL_FORMS": 1,
+                "sections-0-id": section.pk,
+                "sections-0-page": page.pk,
+                "sections-0-title": section.title,
+                "sections-0-body": "Texto escrito por el cliente",
+                "sections-0-order": 1,
+                "sections-1-page": page.pk,
+                "sections-1-title": "Apartado nuevo",
+                "sections-1-body": "Otro texto",
+                "sections-1-order": 2,
+            },
+        )
+
+        page.refresh_from_db()
+        section.refresh_from_db()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(page.title, "Términos del servicio")
+        self.assertEqual(section.body, "Texto escrito por el cliente")
+        self.assertTrue(page.sections.filter(title="Apartado nuevo").exists())

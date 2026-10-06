@@ -35,9 +35,25 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
         },
     )
 
+    # No es un campo del modelo: solo se comprueba que venga marcada.
+    # La fecha de aceptación la pone el backend (ver quotes/views.py).
+    privacy_accepted = serializers.BooleanField(
+        write_only=True,
+        error_messages={"required": "Debes aceptar la política de privacidad."},
+    )
+
     class Meta:
         model = Quote
-        fields = ["name", "email", "phone", "area", "area_other", "square_meters", "message"]
+        fields = [
+            "name",
+            "email",
+            "phone",
+            "area",
+            "area_other",
+            "square_meters",
+            "message",
+            "privacy_accepted",
+        ]
 
     def validate_phone(self, phone):
         digits = re.sub(r"\D", "", phone)
@@ -52,6 +68,11 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
         if square_meters > maximum:
             raise serializers.ValidationError(f"El máximo es {format_square_meters(maximum)} m².")
         return square_meters
+
+    def validate_privacy_accepted(self, accepted):
+        if not accepted:
+            raise serializers.ValidationError("Debes aceptar la política de privacidad.")
+        return accepted
 
     def validate(self, data):
         area_other = data.get("area_other", "").strip()

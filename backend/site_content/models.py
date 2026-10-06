@@ -305,3 +305,55 @@ class ProcessStep(OrderedModel, VisibleModel):
 
     def __str__(self):
         return self.title
+
+
+# ---------------------------------------------------------------------------
+# Páginas legales (Términos y Privacidad)
+# ---------------------------------------------------------------------------
+
+
+class LegalPage(models.Model):
+    """
+    Página legal del sitio. Son siempre dos y las crea una migración:
+    el cliente edita su contenido, pero no puede agregar ni borrar páginas.
+    """
+
+    TERMS = "terminos"
+    PRIVACY = "privacidad"
+    SLUG_CHOICES = [(TERMS, "Términos y condiciones"), (PRIVACY, "Política de privacidad")]
+
+    slug = models.SlugField("dirección web", unique=True, choices=SLUG_CHOICES, editable=False)
+    title = models.CharField("título", max_length=120)
+    intro = models.TextField("introducción", blank=True)
+    updated_at = models.DateTimeField("última actualización", auto_now=True)
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "página legal"
+        verbose_name_plural = "páginas legales"
+
+    def __str__(self):
+        return self.title
+
+
+class LegalSection(OrderedModel):
+    """Apartado de una página legal: un subtítulo y su texto."""
+
+    page = models.ForeignKey(
+        LegalPage, on_delete=models.CASCADE, related_name="sections", verbose_name="página"
+    )
+    title = models.CharField("subtítulo", max_length=120)
+    body = models.TextField("texto", help_text="Los saltos de línea se respetan en el sitio.")
+
+    class Meta(OrderedModel.Meta):
+        verbose_name = "apartado"
+        verbose_name_plural = "apartados"
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Editar un apartado también cuenta como actualizar la página:
+        # así cambia la fecha de "última actualización" que ve el visitante.
+        self.page.save()

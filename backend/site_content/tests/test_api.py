@@ -3,7 +3,14 @@ from django.test import TestCase
 from django.urls import reverse
 
 from core.tests.helpers import TempMediaMixin, make_image_file
-from site_content.models import HeroSection, ProcessStep, Service, ServicesSection
+from site_content.models import (
+    HeroSection,
+    LegalPage,
+    LegalSection,
+    ProcessStep,
+    Service,
+    ServicesSection,
+)
 
 
 class SiteContentApiTests(TempMediaMixin, TestCase):
@@ -27,6 +34,7 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
                 "contact",
                 "footer",
                 "seo",
+                "legal_pages",
             },
         )
 
@@ -111,3 +119,79 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
     def test_api_is_read_only(self):
         for method in [self.client.post, self.client.put, self.client.delete]:
             self.assertEqual(method(self.url).status_code, 405)
+
+    def test_site_has_the_links_to_the_legal_pages(self):
+        self.assertEqual(
+            self.get_site()["legal_pages"],
+            [
+                {"slug": "terminos", "title": "Términos y condiciones"},
+                {"slug": "privacidad", "title": "Política de privacidad"},
+            ],
+        )
+
+
+class LegalPageApiTests(TestCase):
+    """Las dos páginas las crea la migración site_content.0005_initial_legal_pages."""
+
+    def setUp(self):
+        cache.clear()
+
+    def get_page(self, slug):
+        return self.client.get(reverse("legal-page", args=[slug]))
+
+    def test_both_pages_exist_with_their_sections_in_order(self):
+        terms = self.get_page("terminos").json()
+        privacy = self.get_page("privacidad").json()
+
+        self.assertEqual(terms["title"], "Términos y condiciones")
+        self.assertEqual(
+            [section["title"] for section in terms["sections"]],
+            [
+                "Uso del sitio",
+                "Cotizaciones y precios",
+                "Propiedad intelectual",
+                "Cambios en estos términos",
+                "Contacto",
+            ],
+        )
+        self.assertEqual(privacy["title"], "Política de privacidad")
+        self.assertIn("Cookies", [section["title"] for section in privacy["sections"]])
+
+    def test_texts_are_pending_and_not_invented(self):
+        page = self.get_page("privacidad").json()
+
+        self.assertEqual(page["intro"], "[TEXTO PENDIENTE]")
+        self.assertTrue(
+            all(section["body"] == "[TEXTO PENDIENTE]" for section in page["sections"])
+        )
+
+    def test_page_has_the_date_of_the_last_update(self):
+        self.assertIn("updated_at", self.get_page("terminos").json())
+
+    def test_editing_a_section_updates_the_date_of_the_page(self):
+        page = LegalPage.objects.get(slug="privacidad")
+        old_date = page.updated_at
+
+        section = page.sections.first()
+        section.body = "Texto nuevo"
+        section.save()
+
+        page.refresh_from_db()
+        self.assertGreater(page.updated_at, old_date)
+
+    def test_sections_follow_the_order_of_the_panel(self):
+        page = LegalPage.objects.get(slug="terminos")
+        LegalSection.objects.create(page=page, title="Primero", body="x", order=0)
+
+        titles = [section["title"] for section in self.get_page("terminos").json()["sections"]]
+
+        self.assertEqual(titles[0], "Primero")
+
+    def test_unknown_page_gives_404(self):
+        self.assertEqual(self.get_page("no-existe").status_code, 404)
+
+    def test_api_is_read_only(self):
+        url = reverse("legal-page", args=["terminos"])
+
+        for method in [self.client.post, self.client.put, self.client.delete]:
+            self.assertEqual(method(url).status_code, 405)

@@ -1,4 +1,4 @@
-from adminsortable2.admin import SortableAdminMixin
+from adminsortable2.admin import SortableAdminBase, SortableAdminMixin, SortableInlineAdminMixin
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -7,6 +7,8 @@ from site_content.models import (
     ContactSection,
     FooterSection,
     HeroSection,
+    LegalPage,
+    LegalSection,
     ProcessSection,
     ProcessStep,
     ProjectsSection,
@@ -99,3 +101,25 @@ class SpecialtyAdmin(OrderedListAdmin):
 @admin.register(Service, ProcessStep)
 class TitledListAdmin(OrderedListAdmin):
     list_display = ("title", "is_visible")
+
+
+class LegalSectionInline(SortableInlineAdminMixin, admin.StackedInline):
+    """Apartados de la página: se editan y se ordenan dentro de la misma página."""
+
+    model = LegalSection
+    extra = 0
+
+
+@admin.register(LegalPage)
+class LegalPageAdmin(SortableAdminBase, admin.ModelAdmin):
+    """Las dos páginas legales se editan, pero no se agregan ni se eliminan."""
+
+    list_display = ("title", "updated_at")
+    fields = ("title", "intro")
+    inlines = [LegalSectionInline]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False

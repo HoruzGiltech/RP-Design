@@ -32,6 +32,8 @@ CONTENT_MODELS = [
     ("site_content", "specialty"),
     ("site_content", "service"),
     ("site_content", "processstep"),
+    ("site_content", "legalpage"),
+    ("site_content", "legalsection"),
 ]
 
 # Páginas de lista que tienen entrada en el menú del panel
@@ -42,6 +44,7 @@ LIST_PAGES = [
     "site_content_specialty",
     "site_content_service",
     "site_content_processstep",
+    "site_content_legalpage",
 ]
 
 

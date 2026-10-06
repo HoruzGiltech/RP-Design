@@ -22,6 +22,11 @@ export function getProject(slug) {
   return apiGet(`/projects/${encodeURIComponent(slug)}/`)
 }
 
+/** Una página legal ("terminos" o "privacidad") con sus apartados. */
+export function getLegalPage(slug) {
+  return apiGet(`/legal/${encodeURIComponent(slug)}/`)
+}
+
 /** Áreas a remodelar con su precio por m². */
 export function getQuoteAreas() {
   return apiGet('/quote-areas/')

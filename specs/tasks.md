@@ -134,6 +134,13 @@
   5. Cambiar el precio a 120 → al recargar, el sitio muestra "USD 1.500,00" y la cotización anterior sigue en 1.250,00.
   - Probar en un celular real (Android y iOS si es posible).
 
+### 4B. Páginas legales *(agregado el 2026-10-06)*
+- [x] **T-4.9** Modelos `LegalPage` y `LegalSection`, migración con la estructura inicial, panel y permisos de los grupos. *(RF-07.1 a RF-07.3, CA-07.1)*
+- [x] **T-4.10** `GET /api/legal/<slug>/` y `legal_pages` en `/api/site/`. *(RF-07.6)*
+- [x] **T-4.11** Casilla de aceptación: `privacy_accepted` obligatorio en `POST /api/quotes/` y `privacy_accepted_at` en la cotización. *(RF-07.4, CA-07.3)*
+- [x] **T-4.12** Frontend: páginas `/terminos` y `/privacidad`, enlaces y crédito en el pie, y casilla en el formulario. *(RF-07.4, RF-07.5)*
+- [ ] **T-4.13** El cliente o su abogado escriben los textos legales en el panel. *(RF-07.3, CA-07.4)* Bloquea la publicación del sitio, no el desarrollo.
+
 - [ ] **T-4.8** ✋ **Revisión de fin de fase** y revisión de accesibilidad: formulario con teclado, contraste y `alt`. *(RNF-04)*
 
 ---
@@ -152,6 +159,7 @@
   - [ ] HTTPS en los tres dominios
   - [ ] El rate limit responde 429
   - [ ] La URL del panel no es `/admin/`
+  - [ ] Las páginas legales no tienen ningún `[TEXTO PENDIENTE]` (T-4.13)
   - [ ] Respaldos de Postgres activos
 - [ ] **T-5.8** Lighthouse en móvil: Performance ≥ 85, Accesibilidad ≥ 90. *(RNF-03)*
 - [ ] **T-5.9** Entrega al cliente: guía corta de uso del panel (cómo subir un proyecto, cambiar precios y ver cotizaciones).
