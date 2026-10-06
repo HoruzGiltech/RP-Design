@@ -288,10 +288,10 @@ Una migración de datos (`core/migrations/000X_create_groups.py`) crea:
 | Medida | Implementación |
 |---|---|
 | Secretos | `django-environ` lee `.env` |
-| Fuerza bruta en el login | `django-axes`: 5 fallos → 30 min de bloqueo |
+| Fuerza bruta en el login | `django-axes`: 5 fallos → 30 min de bloqueo. Se bloquea la IP, no el usuario, para que nadie pueda dejar al cliente fuera del panel. Página de bloqueo propia, en español |
 | CORS | `django-cors-headers`, con `CORS_ALLOWED_ORIGINS` desde `.env` |
 | CSRF | Activo en el admin. La API pública no usa cookies, así que el POST de cotizaciones no necesita CSRF |
-| Producción | `DEBUG=False`, `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE`, `CSRF_COOKIE_SECURE`, HSTS, `SECURE_PROXY_SSL_HEADER` |
+| Producción | `DEBUG=False`, `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE`, `CSRF_COOKIE_SECURE`, HSTS (un año, con subdominios), `SECURE_PROXY_SSL_HEADER` y `CSRF_TRUSTED_ORIGINS` desde `.env`. Con `DEBUG=False` el backend no arranca si `DJANGO_SECRET_KEY` sigue con el valor de ejemplo |
 | Archivos estáticos | `whitenoise` sirve los estáticos del admin |
 | Contraseñas | Validadores de Django activos (mín. 10 caracteres) |
 
@@ -310,6 +310,10 @@ DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 ADMIN_URL=panel-rp/
 FRONTEND_URL=http://localhost:5173
 CORS_ALLOWED_ORIGINS=http://localhost:5173
+
+# Solo en producción
+CSRF_TRUSTED_ORIGINS=
+SECURE_HSTS_SECONDS=31536000
 
 # Base de datos (los POSTGRES_* crean la base en Docker; DATABASE_URL la usa Django)
 POSTGRES_USER=rp

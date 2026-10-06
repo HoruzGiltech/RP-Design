@@ -4,9 +4,11 @@ Configuración de Django para RP Design.
 Todos los valores que cambian entre entornos (claves, dominios, base de datos)
 se leen de variables de entorno. En local salen del archivo .env de la raíz.
 """
+from datetime import timedelta
 from pathlib import Path
 
 import environ
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "adminsortable2",
+    "axes",
     # Apps del proyecto
     "core",
     "projects",
@@ -55,6 +58,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Cuenta los intentos fallidos de login; debe ir al final
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -81,10 +86,28 @@ DATABASES = {"default": env.db("DATABASE_URL")}
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 10},
+    },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+
+# Bloqueo del login del panel tras varios intentos fallidos (django-axes)
+AUTHENTICATION_BACKENDS = [
+    # Primero axes: rechaza el intento si esa IP está bloqueada
+    "axes.backends.AxesStandaloneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+AXES_FAILURE_LIMIT = 5
+# Si cambias este tiempo, cambia también el texto de core/templates/core/lockout.html
+AXES_COOLOFF_TIME = timedelta(minutes=30)
+# Se bloquea la IP que falla, no el usuario: así nadie puede dejar al cliente
+# fuera del panel con solo escribir mal su nombre de usuario muchas veces.
+AXES_LOCKOUT_PARAMETERS = ["ip_address"]
+AXES_RESET_ON_SUCCESS = True
+AXES_LOCKOUT_TEMPLATE = "core/lockout.html"
 
 # Idioma y hora
 LANGUAGE_CODE = "es"
@@ -127,3 +150,32 @@ REST_FRAMEWORK = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---------------------------------------------------------------------------
+# Producción
+# ---------------------------------------------------------------------------
+# Todo esto se activa solo con DJANGO_DEBUG=False. En local no aplica,
+# porque obligaría a usar HTTPS en localhost.
+if not DEBUG:
+    if SECRET_KEY == "cambia-esto":
+        raise ImproperlyConfigured(
+            "DJANGO_SECRET_KEY sigue con el valor de ejemplo. Genera una clave nueva "
+            "antes de publicar el sitio."
+        )
+
+    # El backend está detrás de un proxy (Railway, Cloudflare) que recibe el HTTPS
+    # y le avisa a Django con esta cabecera.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+
+    # Las cookies del panel solo viajan por HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # HSTS: el navegador recuerda durante un año que este sitio solo se abre con HTTPS
+    SECURE_HSTS_SECONDS = env.int("SECURE_HSTS_SECONDS", default=31536000)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # Dominios desde los que se aceptan formularios del panel (con https://)
+    CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])

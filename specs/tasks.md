@@ -80,9 +80,9 @@
   - Verificación: test de que el 6.º POST en una hora devuelve 429.
 
 ### 2H. Seguridad del panel
-- [ ] **T-2.24** `django-axes` (5 intentos → 30 min) y validadores de contraseña.
+- [x] **T-2.24** `django-axes` (5 intentos → 30 min) y validadores de contraseña.
   - Verificación manual: 5 logins fallidos bloquean el acceso.
-- [ ] **T-2.25** Configuración de producción en `settings` (DEBUG, cookies seguras, HSTS, SSL), activada por `.env`.
+- [x] **T-2.25** Configuración de producción en `settings` (DEBUG, cookies seguras, HSTS, SSL), activada por `.env`.
   - Verificación: `python manage.py check --deploy` sin advertencias críticas con `DEBUG=False`.
 
 - [ ] **T-2.26** ✋ **Revisión de fin de fase:** `manage.py test` pasa completo y se hace una demo del panel.

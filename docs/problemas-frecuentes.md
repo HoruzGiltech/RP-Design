@@ -108,6 +108,34 @@ docker compose restart backend
 
 Los límites se cambian en `.env` (`THROTTLE_PUBLIC` y `THROTTLE_QUOTES`).
 
+## 8. El panel muestra "Demasiados intentos" y no deja entrar
+
+**Cuándo aparece:** después de 5 intentos fallidos de login desde el mismo equipo. El bloqueo dura 30 minutos.
+
+**Causa:** es la protección contra robo de contraseñas (`django-axes`), funcionando como debe. Se bloquea el equipo (su dirección IP), no el usuario.
+
+**Solución:** esperar 30 minutos, o quitar el bloqueo a mano:
+
+```bash
+docker compose exec backend python manage.py axes_reset
+```
+
+Si el problema era la contraseña, se cambia como explica el problema 3.
+
+## 9. `ImproperlyConfigured: DJANGO_SECRET_KEY sigue con el valor de ejemplo`
+
+**Cuándo aparece:** al arrancar el backend con `DJANGO_DEBUG=False`.
+
+**Causa:** en modo producción el proyecto se niega a arrancar con la clave `cambia-esto` de `.env.example`, porque con una clave conocida cualquiera podría falsificar sesiones del panel.
+
+**Solución:** generar una clave y ponerla en `DJANGO_SECRET_KEY`:
+
+```bash
+docker compose exec backend python -c "import secrets; print(secrets.token_urlsafe(64))"
+```
+
+En local no hace falta: con `DJANGO_DEBUG=True` la clave de ejemplo se acepta.
+
 ---
 
 ## Cómo agregar un problema nuevo
