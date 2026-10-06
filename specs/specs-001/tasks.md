@@ -52,7 +52,7 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
 - [x] **S1-B13** Migración de datos: título de la Portada vacío y botón "Agenda una reunión", solo si siguen con el texto original. `HeroSection.title` admite vacío. *(RF-08.6, RF-08.8, CA-08.9)*
   - Verificación: test de que un título cambiado por el cliente no se toca.
 
-- [ ] **S1-B14** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel (categorías, casillas nuevas, botón flotante).
+- [x] **S1-B14** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel (categorías, casillas nuevas, botón flotante). (Aprobada el 2026-10-06.)
 
 ---
 
