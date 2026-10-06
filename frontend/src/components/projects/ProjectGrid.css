@@ -1,0 +1,9 @@
+/*
+  auto-fill (y no auto-fit): con 1 o 2 proyectos las tarjetas conservan su
+  ancho en lugar de estirarse hasta ocupar toda la fila.
+*/
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--col-wide), 100%), 1fr));
+  gap: var(--space-24);
+}

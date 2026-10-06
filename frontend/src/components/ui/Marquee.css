@@ -1,0 +1,63 @@
+.marquee {
+  /* Recorta lo que sale por los lados */
+  overflow: hidden;
+}
+
+/* La lista real: invisible mientras la cinta se mueve, pero la leen los lectores de pantalla */
+.marquee__list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.marquee__track {
+  display: flex;
+  /* El ancho es el de su contenido, no el de la pantalla */
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration) linear infinite;
+}
+
+.marquee__half {
+  display: flex;
+}
+
+.marquee__item {
+  padding-right: var(--space-64);
+  white-space: nowrap;
+}
+
+/* Se detiene para poder leerla con calma */
+.marquee:hover .marquee__track,
+.marquee:focus .marquee__track,
+.marquee:focus-within .marquee__track {
+  animation-play-state: paused;
+}
+
+/* Se mueve exactamente una mitad: al reiniciar, la segunda mitad está donde estaba la primera */
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Menos movimiento: sin cinta. Se muestra la lista fija, como en la maqueta */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    display: none;
+  }
+
+  .marquee__list {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--col-strip), 1fr));
+    gap: var(--space-24);
+  }
+}

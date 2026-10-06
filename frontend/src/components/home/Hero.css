@@ -1,0 +1,62 @@
+.hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-hero), 100%), 1fr));
+  gap: var(--space-48);
+  align-items: end;
+  padding-top: var(--hero-pt);
+  padding-bottom: var(--hero-pb);
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-28);
+}
+
+.hero__eyebrow {
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.hero__body {
+  max-width: 520px;
+  font-size: var(--text-lead);
+  color: var(--color-text-secondary);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12);
+}
+
+/*
+  El recorte hace que el zoom de la foto no se salga de su recuadro.
+  Tiene que ser "clip" y no "hidden": con hidden el recuadro pasa a contar como
+  zona de scroll propia, y el zoom ligado al scroll de la página deja de avanzar.
+*/
+.hero__media {
+  height: var(--media-hero);
+  overflow: clip;
+}
+
+.hero__media-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* En pantallas pequeñas una altura fija de 520px ocuparía toda la pantalla */
+@media (max-width: 767px) {
+  .hero {
+    padding-top: var(--space-48);
+    gap: var(--space-32);
+  }
+
+  .hero__media {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+}

@@ -1,0 +1,70 @@
+.process {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-wide), 100%), 1fr));
+  gap: var(--space-64);
+}
+
+.process__intro-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.process__intro {
+  font-size: var(--text-lead-small);
+  color: var(--color-text-secondary);
+}
+
+.process__media {
+  height: var(--media-process);
+}
+
+.process__media-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.process__steps {
+  display: flex;
+  flex-direction: column;
+  /* Sin esto la lista se estira hasta la altura de la otra columna y la última línea queda lejos */
+  align-self: start;
+  /* La última línea de la lista */
+  border-bottom: 1px solid var(--color-text);
+}
+
+.process__step {
+  display: flex;
+  gap: var(--space-24);
+  padding-block: var(--space-28);
+  border-top: 1px solid var(--color-text);
+}
+
+.process__letter {
+  min-width: 40px;
+  font-family: var(--font-display);
+  font-size: var(--text-process-letter);
+  font-weight: 700;
+}
+
+.process__step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.process__step-description {
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 767px) {
+  .process {
+    gap: var(--space-48);
+  }
+
+  .process__media {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}

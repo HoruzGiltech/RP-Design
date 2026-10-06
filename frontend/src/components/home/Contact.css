@@ -1,0 +1,22 @@
+.contact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-wide), 100%), 1fr));
+  gap: var(--space-64);
+}
+
+.contact__info-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.contact__intro {
+  font-size: var(--text-lead-small);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 767px) {
+  .contact {
+    gap: var(--space-48);
+  }
+}

@@ -100,11 +100,11 @@
 - [x] **T-3.4b** `hooks/useReveal.js`, `ui/Reveal` y `styles/motion.css` con la regla de `prefers-reduced-motion`. *(RF-06.1, RF-06.8, RF-06.9, CA-06.3)*
   - Verificación: un elemento de prueba aparece una sola vez al entrar en pantalla; con "reducir movimiento" se ve desde el inicio.
 - [x] **T-3.5** Layout: Header (logo y menú responsive con hamburguesa) y Footer. *(S1, S8)* Incluye el favicon con el logo (`useFavicon`).
-- [ ] **T-3.6** Hero, con entrada del título y los botones, video opcional y zoom ligado al scroll. *(S2, RF-06.1, RF-06.2, RF-06.5, RF-06.6, CA-06.5)*
-- [ ] **T-3.7** FeaturedProjects (fondo oscuro, enlace a Instagram y botón "Ver todos") y ProjectCard (capa "Ver proyecto" al pasar el cursor y entrada escalonada); la sección se oculta si hay 0 destacados. *(S5, RF-01.1, CA-01.2, RF-06.3, RF-06.7)*
-- [ ] **T-3.8** SpecialtiesStrip (cinta con `ui/Marquee`), Services (entrada izquierda / abajo / derecha) (números 01, 02… calculados) y Process (letras A, B… calculadas y video); se ocultan si están vacíos o desactivados. *(S3, S4, S6, CA-05.2, D-13, RF-06.3, RF-06.4, CA-06.4)*
-- [ ] **T-3.8b** `MediaPlaceholder` en sus variantes clara y oscura, y color de acento aplicado desde `settings.accent_color`. *(CA-05.3, CA-05.4)*
-- [ ] **T-3.8c** Contact: columna de datos (WhatsApp, correo, Instagram y ciudad desde SiteSettings) y espacio para la calculadora. *(S7)*
+- [x] **T-3.6** Hero, con entrada del título y los botones, video opcional y zoom ligado al scroll. *(S2, RF-06.1, RF-06.2, RF-06.5, RF-06.6, CA-06.5)*
+- [x] **T-3.7** FeaturedProjects (fondo oscuro, enlace a Instagram y botón "Ver todos") y ProjectCard (capa "Ver proyecto" al pasar el cursor y entrada escalonada); la sección se oculta si hay 0 destacados. *(S5, RF-01.1, CA-01.2, RF-06.3, RF-06.7)*
+- [x] **T-3.8** SpecialtiesStrip (cinta con `ui/Marquee`), Services (entrada izquierda / abajo / derecha) (números 01, 02… calculados) y Process (letras A, B… calculadas y video); se ocultan si están vacíos o desactivados. *(S3, S4, S6, CA-05.2, D-13, RF-06.3, RF-06.4, CA-06.4)*
+- [x] **T-3.8b** `MediaPlaceholder` en sus variantes clara y oscura, y color de acento aplicado desde `settings.accent_color`. *(CA-05.3, CA-05.4)*
+- [x] **T-3.8c** Contact: columna de datos (WhatsApp, correo, Instagram y ciudad desde SiteSettings) y espacio para la calculadora. *(S7)*
 - [ ] **T-3.9** `ProjectsPage` con ProjectGrid y miniaturas con `loading="lazy"`. *(RF-01.2, CA-02.3)*
 - [ ] **T-3.10** `ProjectDetailPage` con MediaGallery y Lightbox (teclado: Esc y flechas). *(RF-01.3, RF-02.6)*
 - [ ] **T-3.11** `NotFoundPage` y manejo de slugs inexistentes. *(CA-01.5)*

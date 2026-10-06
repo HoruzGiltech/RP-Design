@@ -513,9 +513,9 @@ Referencia: https://sparquitectosve.com/ (hecha con Elementor). El inventario se
 | RF-06.1 | Antetítulo, título e intro de cada sección | `<Reveal>`: de `opacity: 0; translateY(var(--reveal-distance))` al estado final |
 | RF-06.2 | Botones de la Portada | `<Reveal from="right">` con retraso, después del título |
 | RF-06.3 | Tarjetas de Servicios, Proyectos y pasos de Proceso | `<Reveal>` con `delay = índice × --motion-stagger`. En Servicios, desde 900 px de ancho: la primera tarjeta entra desde la izquierda, la última desde la derecha y las del medio desde abajo |
-| RF-06.4 | Franja de especialidades | `<Marquee>`: la lista se repite dos veces dentro de una pista que se mueve con `@keyframes` (`translateX(0)` → `-50%`). La copia lleva `aria-hidden`. Se pausa con `:hover` y `:focus-within` |
+| RF-06.4 | Franja de especialidades | `<Marquee>`: la lista se repite dos veces dentro de una pista que se mueve con `@keyframes` (`translateX(0)` → `-50%`). Toda la pista lleva `aria-hidden` y la lista real va aparte, solo para lectores de pantalla (así cada especialidad se lee una vez). Se pausa con `:hover` y con el foco del teclado. Con "reducir movimiento" la pista no se muestra y se ve la lista fija, como en la maqueta |
 | RF-06.5 | Portada | Si `hero.video` existe: `<video autoplay muted loop playsInline poster={hero.image}>` en el recuadro de la imagen. Si no, la imagen |
-| RF-06.6 | Imagen de la Portada y portada del detalle | Animación CSS ligada al scroll (`animation-timeline: view()`), de `scale(1)` a `scale(1.08)`, dentro de un contenedor con `overflow: hidden` |
+| RF-06.6 | Imagen de la Portada y portada del detalle | Animación CSS ligada al scroll (`animation-timeline: view()`), de `scale(1)` a `scale(1.08)`, dentro de un contenedor con `overflow: clip` (con `hidden` el contenedor cuenta como zona de scroll y el zoom no avanza) |
 | RF-06.7 | `ProjectCard` | Capa `--color-dark` al 55 % con "Ver proyecto", que aparece con `opacity` en `:hover` y `:focus-visible`; la foto pasa a `scale(1.04)` |
 
 **Reglas**

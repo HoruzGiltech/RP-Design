@@ -34,6 +34,32 @@
   transform: none;
 }
 
+/* --- Zoom suave ligado al scroll (foto de la Portada y portada del proyecto) --- */
+
+/*
+  La foto crece un poco mientras su recuadro cruza la pantalla. El recuadro
+  que la contiene debe tener overflow: clip para recortar lo que sobra (no
+  hidden: ver la explicación en Hero.css).
+  @supports: solo se aplica en navegadores que entienden animaciones ligadas
+  al scroll. En los demás (hoy Firefox) la foto simplemente queda fija.
+*/
+@keyframes zoom-on-scroll {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .zoom-on-scroll {
+    animation: zoom-on-scroll linear both;
+    /* El avance de la animación lo marca el scroll, no el reloj */
+    animation-timeline: view();
+  }
+}
+
 /* --- Menos movimiento: todo se muestra en su estado final, sin transición --- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -41,5 +67,9 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .zoom-on-scroll {
+    animation: none;
   }
 }
