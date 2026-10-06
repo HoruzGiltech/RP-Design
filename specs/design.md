@@ -133,7 +133,7 @@ Cada modelo corresponde a una sección del inventario (`requirements.md` §3). E
 | `instagram_handle` | "rpdesign_ve" (la URL se arma sola) |
 | `city` | "Caracas, Venezuela" |
 | `price_note` | Ver el texto abajo |
-| `max_square_meters` | Decimal, `200`. Es el tope del control deslizante de m² |
+| `max_square_meters` | Decimal, `500`. Es el tope del control deslizante de m² |
 
 Texto inicial de `price_note`:
 > Precio referencial en USD, sujeto a modificación tras visita técnica. También puede pagarse en bolívares a tasa BCV del día.
@@ -593,6 +593,6 @@ Hay volúmenes para los datos de Postgres y para `media/`.
 | D-19 | No se adoptan las tarjetas que se voltean ni el video de fondo en Contacto | Esconden contenido, fallan en táctil o bajan el contraste del formulario |
 | D-20 | La franja de especialidades pasa a ser una cinta en movimiento | Es el equivalente del carrusel automático de la referencia; cambia la distribución de la maqueta en S3 |
 | D-21 | Video opcional en la Portada, dentro del recuadro de la foto | Equivale al video de fondo de la referencia sin cambiar la distribución de la maqueta |
-| D-24 | Metros cuadrados con control deslizante y máximo de 200 m² por defecto | Pedido del desarrollador (2026-10-06). Con el tope anterior de 10000 el control sería imposible de usar; el cliente puede cambiarlo en el panel |
+| D-24 | Metros cuadrados con control deslizante y máximo de 500 m² por defecto | Pedido del desarrollador (2026-10-06). Con el tope anterior de 10000 el control sería imposible de usar. Quien necesite más de 500 m² lo conversa con RP Design; el cliente puede cambiar el tope en el panel |
 | D-23 | oxlint como linter del frontend, en lugar de ESLint | Es el que trae hoy la plantilla oficial de Vite; `npm run lint` funciona igual y no hay que configurar nada |
 | D-22 | Django 5.2 LTS en lugar de 6.1 | `django-admin-sortable2` aún no soporta 6.1 (fallaban las acciones de las listas), y la LTS tiene soporte hasta abril de 2028 |

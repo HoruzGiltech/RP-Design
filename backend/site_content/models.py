@@ -115,7 +115,7 @@ class SiteSettings(SingletonModel):
         "máximo de m² en la calculadora",
         max_digits=8,
         decimal_places=2,
-        default=200,
+        default=500,
         help_text="Tope del control deslizante de metros cuadrados del formulario.",
     )
 

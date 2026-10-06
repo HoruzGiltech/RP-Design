@@ -33,7 +33,7 @@ class InitialContentTests(TestCase):
         self.assertEqual(settings.whatsapp_display, "0412 730 5964")
         self.assertEqual(settings.instagram_handle, "rpdesign_ve")
         self.assertEqual(settings.city, "Caracas, Venezuela")
-        self.assertEqual(settings.max_square_meters, 200)
+        self.assertEqual(settings.max_square_meters, 500)
         self.assertTrue(settings.price_note.startswith("Precio referencial en USD"))
 
     def test_every_section_exists_with_its_title(self):

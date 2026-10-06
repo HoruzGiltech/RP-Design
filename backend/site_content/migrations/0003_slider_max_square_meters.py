@@ -1,5 +1,5 @@
 """
-Baja el máximo de m² por defecto de 10000 a 200.
+Baja el máximo de m² por defecto de 10000 a 500.
 
 Los metros cuadrados del formulario se eligen ahora con un control deslizante,
 y con un tope de 10000 sería imposible atinarle a un valor. El cliente puede
@@ -10,7 +10,7 @@ from decimal import Decimal
 from django.db import migrations, models
 
 OLD_DEFAULT = Decimal("10000")
-NEW_DEFAULT = Decimal("200")
+NEW_DEFAULT = Decimal("500")
 
 
 def lower_default_maximum(apps, schema_editor):
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             name="max_square_meters",
             field=models.DecimalField(
                 decimal_places=2,
-                default=200,
+                default=500,
                 help_text="Tope del control deslizante de metros cuadrados del formulario.",
                 max_digits=8,
                 verbose_name="máximo de m² en la calculadora",
