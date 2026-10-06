@@ -337,7 +337,7 @@ VITE_API_URL=http://localhost:8000/api
 
 ### 2.13 Dependencias del backend
 
-`Django`, `djangorestframework`, `psycopg[binary]`, `django-environ`, `django-cors-headers`, `django-axes`, `django-admin-sortable2`, `django-storages[s3]`, `Pillow`, `filetype`, `whitenoise`, `gunicorn`.
+`Django` (5.2 LTS, ver D-22), `djangorestframework`, `psycopg[binary]`, `django-environ`, `django-cors-headers`, `django-axes`, `django-admin-sortable2`, `django-storages[s3]`, `Pillow`, `filetype`, `whitenoise`, `gunicorn`.
 
 ---
 
@@ -574,3 +574,4 @@ Hay volúmenes para los datos de Postgres y para `media/`.
 | D-19 | No se adoptan las tarjetas que se voltean ni el video de fondo en Contacto | Esconden contenido, fallan en táctil o bajan el contraste del formulario |
 | D-20 | La franja de especialidades pasa a ser una cinta en movimiento | Es el equivalente del carrusel automático de la referencia; cambia la distribución de la maqueta en S3 |
 | D-21 | Video opcional en la Portada, dentro del recuadro de la foto | Equivale al video de fondo de la referencia sin cambiar la distribución de la maqueta |
+| D-22 | Django 5.2 LTS en lugar de 6.1 | `django-admin-sortable2` aún no soporta 6.1 (fallaban las acciones de las listas), y la LTS tiene soporte hasta abril de 2028 |

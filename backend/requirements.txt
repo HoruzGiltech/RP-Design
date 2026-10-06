@@ -1,5 +1,6 @@
 # Versiones fijas. Para actualizar una, cambia el número y reconstruye la imagen.
-Django==6.1.1
+# Django 5.2 es la versión LTS (soporte hasta abril de 2028) y la última que soporta django-admin-sortable2
+Django==5.2.17
 psycopg[binary]==3.3.6
 django-environ==0.14.0
 djangorestframework==3.18.1

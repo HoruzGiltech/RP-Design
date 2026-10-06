@@ -88,11 +88,11 @@ docker compose exec backend python manage.py shell -c "from django.contrib.auth 
 
 **Cuándo aparece:** al abrir en el panel una lista que se ordena arrastrando (Proyectos, Áreas y precios, Servicios...).
 
-**Causa:** `django-admin-sortable2` 2.3.1 trae ese archivo solo hasta Django 6.0, y el proyecto usa Django 6.1.
+**Causa:** `django-admin-sortable2` 2.3.1 trae ese archivo solo hasta Django 6.0. El proyecto arrancó con Django 6.1.
 
-**Efecto:** arrastrar para ordenar funciona. Lo que no funciona en esas listas es la casilla "seleccionar todo" y el contador de elementos seleccionados de las acciones (por ejemplo, "Eliminar seleccionados"). Marcando las casillas una por una, la acción sí se ejecuta.
+**Efecto:** arrastrar para ordenar funcionaba, pero en esas listas fallaban la casilla "seleccionar todo" y el contador de elementos seleccionados.
 
-**Solución:** pendiente de decidir. Opciones: bajar a Django 5.2 LTS (compatible con la librería y con soporte hasta 2028), o esperar una versión de la librería que incluya el archivo para 6.1.
+**Solución (aplicada el 2026-10-06):** se fijó Django en la versión 5.2 LTS en `backend/requirements.txt`. Si el error vuelve a aparecer con otro número (por ejemplo `actions-6.0.js`), es que alguien subió Django a una versión que la librería todavía no soporta: antes de actualizar Django hay que revisar qué archivos `actions-X.Y.js` trae la librería.
 
 ## 7. La API responde `429` ("demasiadas peticiones")
 
