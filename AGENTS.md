@@ -198,6 +198,10 @@ docker compose exec backend python manage.py test      # tests backend
 cd frontend && npm run lint && npm run build           # verificar frontend
 ```
 
+### Errores del entorno
+- Los errores que ya aparecieron (contenedores apagados, Docker cerrado, acceso al panel) y sus soluciones están en `docs/problemas-frecuentes.md`. Revísalo antes de diagnosticar desde cero.
+- Si aparece un error nuevo de entorno o de comandos, **agrégalo a ese archivo** con su causa y su solución.
+
 ---
 
 ## 6. Seguridad
