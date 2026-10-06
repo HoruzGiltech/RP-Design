@@ -133,7 +133,7 @@ Cada modelo corresponde a una sección del inventario (`requirements.md` §3). E
 | `instagram_handle` | "rpdesign_ve" (la URL se arma sola) |
 | `city` | "Caracas, Venezuela" |
 | `price_note` | Ver el texto abajo |
-| `max_square_meters` | Decimal, `10000` |
+| `max_square_meters` | Decimal, `200`. Es el tope del control deslizante de m² |
 
 Texto inicial de `price_note`:
 > Precio referencial en USD, sujeto a modificación tras visita técnica. También puede pagarse en bolívares a tasa BCV del día.
@@ -459,7 +459,7 @@ frontend/src/
 │   ├── layout/   Header, Footer, Layout
 │   ├── home/     Hero, SpecialtiesStrip, Services, FeaturedProjects, Process, Contact, ContactInfo
 │   ├── projects/ ProjectCard, ProjectGrid, MediaGallery, Lightbox
-│   ├── quote/    QuoteCalculator, EstimateDisplay, Field, QuoteSuccess
+│   ├── quote/    QuoteCalculator, EstimateDisplay, Field, SquareMetersSlider, QuoteSuccess
 │   ├── media/    MediaPlaceholder (recuadro gris cuando no hay imagen; variante clara y oscura)
 │   └── ui/       Button, Spinner, ErrorMessage, Section, Reveal, Marquee
 └── pages/        HomePage, ProjectsPage, ProjectDetailPage, NotFoundPage
@@ -475,7 +475,8 @@ frontend/src/
 - Si se elige un área con `is_other`, aparece el campo "Especifique".
 - Incluye el honeypot `website`, oculto con CSS (no con `type="hidden"`), con `tabIndex={-1}` y `autoComplete="off"`.
 - Al enviar: deshabilita el botón, hace el POST y luego `window.location.assign(whatsapp_url)`. También muestra una pantalla de éxito con el botón **"Abrir WhatsApp"** como respaldo (CA-03.5).
-- Los metros cuadrados aceptan coma o punto decimal (`12,5`), con teclado numérico en el celular; al backend se envían con punto.
+- Los metros cuadrados se eligen con `SquareMetersSlider`: un `<input type="range">` del navegador (funciona con dedo, mouse y flechas del teclado), de 1 al `max_square_meters` del panel, paso de 1 m² y valor inicial 10. Se le da el aspecto del sitio: línea fina y botón cuadrado con el color de acento. Lleva `aria-valuetext` ("25 metros cuadrados").
+- `parseDecimal()` sigue aceptando coma o punto, por si el campo vuelve a ser de texto; el backend acepta decimales igual que antes.
 - El estimado en vivo se calcula con centésimas enteras y redondea como el backend, para que el monto mostrado coincida con el guardado.
 - Al fallar la validación, el foco va al primer campo con error. Cada error está unido a su campo con `aria-describedby`.
 - Color de los errores: `--color-error` (`#A4281B`). No viene de la maqueta, que no tiene estados de error.
@@ -592,5 +593,6 @@ Hay volúmenes para los datos de Postgres y para `media/`.
 | D-19 | No se adoptan las tarjetas que se voltean ni el video de fondo en Contacto | Esconden contenido, fallan en táctil o bajan el contraste del formulario |
 | D-20 | La franja de especialidades pasa a ser una cinta en movimiento | Es el equivalente del carrusel automático de la referencia; cambia la distribución de la maqueta en S3 |
 | D-21 | Video opcional en la Portada, dentro del recuadro de la foto | Equivale al video de fondo de la referencia sin cambiar la distribución de la maqueta |
+| D-24 | Metros cuadrados con control deslizante y máximo de 200 m² por defecto | Pedido del desarrollador (2026-10-06). Con el tope anterior de 10000 el control sería imposible de usar; el cliente puede cambiarlo en el panel |
 | D-23 | oxlint como linter del frontend, en lugar de ESLint | Es el que trae hoy la plantilla oficial de Vite; `npm run lint` funciona igual y no hay que configurar nada |
 | D-22 | Django 5.2 LTS en lugar de 6.1 | `django-admin-sortable2` aún no soporta 6.1 (fallaban las acciones de las listas), y la LTS tiene soporte hasta abril de 2028 |

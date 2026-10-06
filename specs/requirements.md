@@ -107,7 +107,7 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 | RF-03.7 | Bajo el monto se muestra la **nota de precio**, editable en el panel (texto por defecto en `design.md`) |
 | RF-03.8 | Al enviar, el backend valida, **recalcula** el precio, arma el mensaje, guarda la cotización **con el texto exacto del mensaje** y devuelve el enlace `wa.me` |
 | RF-03.9 | El frontend abre WhatsApp con ese enlace, dirigido al número configurado en el panel |
-| RF-03.10 | Los m² deben ser mayores que 0 y no superar un máximo configurable en el panel |
+| RF-03.10 | Los m² se eligen con un **control deslizante** (una línea con un botón que se arrastra), de 1 m² hasta el máximo configurable en el panel (200 m² por defecto), de metro en metro. El valor elegido se ve junto a la etiqueta y el estimado cambia mientras se arrastra |
 | RF-03.11 | El formulario mantiene el estilo de la maqueta (caja clara con borde, etiquetas en negrita, inputs blancos). Orden de los campos: Nombre, Teléfono, Correo, Área a remodelar, Metros cuadrados, Estimado, Mensaje. El botón dice **"Enviar por WhatsApp"** |
 | RF-03.12 | El campo "Tipo de proyecto" de la maqueta (Residencial / Comercial / Solo renders o planos / Ejecución de obra) **se reemplaza** por "Área a remodelar", que es el que define el precio |
 

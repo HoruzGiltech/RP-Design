@@ -112,7 +112,11 @@ class SiteSettings(SingletonModel):
         help_text="Se muestra debajo del estimado de la calculadora.",
     )
     max_square_meters = models.DecimalField(
-        "máximo de m² en la calculadora", max_digits=8, decimal_places=2, default=10000
+        "máximo de m² en la calculadora",
+        max_digits=8,
+        decimal_places=2,
+        default=200,
+        help_text="Tope del control deslizante de metros cuadrados del formulario.",
     )
 
     class Meta:

@@ -121,6 +121,7 @@
 
 - [x] **T-4.1** `utils/currency.js` y `utils/estimate.js`, con tests en Vitest (mismos casos que el backend). *(RF-03.4, RF-03.6)*
 - [x] **T-4.2** Formulario `QuoteCalculator`: campos, validación y campo "Especifique" para "Otro". *(RF-03.1, RF-03.2, CA-03.6)*
+- [x] **T-4.2b** Cambiar el campo de metros cuadrados por un control deslizante (`SquareMetersSlider`) y bajar el máximo por defecto a 200 m² (migración `site_content.0003`). *(RF-03.10, D-24)*
 - [x] **T-4.3** `EstimateDisplay`: estimado en vivo, "A cotizar" y `price_note`. *(RF-03.5, RF-03.7)*
 - [x] **T-4.4** Envío: POST, botón deshabilitado mientras se envía, `location.assign(whatsapp_url)` y pantalla de éxito con "Abrir WhatsApp". *(RF-03.9, CA-03.5)*
 - [x] **T-4.5** Manejo de errores 400 (por campo) y 429 (mensaje amable).

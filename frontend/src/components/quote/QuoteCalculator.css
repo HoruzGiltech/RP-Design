@@ -65,6 +65,110 @@ textarea.quote-field__control {
   color: inherit;
 }
 
+/* --- Control deslizante de metros cuadrados --- */
+
+.quote-slider__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+}
+
+.quote-slider__value {
+  font-family: var(--font-display);
+  font-size: var(--text-h3-large);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent);
+  /* Las cifras ocupan el mismo ancho: el número no "baila" al deslizar */
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+  Se quita el aspecto que trae el navegador y se dibuja el del sitio: una
+  línea fina y un botón cuadrado. La línea y el botón se estilizan aparte en
+  cada motor (-webkit- para Chrome, Safari y Edge; -moz- para Firefox).
+*/
+.quote-slider__input {
+  appearance: none;
+  width: 100%;
+  /* Alto cómodo para atinarle con el dedo, aunque la línea sea fina */
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* La línea: oscura hasta el botón y clara después. --slider-filled lo pone el componente */
+.quote-slider__input::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--color-text) var(--slider-filled),
+    var(--color-border-input) var(--slider-filled)
+  );
+}
+
+.quote-slider__input::-moz-range-track {
+  height: 2px;
+  background: var(--color-border-input);
+}
+
+.quote-slider__input::-moz-range-progress {
+  height: 2px;
+  background: var(--color-text);
+}
+
+/* El botón: cuadrado, como el resto del sitio */
+.quote-slider__input::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  /* Lo centra sobre la línea: (2px de línea - 24px de botón) / 2 */
+  margin-top: -11px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-accent);
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+
+.quote-slider__input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-accent);
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+
+/* Al arrastrar, el botón crece un poco: confirma que lo tienes agarrado */
+.quote-slider__input:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+.quote-slider__input:active::-moz-range-thumb {
+  transform: scale(1.15);
+}
+
+.quote-slider__input:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.quote-slider__range {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-slider__input::-webkit-slider-thumb,
+  .quote-slider__input::-moz-range-thumb {
+    transition: none;
+  }
+}
+
 /* --- Estimado --- */
 
 .quote-estimate {

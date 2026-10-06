@@ -11,7 +11,11 @@ import Spinner from '../ui/Spinner'
 import EstimateDisplay from './EstimateDisplay'
 import Field from './Field'
 import QuoteSuccess from './QuoteSuccess'
+import SquareMetersSlider from './SquareMetersSlider'
 import './QuoteCalculator.css'
+
+// Metros cuadrados con los que arranca el control deslizante
+const INITIAL_SQUARE_METERS = '10'
 
 const EMPTY_FORM = {
   name: '',
@@ -19,7 +23,7 @@ const EMPTY_FORM = {
   email: '',
   area: '',
   area_other: '',
-  square_meters: '',
+  square_meters: INITIAL_SQUARE_METERS,
   message: '',
   // Campo trampa para bots (honeypot). Una persona nunca lo ve ni lo llena.
   website: '',
@@ -178,13 +182,9 @@ export default function QuoteCalculator() {
           error={errors.area_other}
         />
       )}
-      <Field
-        name="square_meters"
-        label="Metros cuadrados"
-        // Teclado numérico con coma en el celular
-        inputMode="decimal"
-        placeholder="Ejemplo: 12,5"
+      <SquareMetersSlider
         value={values.square_meters}
+        max={settings.max_square_meters}
         onChange={handleChange}
         error={errors.square_meters}
       />
