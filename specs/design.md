@@ -276,6 +276,8 @@ Una migración de datos (`core/migrations/000X_create_groups.py`) crea:
 - Django Admin ya muestra en solo lectura los modelos donde el usuario solo tiene `view`. Así se cumple CA-04.1 sin código extra.
 - Los usuarios del panel necesitan `is_staff=True` y su grupo. **No** se usa `is_superuser` para el cliente; el superusuario queda solo para el desarrollador.
 - Como los permisos se crean después de las migraciones de cada app, la migración de grupos depende de las últimas migraciones de esas apps y llama a `create_permissions` antes de asignar.
+- El rol Admin gestiona usuarios, pero **no puede** marcar "superusuario", dar permisos sueltos ni editar o borrar la cuenta del desarrollador (`core/admin.py`). Sin este control, quien puede editar usuarios podría darse acceso total.
+- Si se agrega un modelo nuevo, hace falta otra migración que dé sus permisos a los grupos. Un test (`core/tests/test_roles.py`) falla si se olvida.
 
 ### 2.10 Seguridad
 

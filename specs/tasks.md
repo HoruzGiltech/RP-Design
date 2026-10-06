@@ -63,9 +63,9 @@
   - Verificación manual: no se puede crear un segundo Hero.
 
 ### 2F. Roles
-- [ ] **T-2.16** Migración de datos que crea los grupos **Admin** y **Viewer** con sus permisos. *(RF-04.8, CA-04.3)*
+- [x] **T-2.16** Migración de datos que crea los grupos **Admin** y **Viewer** con sus permisos. *(RF-04.8, CA-04.3)*
   - Verificación: con una BD nueva, después de `migrate`, ambos grupos existen con los permisos esperados.
-- [ ] **T-2.17** Tests de permisos: el Viewer recibe 403 al crear, editar o borrar, y el Admin puede todo. *(CA-04.1, CA-04.2, CA-04.4)*
+- [x] **T-2.17** Tests de permisos: el Viewer recibe 403 al crear, editar o borrar, y el Admin puede todo. *(CA-04.1, CA-04.2, CA-04.4)*
 
 ### 2G. API
 - [ ] **T-2.18** Serializers y `GET /api/site/`. *(RF-05.1)*
