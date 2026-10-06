@@ -113,7 +113,7 @@
   - Verificación: capturas en cada ancho comparadas con `docs/maqueta-legible.html`.
 - [x] **T-3.13b** Revisión de animaciones con Playwright: recorrido normal y con `prefers-reduced-motion` emulado. *(CA-06.1, CA-06.2, CA-06.6)*
 
-- [ ] **T-3.14** ✋ **Revisión de fin de fase:** `npm run lint` y `npm run build` pasan; demo navegando todo el sitio con datos reales cargados desde el panel.
+- [x] **T-3.14** ✋ **Revisión de fin de fase:** `npm run lint` y `npm run build` pasan; demo navegando todo el sitio con datos reales cargados desde el panel. (Aprobada el 2026-10-06.)
 
 ---
 
