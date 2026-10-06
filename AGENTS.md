@@ -23,7 +23,7 @@ Actúa como **desarrollador fullstack senior** que escribe código **simple, cla
 
 **Referencia visual:** la maqueta `docs/maqueta-legible.html` (el HTML extraído, que es el que se lee y se compara). El original del diseñador está en `docs/maqueta-original.html`, empaquetado y difícil de leer.
 - Es la fuente de verdad estética: colores, tipografías, espaciados y estilo de componentes.
-- **Excepción:** el hero y la sección Proyectos del inicio ya no siguen la distribución de la maqueta, por cambios que pidió el cliente (`specs-001/`). Conservan sus tokens: colores, tipografías y sin bordes redondeados.
+- **Excepción:** el hero y la sección Proyectos del inicio ya no siguen la distribución de la maqueta, por cambios que pidió el cliente (`specs/specs-001/`). Conservan sus tokens: colores, tipografías y sin bordes redondeados.
 - Los *design tokens* ya están extraídos en `specs/design.md` §3.0. Van a `frontend/src/styles/tokens.css` y se reutilizan siempre. No copies el HTML tal cual a React: conviértelo en componentes.
 
 **Referencia de animaciones:** https://sparquitectosve.com/. De ahí se toma **solo el movimiento** (cómo aparecen y reaccionan los elementos), adaptado al estilo de la maqueta. Los colores, tipografías, espaciados y la distribución siguen saliendo de la maqueta. El detalle está en `specs/requirements.md` RF-06 y `specs/design.md` §3.6.
@@ -46,10 +46,10 @@ specs/
   tasks.md          ← PASOS pequeños y verificables, con checkbox
 ```
 
-**Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van en una carpeta aparte y numerada (`specs-001/`, `specs-002/`…), cada una con sus tres archivos. Reglas:
+**Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
-- Si un paquete contradice a `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Trabajo en curso: `specs-001/`.** Empieza cada sesión leyendo este archivo, `specs/` y `specs-001/`.
+- Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
+- **Trabajo en curso: `specs/specs-001/`.** Empieza cada sesión leyendo este archivo, `specs/` y `specs/specs-001/`.
 
 1. **Requisitos:** a partir de la sección 4 de este archivo, crea/actualiza `specs/requirements.md`.
 2. **Diseño:** documenta modelos de datos, endpoints y componentes en `specs/design.md`.
@@ -161,12 +161,12 @@ El cliente puede:
 - [ ] Antes de publicar, no queda ningún `[TEXTO PENDIENTE]` en las páginas legales.
 
 ### Cambios de specs-001 (RF-08 a RF-12)
-El detalle está en `specs-001/requirements.md`. En resumen:
+El detalle está en `specs/specs-001/requirements.md`. En resumen:
 - **RF-08 — Hero con portadas de proyectos:** cada proyecto tiene la casilla "Mostrar en el hero"; con más de una portada rotan con un fundido, con una queda fija. Sustituye a los 3 destacados de RF-01. El título de la Portada queda vacío y el botón dice "Agenda una reunión".
 - **RF-09 — Categorías:** la sección Proyectos del inicio muestra categorías (Comercial, Residencial, Corporativo) y `/proyectos` se filtra por categoría. Se mantiene "Ver todos los proyectos".
-- **RF-10 — Dirección web automática:** el slug del proyecto se genera solo; con una sola palabra se completa con "proyecto".
+- **RF-10 — Dirección web automática:** el slug del proyecto se genera solo; con una sola palabra se le antepone "proyecto" (`proyecto-casa`).
 - **RF-11 — WhatsApp en formato internacional:** `+58 412 730 5964`, calculado a partir del número.
-- **RF-12 — Botón flotante de WhatsApp:** abajo a la derecha, con el mensaje "Hola! quiero agendar una reunión".
+- **RF-12 — Botón flotante de WhatsApp:** el icono clásico (círculo verde), abajo a la derecha, con el mensaje "Hola! quiero agendar una reunión".
 
 ---
 
@@ -208,8 +208,8 @@ El detalle está en `specs-001/requirements.md`. En resumen:
 ├── .env.example
 ├── docker-compose.yml
 ├── docs/maqueta-legible.html   # + maqueta-original.html
-├── specs/          # especificación base
-├── specs-001/      # cambios pedidos por el cliente (trabajo en curso)
+├── specs/          # especificación base (requirements, design, tasks)
+│   └── specs-001/  # cambios pedidos por el cliente (trabajo en curso)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -299,7 +299,7 @@ Al terminar cada tarea o fase, responde con:
 | Animaciones | Referencia: sparquitectosve.com, adaptada a la maqueta. Solo CSS, sin librerías |
 | Páginas legales | Términos y Privacidad, editables en el panel y con `[TEXTO PENDIENTE]` hasta que el cliente dé los textos. Sin aviso de cookies: el sitio no las usa |
 | Crédito | "Desarrollado por Giltechnology" fijo en el pie, sin enlace por ahora |
-| Cambios del cliente | Van en paquetes numerados (`specs-001/`…), que mandan sobre `specs/` |
+| Cambios del cliente | Van dentro de `specs/`, en paquetes numerados (`specs/specs-001/`…), que mandan sobre la base |
 | Hero | Portadas de proyectos marcadas en el panel, con rotación; reemplaza a los destacados (specs-001) |
 | Categorías | Comercial, Residencial y Corporativo; un proyecto pertenece a una (specs-001) |
 
@@ -316,6 +316,5 @@ Al terminar cada tarea o fase, responde con:
 
 1. ¿El cliente quiere secciones **Nosotros** y **Testimonios**? No están en la maqueta; hoy están fuera de alcance (`specs/requirements.md` §6).
 2. Los **textos legales** (Términos y Privacidad) los debe entregar el cliente o su abogado. Hasta entonces las páginas muestran `[TEXTO PENDIENTE]`; bloquea la publicación, no el desarrollo.
-3. Las **decisiones a confirmar de specs-001** (P-1 a P-7 en `specs-001/requirements.md` §4).
 
-Las dos primeras no bloquean el desarrollo. La tercera bloquea el inicio de specs-001.
+Ninguna bloquea el desarrollo.

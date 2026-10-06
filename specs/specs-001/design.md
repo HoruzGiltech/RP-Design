@@ -1,9 +1,9 @@
 # Diseño técnico — specs-001
 
-> **Cómo** se construye lo que pide `specs-001/requirements.md`.
+> **Cómo** se construye lo que pide `specs/specs-001/requirements.md`.
 > Solo describe lo que cambia. Lo que no aparece aquí sigue como en `specs/design.md`.
 
-**Estado:** Borrador v1 (2026-10-06) — pendiente de aprobación
+**Estado:** Aprobado (v1, 2026-10-06)
 
 ---
 
@@ -29,7 +29,7 @@ No se agregan dependencias, ni en el backend ni en el frontend.
 | Campo | Tipo | Notas |
 |---|---|---|
 | `name` | Char(60), único | "Comercial", "Residencial", "Corporativo" |
-| `slug` | Slug, único, no editable | Se genera del nombre al crear (RF-10.5) |
+| `slug` | Slug, único, no editable | Se genera del nombre al crear, sin la palabra "proyecto" (RF-10.5) |
 
 - Datos iniciales por migración: las tres categorías, en ese orden.
 - No tiene imagen propia: la portada sale de un proyecto (RF-09.7).
@@ -39,7 +39,7 @@ No se agregan dependencias, ni en el backend ni en el frontend.
 | Campo | Cambio |
 |---|---|
 | `category` | Pasa de `Char(80)` a `FK → ProjectCategory`, `on_delete=PROTECT`, `related_name="projects"`. Obligatorio en el formulario del panel; en la base admite vacío para los proyectos que la migración no pueda asociar |
-| `slug` | Deja de ser editable (`editable=False`). Se genera en `save()` solo al crear |
+| `slug` | Deja de ser editable (`editable=False`). Se genera en `save()` cuando está vacío, o sea, solo al crear |
 | `show_in_hero` | Bool nuevo, "Mostrar en el hero", por defecto `False` |
 | `hero_order` | PositiveSmallInteger nuevo, "Orden en el hero" |
 | `is_category_cover` | Bool nuevo, "Usar como portada de su categoría" |
@@ -56,7 +56,7 @@ def clean(self):
         raise ValidationError({"show_in_hero": "Ya hay 6 proyectos en el hero. Quita uno antes de agregar otro."})
 
 def save(self, *args, **kwargs):
-    if not self.pk:
+    if not self.slug:
         self.slug = build_project_slug(self.title)   # solo al crear (RF-10.4)
     ...
     super().save(*args, **kwargs)
@@ -70,16 +70,20 @@ def save(self, *args, **kwargs):
 Funciones puras, con tests:
 
 ```python
-SINGLE_WORD_SUFFIX = "proyecto"
+SINGLE_WORD_PREFIX = "proyecto"
 
 def build_base_slug(title: str) -> str:
-    """'Remodelación de cocina' -> 'remodelacion-de-cocina'; 'Casa' -> 'casa-proyecto'."""
+    """'Remodelación de cocina' -> 'remodelacion-de-cocina'; 'Casa' -> 'proyecto-casa'."""
 
 def make_unique_slug(base_slug: str, existing_slugs) -> str:
-    """Si 'casa-proyecto' ya existe -> 'casa-proyecto-2', '-3'..."""
+    """Si 'proyecto-casa' ya existe -> 'proyecto-casa-2', '-3'..."""
+
+def match_category_name(old_text: str, category_names) -> str | None:
+    """'Fachada · Residencial' -> 'Residencial'. La usa la migración de categorías."""
 ```
 
-- "Una sola palabra" se decide sobre el slug ya limpio: si no contiene ningún guion, se le agrega `-proyecto`.
+- "Una sola palabra" se decide sobre el slug ya limpio: si no contiene ningún guion, se le antepone `proyecto-`.
+- Si el título ya es "Proyecto", queda `proyecto` (no `proyecto-proyecto`).
 - Un título sin letras ni números (por ejemplo "¿?") da `proyecto`.
 
 ### 2.3 Migraciones
@@ -258,7 +262,8 @@ const { index, isPlaying, goTo, next, previous, toggle, pause, resume } = useSli
 - Es un enlace: `<a href={buildWhatsAppLink(number, greeting)} target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp">`.
 - Posición: `position: fixed`, a 24 px del borde inferior y derecho (16 px en móvil), sumando `env(safe-area-inset-bottom)` para los celulares con barra de gestos.
 - Tamaño: 56 × 56 px. Icono: el logotipo de WhatsApp como SVG en línea, sin librería de iconos.
-- Aspecto (P-3): cuadrado, fondo `--color-whatsapp` (`#128C7E`, el verde oscuro de la marca) e icono blanco. Con ese verde el icono blanco tiene contraste suficiente; con el verde claro clásico (`#25D366`) no lo tendría.
+- Aspecto (P-3): el icono clásico. Círculo con fondo `--color-whatsapp` (`#25D366`, el verde de la marca) y el logotipo en blanco. Es redondo a propósito, como excepción a la regla de la maqueta, para que se reconozca al instante.
+- El blanco sobre ese verde no llega al contraste que se le pide a un texto, pero aquí la forma y el color del logotipo son los que lo identifican; además lleva nombre accesible y un borde fino oscuro para separarlo de fondos claros.
 - `z-index` por encima del contenido y del encabezado, y **por debajo** del visor de imágenes (`<dialog>` modal).
 - Para no tapar contenido (CA-12.3): el pie de página gana espacio inferior en móvil, y el formulario de cotización deja margen a la derecha de su botón de envío en pantallas angostas.
 - Animación: aparece con un fundido al cargar; al pasar el cursor crece a `scale(1.05)`; al pulsar, `scale(0.97)`.
@@ -283,7 +288,7 @@ La usan `WhatsAppButton` y `ContactInfo` (que hoy arma el enlace a mano). El enl
 
 | Variable | Valor | Uso |
 |---|---|---|
-| `--color-whatsapp` | `#128C7E` | Fondo del botón flotante (P-3) |
+| `--color-whatsapp` | `#25D366` | Fondo del botón flotante (P-3) |
 | `--media-hero-max` | `760px` | Alto máximo del hero |
 | `--motion-slide` | `900ms` | Fundido entre portadas |
 | `--slide-duration` | `6s` | Tiempo de cada portada y de su zoom |

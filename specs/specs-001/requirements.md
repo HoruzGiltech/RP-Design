@@ -3,7 +3,7 @@
 > **Qué** cambia respecto a lo ya construido y **cómo sabemos que está bien hecho**.
 > Es un paquete de cambios sobre la base de `specs/`. Donde este documento contradice a `specs/`, **manda este**.
 
-**Estado:** Borrador v1 (2026-10-06) — pendiente de aprobación
+**Estado:** Aprobado (v1, 2026-10-06)
 **Base:** `specs/requirements.md` v3 (RF-01 a RF-07), ya implementada salvo el despliegue.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 
@@ -41,7 +41,7 @@ Reemplaza a la Portada actual (S2 de `specs/requirements.md`) y a los "destacado
 | RF-08.8 | El texto del botón principal pasa de "Agenda una visita" a **"Agenda una reunión"** (sigue editable en el panel) |
 | RF-08.9 | Si **ningún** proyecto tiene la casilla marcada, el hero usa la imagen o el video de la Portada del panel, como hasta ahora, dentro del nuevo diseño. Si tampoco hay, queda el fondo oscuro con el texto |
 | RF-08.10 | Se eliminan "Destacado" y "Orden entre destacados" de los proyectos, y con ellos el límite de 3 destacados. Los sustituye "Mostrar en el hero" |
-| RF-08.11 | Como máximo **6** proyectos pueden estar en el hero a la vez; el panel lo impide con un mensaje claro *(valor a confirmar, ver §4)* |
+| RF-08.11 | Como máximo **6** proyectos pueden estar en el hero a la vez; el panel lo impide con un mensaje claro |
 
 **Criterios de aceptación**
 - [ ] CA-08.1 Con 0, 1 y varios proyectos marcados, el hero no muestra huecos ni bloques rotos.
@@ -85,14 +85,14 @@ Cambia la sección Proyectos del inicio (S5) y la página `/proyectos`.
 | ID | Requisito |
 |---|---|
 | RF-10.1 | La dirección web (slug) de un proyecto **no se escribe a mano**: se genera sola a partir del título al crearlo. En el panel se ve, pero no se edita |
-| RF-10.2 | Si el título tiene **una sola palabra**, se completa con la palabra "proyecto": "Casa" → `casa-proyecto` *(orden a confirmar, ver §4)* |
-| RF-10.3 | Si la dirección ya existe, se le agrega un número: `casa-proyecto-2` |
+| RF-10.2 | Si el título tiene **una sola palabra**, se completa con la palabra "proyecto" **al principio**: "Casa" → `proyecto-casa` |
+| RF-10.3 | Si la dirección ya existe, se le agrega un número: `proyecto-casa-2` |
 | RF-10.4 | La dirección **no cambia** al editar el título después, para no romper enlaces ya compartidos |
-| RF-10.5 | La dirección de las categorías se genera igual, a partir de su nombre |
+| RF-10.5 | La dirección de las categorías también se genera sola a partir de su nombre, sin la palabra "proyecto": "Residencial" → `residencial` |
 
 **Criterios de aceptación**
 - [ ] CA-10.1 En el formulario de proyecto del panel no hay un campo para escribir la dirección web.
-- [ ] CA-10.2 "Remodelación de cocina" → `remodelacion-de-cocina`; "Casa" → `casa-proyecto`.
+- [ ] CA-10.2 "Remodelación de cocina" → `remodelacion-de-cocina`; "Casa" → `proyecto-casa`.
 - [ ] CA-10.3 Los proyectos que ya existen conservan su dirección actual.
 
 ### RF-11 — WhatsApp en formato internacional
@@ -111,7 +111,7 @@ Cambia la sección Proyectos del inicio (S5) y la página `/proyectos`.
 
 | ID | Requisito |
 |---|---|
-| RF-12.1 | En todas las páginas hay un botón con el icono de WhatsApp, fijo en la esquina **inferior derecha** |
+| RF-12.1 | En todas las páginas hay un botón con el **icono clásico de WhatsApp** (círculo verde con el logotipo blanco), fijo en la esquina **inferior derecha** |
 | RF-12.2 | Al pulsarlo se abre WhatsApp hacia el número del panel con el mensaje ya escrito: **"Hola! quiero agendar una reunión"** |
 | RF-12.3 | El mensaje es editable en el panel, y hay un interruptor para mostrar u ocultar el botón |
 | RF-12.4 | El botón no tapa contenido importante ni queda encima del visor de imágenes |
@@ -139,19 +139,19 @@ Todo lo demás de `specs/` sigue vigente: calculadora, panel y roles, contenido 
 
 ---
 
-## 4. Decisiones a confirmar
+## 4. Decisiones confirmadas
 
-Las tomé con el criterio más razonable para poder escribir la spec. Cualquiera se cambia antes de programar.
+Confirmadas por el desarrollador el 2026-10-06.
 
-| # | Tema | Lo que propongo | Alternativa |
-|---|---|---|---|
-| P-1 | Palabra "proyecto" en la dirección de una sola palabra | Al final: `casa-proyecto` | Al principio: `proyecto-casa` |
-| P-2 | Máximo de portadas en el hero | 6, por peso de la página | Sin límite, u otro número |
-| P-3 | Aspecto del botón flotante | Cuadrado (la maqueta no usa bordes redondeados), con el verde de WhatsApp para que se reconozca | Con el color de acento del sitio; o redondo, como el clásico |
-| P-4 | A dónde lleva "Agenda una reunión" del hero | A la sección Contacto, como hoy | A WhatsApp con el mensaje de RF-12, igual que el botón flotante |
-| P-5 | Tiempo entre portadas | 6 segundos, fijo en el código | Editable desde el panel |
-| P-6 | Título de la sección de categorías | Se conserva el texto actual del panel ("Proyectos recientes"); el cliente lo cambia si quiere | Que el cliente dé un texto nuevo ahora |
-| P-7 | Proyecto sin categoría | El panel exige elegir una al guardar. Los que queden sin categoría por la migración solo aparecen en "Todos" | Permitir proyectos sin categoría |
+| # | Tema | Decisión |
+|---|---|---|
+| P-1 | Palabra "proyecto" en la dirección de una sola palabra | **Al principio:** `proyecto-casa` |
+| P-2 | Máximo de portadas en el hero | **6** |
+| P-3 | Aspecto del botón flotante | **El icono clásico de WhatsApp:** círculo verde con el logotipo blanco. Es la única pieza redonda además del logo del encabezado |
+| P-4 | A dónde lleva "Agenda una reunión" del hero | **A la sección Contacto** |
+| P-5 | Tiempo entre portadas | **6 segundos**, fijo en el código |
+| P-6 | Título de la sección de categorías | Se conserva el texto actual del panel; el cliente lo cambia si quiere |
+| P-7 | Proyecto sin categoría | El panel **exige** elegir una al guardar. Los que queden sin categoría por la migración solo aparecen en "Todos" |
 
 ---
 

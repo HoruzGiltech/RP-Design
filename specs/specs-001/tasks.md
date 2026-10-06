@@ -1,7 +1,7 @@
 # Tareas — specs-001
 
 > Pasos pequeños y verificables. Se hace **una tarea a la vez** y se marca `[x]` solo cuando se cumple su **verificación**.
-> Cada tarea indica qué requisito cubre de `specs-001/requirements.md`.
+> Cada tarea indica qué requisito cubre de `specs/specs-001/requirements.md`.
 
 **Leyenda:** `[ ]` pendiente · `[x]` hecha · `[~]` en progreso · `[!]` bloqueada (anota el motivo)
 
@@ -11,9 +11,10 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
 
 ## Fase A — Especificación
 
-- [x] **S1-A1** Crear `specs-001/requirements.md`, `design.md` y `tasks.md`.
+- [x] **S1-A1** Crear `specs/specs-001/requirements.md`, `design.md` y `tasks.md`.
 - [x] **S1-A2** Actualizar `AGENTS.md` para que specs-001 sea el trabajo en curso, antes del despliegue.
-- [ ] **S1-A3** ✋ **Aprobación** de specs-001 y de las decisiones a confirmar (P-1 a P-7 de `requirements.md` §4). *No se programa nada antes de esto.*
+- [x] **S1-A3** ✋ **Aprobación** de specs-001 y de las decisiones P-1 a P-7 (`requirements.md` §4). (Aprobado el 2026-10-06.)
+- [x] **S1-A4** Mover el paquete a `specs/specs-001/`: todas las specs van dentro de `specs/`.
 
 ---
 
@@ -21,7 +22,7 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
 
 ### B1. Dirección web automática
 - [ ] **S1-B1** `projects/services.py`: `build_base_slug` y `make_unique_slug`. *(RF-10.2, RF-10.3)*
-  - Verificación: tests: "Remodelación de cocina" → `remodelacion-de-cocina`; "Casa" → `casa-proyecto`; repetido → `-2`; sin letras → `proyecto`.
+  - Verificación: tests: "Remodelación de cocina" → `remodelacion-de-cocina`; "Casa" → `proyecto-casa`; repetido → `-2`; sin letras → `proyecto`.
 - [ ] **S1-B2** `Project.slug` no editable y generado solo al crear; sale del formulario del panel y se muestra en solo lectura. *(RF-10.1, RF-10.4, CA-10.1, CA-10.3)*
   - Verificación: tests de que editar el título no cambia la dirección y de que el formulario no tiene el campo.
 
