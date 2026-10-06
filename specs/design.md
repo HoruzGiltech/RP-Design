@@ -175,6 +175,12 @@ def calculate_estimate(area: RemodelArea, square_meters: Decimal) -> Decimal | N
 def format_usd(amount: Decimal | None) -> str:
     """Decimal('1250.5') -> 'USD 1.250,50'; None -> 'A cotizar'."""
 
+def format_square_meters(square_meters: Decimal) -> str:
+    """Decimal('12.50') -> '12,5'; Decimal('30.00') -> '30'."""
+
+def clean_phone(phone: str) -> str:
+    """'+58 412-123 45 67' -> '+584121234567'."""
+
 def build_whatsapp_message(quote: Quote) -> str: ...
 
 def build_whatsapp_link(phone: str, message: str) -> str:

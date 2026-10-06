@@ -48,10 +48,10 @@
   - Verificación manual: crear un proyecto con 3 imágenes y 1 video, reordenarlos arrastrando y comprobar que el orden se guarda.
 
 ### 2D. App `quotes`
-- [ ] **T-2.10** Modelos `RemodelArea` y `Quote`, más la migración de datos con las 6 áreas iniciales. *(RF-03.2)*
-- [ ] **T-2.11** `services.py`: `calculate_estimate`, `format_usd`, `build_whatsapp_message` y `build_whatsapp_link`. *(RF-03.4 a RF-03.6, CA-03.1)*
+- [x] **T-2.10** Modelos `RemodelArea` y `Quote`, más la migración de datos con las 6 áreas iniciales. *(RF-03.2)*
+- [x] **T-2.11** `services.py`: `calculate_estimate`, `format_usd`, `build_whatsapp_message` y `build_whatsapp_link`. *(RF-03.4 a RF-03.6, CA-03.1)*
   - Verificación: tests unitarios: `12.5 × 100 = USD 1.250,00`; área sin precio → "A cotizar"; el mensaje incluye todos los campos; se omite la línea del mensaje cuando está vacío.
-- [ ] **T-2.12** Admin de áreas (precios editables en la lista) y de cotizaciones (solo lectura salvo el estado, con filtros, búsqueda y enlace a WhatsApp). *(RF-04.4, RF-04.7)*
+- [x] **T-2.12** Admin de áreas (precios editables en la lista) y de cotizaciones (solo lectura salvo el estado, con filtros, búsqueda y enlace a WhatsApp). *(RF-04.4, RF-04.7)*
 
 ### 2E. App `site_content`
 - [ ] **T-2.13** Modelos `SiteSettings` (incluye `accent_color`) y las secciones únicas `HeroSection` (con `video` opcional, RF-06.5), `ServicesSection`, `ProjectsSection`, `ProcessSection`, `ContactSection`, `FooterSection` y `SeoSettings`. *(RF-05, RF-04.5)*
