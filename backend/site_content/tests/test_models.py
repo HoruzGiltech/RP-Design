@@ -44,7 +44,7 @@ class InitialContentTests(TestCase):
         self.assertEqual(
             ServicesSection.objects.get().title, "Un solo equipo para todo tu proyecto"
         )
-        self.assertEqual(ProjectsSection.objects.get().title, "Proyectos recientes")
+        self.assertEqual(ProjectsSection.objects.get().title, "Mis Proyectos")
         self.assertEqual(
             ProcessSection.objects.get().title, "Ve tu espacio antes de construirlo"
         )

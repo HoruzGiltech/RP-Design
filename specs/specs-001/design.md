@@ -95,6 +95,7 @@ def match_category_name(old_text: str, category_names) -> str | None:
 | `projects` | `0004_remove_old_fields` | Elimina el `category` de texto, `is_featured` y `featured_order`; renombra `category_fk` → `category`; `slug` pasa a no editable |
 | `site_content` | `0006_whatsapp_floating_button` | Elimina `whatsapp_display`. Agrega `whatsapp_greeting` y `show_whatsapp_button` |
 | `site_content` | `0007_hero_texts` (datos) | Vacía el título de la Portada y cambia el botón a "Agenda una reunión", **solo si siguen con el texto original** (si el cliente ya los cambió, se respetan) |
+| `site_content` | `0008_projects_section_title` (datos) | Cambia el título de la sección Proyectos a "Mis Proyectos", solo si sigue con el texto original |
 | `core` | `0003_category_permissions` | Reparte los permisos de `ProjectCategory` a los grupos (`assign_group_permissions`) |
 
 El cambio de `category` se hace en tres pasos (campo nuevo → copiar datos → borrar el viejo) para no perder información por el camino.

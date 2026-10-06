@@ -150,7 +150,7 @@ Confirmadas por el desarrollador el 2026-10-06.
 | P-3 | Aspecto del botón flotante | **El icono clásico de WhatsApp:** círculo verde con el logotipo blanco. Es la única pieza redonda además del logo del encabezado |
 | P-4 | A dónde lleva "Agenda una reunión" del hero | **A la sección Contacto** |
 | P-5 | Tiempo entre portadas | **6 segundos**, fijo en el código |
-| P-6 | Título de la sección de categorías | Se conserva el texto actual del panel; el cliente lo cambia si quiere |
+| P-6 | Título de la sección de categorías | **"Mis Proyectos"** (antes "Proyectos recientes"). Sigue editable en el panel |
 | P-7 | Proyecto sin categoría | El panel **exige** elegir una al guardar. Los que queden sin categoría por la migración solo aparecen en "Todos" |
 
 ---

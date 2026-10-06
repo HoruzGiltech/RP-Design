@@ -73,6 +73,8 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
   - Verificación con Playwright a 360 px: no tapa el envío del formulario ni el pie; queda por debajo del visor.
 - [x] **S1-C10** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de lo nuevo: contraste del texto sobre las portadas, teclado en los controles del hero, nombres accesibles. *(RNF-09, RNF-10)*
 
+- [x] **S1-C10b** Título de la sección de categorías: "Mis Proyectos" (migración `site_content.0008`). *(P-6)*
+
 - [ ] **S1-C11** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio con datos cargados desde el panel y prueba en un celular real.
 
 ---
