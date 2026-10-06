@@ -118,6 +118,12 @@ REST_FRAMEWORK = {
     # La API pública no usa sesiones ni cookies, por eso no necesita CSRF
     "DEFAULT_AUTHENTICATION_CLASSES": [],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
+    # Límite de peticiones por IP. Cada vista indica cuál usa con "throttle_scope".
+    "DEFAULT_THROTTLE_CLASSES": ["rest_framework.throttling.ScopedRateThrottle"],
+    "DEFAULT_THROTTLE_RATES": {
+        "public": env("THROTTLE_PUBLIC", default="120/min"),
+        "quotes": env("THROTTLE_QUOTES", default="5/hour"),
+    },
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

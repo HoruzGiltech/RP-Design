@@ -84,6 +84,30 @@ docker compose exec backend python manage.py shell -c "from django.contrib.auth 
 
 **Solución:** ninguna. Es un aviso, no un error, y los tests pasan igual. Deja de salir si se ejecuta `docker compose exec backend python manage.py collectstatic`.
 
+## 6. `GET /static/adminsortable2/js/actions-6.1.js ... 404` en los registros del backend
+
+**Cuándo aparece:** al abrir en el panel una lista que se ordena arrastrando (Proyectos, Áreas y precios, Servicios...).
+
+**Causa:** `django-admin-sortable2` 2.3.1 trae ese archivo solo hasta Django 6.0, y el proyecto usa Django 6.1.
+
+**Efecto:** arrastrar para ordenar funciona. Lo que no funciona en esas listas es la casilla "seleccionar todo" y el contador de elementos seleccionados de las acciones (por ejemplo, "Eliminar seleccionados"). Marcando las casillas una por una, la acción sí se ejecuta.
+
+**Solución:** pendiente de decidir. Opciones: bajar a Django 5.2 LTS (compatible con la librería y con soporte hasta 2028), o esperar una versión de la librería que incluya el archivo para 6.1.
+
+## 7. La API responde `429` ("demasiadas peticiones")
+
+**Cuándo aparece:** al enviar más de 5 cotizaciones en una hora desde la misma computadora, o más de 120 peticiones por minuto al resto de la API. Es fácil llegar al primero haciendo pruebas.
+
+**Causa:** es el límite de seguridad, funcionando como debe.
+
+**Solución en local:** reiniciar el backend borra los contadores:
+
+```bash
+docker compose restart backend
+```
+
+Los límites se cambian en `.env` (`THROTTLE_PUBLIC` y `THROTTLE_QUOTES`).
+
 ---
 
 ## Cómo agregar un problema nuevo

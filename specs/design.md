@@ -251,6 +251,10 @@ Respuesta `400`: `{ "campo": ["mensaje en español"] }`. Respuesta `429`: límit
 
 Los dos throttles, `public: 120/min` y `quotes: 5/hour`, se configuran en `REST_FRAMEWORK` y se pueden cambiar desde `.env`.
 
+- En `/api/site/`, las secciones ocultas llegan con `is_visible: false`; de las listas solo llegan los elementos visibles, ya ordenados.
+- El honeypot se revisa **antes** de validar: un bot con datos inválidos también recibe el `201` falso.
+- Los contadores de límite viven en la memoria del proceso. Con varios procesos de `gunicorn` en producción hará falta una caché compartida, y `NUM_PROXIES` para leer la IP real detrás de Cloudflare (fase 5).
+
 ### 2.8 Panel (Django Admin)
 
 | Modelo | Configuración |

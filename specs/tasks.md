@@ -68,15 +68,15 @@
 - [x] **T-2.17** Tests de permisos: el Viewer recibe 403 al crear, editar o borrar, y el Admin puede todo. *(CA-04.1, CA-04.2, CA-04.4)*
 
 ### 2G. API
-- [ ] **T-2.18** Serializers y `GET /api/site/`. *(RF-05.1)*
+- [x] **T-2.18** Serializers y `GET /api/site/`. *(RF-05.1)*
   - Verificación: la respuesta incluye todas las secciones; las ocultas llegan con `is_visible: false`.
-- [ ] **T-2.19** `GET /api/projects/` (con `?featured=true`) y `GET /api/projects/<slug>/`. *(RF-01.1 a RF-01.5)*
+- [x] **T-2.19** `GET /api/projects/` (con `?featured=true`) y `GET /api/projects/<slug>/`. *(RF-01.1 a RF-01.5)*
   - Verificación: tests de que un borrador da 404 y de que el orden de destacados y de media es el correcto.
-- [ ] **T-2.20** `GET /api/quote-areas/`.
-- [ ] **T-2.21** `POST /api/quotes/`: validación, recálculo, guardado del mensaje y respuesta con `whatsapp_url`. *(RF-03.8, CA-03.2, CA-03.4)*
+- [x] **T-2.20** `GET /api/quote-areas/`.
+- [x] **T-2.21** `POST /api/quotes/`: validación, recálculo, guardado del mensaje y respuesta con `whatsapp_url`. *(RF-03.8, CA-03.2, CA-03.4)*
   - Verificación: test que envía un `estimated_price` falso y comprueba que se ignora.
-- [ ] **T-2.22** Honeypot con respuesta 201 falsa sin guardar nada. *(D-10)*
-- [ ] **T-2.23** Throttles `public` y `quotes`. *(RNF-05)*
+- [x] **T-2.22** Honeypot con respuesta 201 falsa sin guardar nada. *(D-10)*
+- [x] **T-2.23** Throttles `public` y `quotes`. *(RNF-05)*
   - Verificación: test de que el 6.º POST en una hora devuelve 429.
 
 ### 2H. Seguridad del panel
