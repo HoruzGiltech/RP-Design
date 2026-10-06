@@ -2,7 +2,7 @@ from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
 
-from projects.models import Project, ProjectMedia
+from projects.models import Project, ProjectCategory, ProjectMedia
 
 NO_PREVIEW = "—"
 
@@ -14,6 +14,22 @@ def image_preview(image, height):
     return format_html(
         '<img src="{}" alt="" style="height: {}px; width: auto;">', image.url, height
     )
+
+
+@admin.register(ProjectCategory)
+class ProjectCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
+    """
+    Categorías de proyectos. Se ordenan arrastrando.
+    La dirección web no se escribe: se genera sola a partir del nombre.
+    Una categoría con proyectos no se puede eliminar (Django lo avisa).
+    """
+
+    list_display = ("name", "project_count")
+    fields = ("name",)
+
+    @admin.display(description="Proyectos")
+    def project_count(self, category):
+        return category.projects.count()
 
 
 class ProjectMediaInline(SortableInlineAdminMixin, admin.TabularInline):
@@ -39,22 +55,32 @@ class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
         "title",
         "category",
         "is_published",
-        "is_featured",
-        "featured_order",
+        "show_in_hero",
+        "hero_order",
+        "is_category_cover",
     )
     list_display_links = ("cover_preview", "title")
-    list_filter = ("is_published", "is_featured")
-    search_fields = ("title", "category", "location")
-    prepopulated_fields = {"slug": ("title",)}
-    readonly_fields = ("cover_preview_large",)
+    list_filter = ("is_published", "category", "show_in_hero")
+    search_fields = ("title", "location")
+    # La dirección web se muestra, pero no se escribe: se genera sola
+    readonly_fields = ("slug_display", "cover_preview_large")
     inlines = [ProjectMediaInline]
 
     fieldsets = (
-        (None, {"fields": ("title", "slug", "summary", "description")}),
+        (None, {"fields": ("title", "slug_display", "summary", "description")}),
         ("Datos del proyecto", {"fields": ("category", "location", "year")}),
         ("Portada", {"fields": ("cover_preview_large", "cover_image", "cover_alt")}),
-        ("Publicación", {"fields": ("is_published", "is_featured", "featured_order")}),
+        (
+            "Publicación",
+            {"fields": ("is_published", "show_in_hero", "hero_order", "is_category_cover")},
+        ),
     )
+
+    @admin.display(description="Dirección web")
+    def slug_display(self, project):
+        if not project.slug:
+            return "Se genera sola al guardar, a partir del título."
+        return project.slug
 
     @admin.display(description="Portada")
     def cover_preview(self, project):

@@ -58,7 +58,7 @@ class SiteContentAdminTests(TestCase):
             {
                 "is_visible": "on",
                 "title": "Título nuevo",
-                "primary_cta_text": "Agenda una visita",
+                "primary_cta_text": "Agenda una reunión",
                 "secondary_cta_text": "Ver proyectos",
             },
         )
@@ -78,7 +78,8 @@ class SiteContentAdminTests(TestCase):
                 "header_cta_text": settings.header_cta_text,
                 "accent_color": settings.accent_color,
                 "whatsapp_number": "0412-7305964",
-                "whatsapp_display": settings.whatsapp_display,
+                "whatsapp_greeting": settings.whatsapp_greeting,
+                "show_whatsapp_button": "on",
                 "contact_email": settings.contact_email,
                 "instagram_handle": settings.instagram_handle,
                 "city": settings.city,

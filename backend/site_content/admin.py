@@ -63,12 +63,15 @@ class SiteSettingsAdmin(SingletonAdmin):
             {
                 "fields": (
                     "whatsapp_number",
-                    "whatsapp_display",
                     "contact_email",
                     "instagram_handle",
                     "city",
                 )
             },
+        ),
+        (
+            "Botón flotante de WhatsApp",
+            {"fields": ("show_whatsapp_button", "whatsapp_greeting")},
         ),
         ("Calculadora", {"fields": ("price_note", "max_square_meters")}),
     )

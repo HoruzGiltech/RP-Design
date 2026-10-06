@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -14,6 +16,12 @@ class LoginLockoutTests(TestCase):
     def setUp(self):
         get_user_model().objects.create_superuser("dev", password=GOOD_PASSWORD)
         self.login_url = reverse("admin:login")
+        # axes avisa por consola de cada intento fallido. Aquí se provocan a propósito,
+        # así que se silencia durante estos tests para no llenar la salida.
+        axes_logger = logging.getLogger("axes")
+        previous_level = axes_logger.level
+        axes_logger.setLevel(logging.CRITICAL)
+        self.addCleanup(axes_logger.setLevel, previous_level)
 
     def login(self, password, ip="10.0.0.1"):
         # "next" es la página a la que el panel lleva después de entrar

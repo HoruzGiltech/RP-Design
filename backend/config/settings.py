@@ -108,8 +108,6 @@ AXES_COOLOFF_TIME = timedelta(minutes=30)
 AXES_LOCKOUT_PARAMETERS = ["ip_address"]
 AXES_RESET_ON_SUCCESS = True
 AXES_LOCKOUT_TEMPLATE = "core/lockout.html"
-# Sin esto, axes escribe una línea en la consola por cada intento fallido
-AXES_VERBOSE = False
 
 # Idioma y hora
 LANGUAGE_CODE = "es"

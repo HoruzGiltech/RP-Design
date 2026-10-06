@@ -30,17 +30,17 @@ class InitialContentTests(TestCase):
         self.assertEqual(settings.header_cta_text, "Cotiza tu proyecto")
         self.assertEqual(settings.accent_color, "#111111")
         self.assertEqual(settings.whatsapp_number, "584127305964")
-        self.assertEqual(settings.whatsapp_display, "0412 730 5964")
+        self.assertEqual(settings.whatsapp_greeting, "Hola! quiero agendar una reunión")
+        self.assertTrue(settings.show_whatsapp_button)
         self.assertEqual(settings.instagram_handle, "rpdesign_ve")
         self.assertEqual(settings.city, "Caracas, Venezuela")
         self.assertEqual(settings.max_square_meters, 500)
         self.assertTrue(settings.price_note.startswith("Precio referencial en USD"))
 
     def test_every_section_exists_with_its_title(self):
-        self.assertEqual(
-            HeroSection.objects.get().title,
-            "Transformamos tus espacios, del plano a la obra.",
-        )
+        # specs-001: el título de la Portada queda vacío y el botón cambia de texto
+        self.assertEqual(HeroSection.objects.get().title, "")
+        self.assertEqual(HeroSection.objects.get().primary_cta_text, "Agenda una reunión")
         self.assertEqual(
             ServicesSection.objects.get().title, "Un solo equipo para todo tu proyecto"
         )

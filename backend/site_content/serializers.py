@@ -15,10 +15,13 @@ from site_content.models import (
     SiteSettings,
     Specialty,
 )
+from site_content.services import format_whatsapp_number
 
 
 class SiteSettingsSerializer(serializers.ModelSerializer):
     instagram_url = serializers.SerializerMethodField()
+    # No es un campo del panel: se calcula a partir del número (specs-001, RF-11)
+    whatsapp_display = serializers.SerializerMethodField()
 
     class Meta:
         model = SiteSettings
@@ -31,6 +34,8 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             "accent_color",
             "whatsapp_number",
             "whatsapp_display",
+            "whatsapp_greeting",
+            "show_whatsapp_button",
             "contact_email",
             "instagram_handle",
             "instagram_url",
@@ -38,6 +43,9 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             "price_note",
             "max_square_meters",
         ]
+
+    def get_whatsapp_display(self, settings):
+        return format_whatsapp_number(settings.whatsapp_number)
 
     def get_instagram_url(self, settings):
         if not settings.instagram_handle:

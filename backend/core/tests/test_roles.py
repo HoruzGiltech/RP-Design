@@ -18,6 +18,7 @@ User = get_user_model()
 # Modelos que el cliente gestiona en el panel: (app, modelo)
 CONTENT_MODELS = [
     ("projects", "project"),
+    ("projects", "projectcategory"),
     ("projects", "projectmedia"),
     ("quotes", "remodelarea"),
     ("quotes", "quote"),
@@ -39,6 +40,7 @@ CONTENT_MODELS = [
 # Páginas de lista que tienen entrada en el menú del panel
 LIST_PAGES = [
     "projects_project",
+    "projects_projectcategory",
     "quotes_remodelarea",
     "quotes_quote",
     "site_content_specialty",
@@ -149,12 +151,12 @@ class ViewerPermissionsTests(TempMediaMixin, TestCase):
             reverse("admin:projects_project_change", args=[self.project.pk]),
             {
                 "title": "Cambiado por el visor",
-                "slug": self.project.slug,
+                "category": self.project.category.pk,
                 "summary": "x",
                 "description": "x",
                 "cover_alt": "x",
                 "cover_image": make_image_file(),
-                "featured_order": 0,
+                "hero_order": 0,
                 "media-TOTAL_FORMS": 0,
                 "media-INITIAL_FORMS": 0,
             },

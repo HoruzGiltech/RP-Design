@@ -11,8 +11,9 @@ from core.validators import (
     validate_image_file,
     validate_media_file,
 )
+from projects.services import build_base_slug, make_unique_slug
 
-MAX_FEATURED_PROJECTS = 3
+MAX_HERO_PROJECTS = 6
 
 
 def project_upload_path(instance, filename):
@@ -20,21 +21,44 @@ def project_upload_path(instance, filename):
     return build_unique_path("projects", filename)
 
 
+class ProjectCategory(OrderedModel):
+    """Categoría de proyectos: Comercial, Residencial, Corporativo..."""
+
+    name = models.CharField("nombre", max_length=60, unique=True)
+    slug = models.SlugField("dirección web", max_length=70, unique=True, editable=False)
+
+    class Meta(OrderedModel.Meta):
+        verbose_name = "categoría"
+        verbose_name_plural = "categorías"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        # La dirección se crea una vez y no cambia, aunque después cambie el nombre:
+        # así los enlaces ya compartidos siguen funcionando.
+        if not self.slug:
+            existing = set(ProjectCategory.objects.values_list("slug", flat=True))
+            self.slug = make_unique_slug(slugify(self.name) or "categoria", existing)
+        super().save(*args, **kwargs)
+
+
 class Project(TimeStampedModel, OrderedModel):
     title = models.CharField("título", max_length=150)
-    slug = models.SlugField(
-        "dirección web",
-        max_length=170,
-        unique=True,
-        blank=True,
-        help_text="Parte final de la URL del proyecto. Si se deja vacía, sale del título.",
-    )
+    slug = models.SlugField("dirección web", max_length=170, unique=True, editable=False)
     summary = models.CharField(
         "resumen", max_length=300, help_text="Texto corto que se ve en la tarjeta."
     )
     description = models.TextField("descripción")
-    category = models.CharField(
-        "categoría", max_length=80, blank=True, help_text="Ejemplo: Fachada · Residencial"
+    # PROTECT: no se puede borrar una categoría que tiene proyectos.
+    # null=True solo por los proyectos anteriores a que existieran las categorías;
+    # en el panel es obligatoria (blank=False).
+    category = models.ForeignKey(
+        ProjectCategory,
+        on_delete=models.PROTECT,
+        related_name="projects",
+        verbose_name="categoría",
+        null=True,
     )
     location = models.CharField("ubicación", max_length=120, blank=True)
     year = models.PositiveSmallIntegerField("año", null=True, blank=True)
@@ -56,13 +80,24 @@ class Project(TimeStampedModel, OrderedModel):
     is_published = models.BooleanField(
         "publicado", default=False, help_text="Si no está marcado, es un borrador."
     )
-    is_featured = models.BooleanField(
-        "destacado",
+    show_in_hero = models.BooleanField(
+        "mostrar en el hero",
         default=False,
-        help_text=f"Se muestra en el inicio. Máximo {MAX_FEATURED_PROJECTS}.",
+        help_text=(
+            "La portada aparece en la parte superior del inicio. "
+            f"Con más de una, van rotando. Máximo {MAX_HERO_PROJECTS}."
+        ),
     )
-    featured_order = models.PositiveSmallIntegerField(
-        "orden entre destacados", default=0, help_text="El número menor va primero."
+    hero_order = models.PositiveSmallIntegerField(
+        "orden en el hero", default=0, help_text="El número menor va primero."
+    )
+    is_category_cover = models.BooleanField(
+        "usar como portada de su categoría",
+        default=False,
+        help_text=(
+            "Su portada representa a la categoría en el inicio. Solo una por categoría: "
+            "al marcar esta, se desmarca la anterior."
+        ),
     )
 
     class Meta(OrderedModel.Meta):
@@ -74,35 +109,37 @@ class Project(TimeStampedModel, OrderedModel):
 
     def clean(self):
         super().clean()
-        if self.is_featured and self._count_other_featured() >= MAX_FEATURED_PROJECTS:
+        if self.show_in_hero and self._count_other_hero_projects() >= MAX_HERO_PROJECTS:
             raise ValidationError(
                 {
-                    "is_featured": (
-                        f"Ya hay {MAX_FEATURED_PROJECTS} proyectos destacados. "
-                        "Quita uno antes de destacar otro."
+                    "show_in_hero": (
+                        f"Ya hay {MAX_HERO_PROJECTS} proyectos en el hero. "
+                        "Quita uno antes de agregar otro."
                     )
                 }
             )
 
     def save(self, *args, **kwargs):
+        # La dirección se crea una vez, al guardar por primera vez. Después no
+        # cambia aunque cambie el título, para no romper enlaces ya compartidos.
         if not self.slug:
-            self.slug = self._build_unique_slug()
+            existing = set(Project.objects.values_list("slug", flat=True))
+            self.slug = make_unique_slug(build_base_slug(self.title), existing)
         if file_has_changed(self, "cover_image"):
             self._process_cover()
         super().save(*args, **kwargs)
+        if self.is_category_cover:
+            self._unmark_other_category_covers()
 
-    def _count_other_featured(self):
-        return Project.objects.filter(is_featured=True).exclude(pk=self.pk).count()
+    def _count_other_hero_projects(self):
+        return Project.objects.filter(show_in_hero=True).exclude(pk=self.pk).count()
 
-    def _build_unique_slug(self):
-        """Crea el slug desde el título; si ya existe, le agrega -2, -3..."""
-        base_slug = slugify(self.title) or "proyecto"
-        slug = base_slug
-        number = 2
-        while Project.objects.filter(slug=slug).exclude(pk=self.pk).exists():
-            slug = f"{base_slug}-{number}"
-            number += 1
-        return slug
+    def _unmark_other_category_covers(self):
+        """Solo un proyecto puede ser la portada de su categoría."""
+        if self.category_id is None:
+            return
+        others = Project.objects.filter(category_id=self.category_id, is_category_cover=True)
+        others.exclude(pk=self.pk).update(is_category_cover=False)
 
     def _process_cover(self):
         """Reemplaza la foto subida por su versión optimizada y crea la miniatura."""

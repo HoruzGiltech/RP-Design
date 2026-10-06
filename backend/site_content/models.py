@@ -17,6 +17,8 @@ DEFAULT_PRICE_NOTE = (
     "También puede pagarse en bolívares a tasa BCV del día."
 )
 
+DEFAULT_WHATSAPP_GREETING = "Hola! quiero agendar una reunión"
+
 whatsapp_number_validator = RegexValidator(
     regex=r"^\d{10,15}$",
     message="Escribe el número en formato internacional, solo dígitos. Ejemplo: 584127305964",
@@ -92,13 +94,10 @@ class SiteSettings(SingletonModel):
         max_length=15,
         default="584127305964",
         validators=[whatsapp_number_validator],
-        help_text="A este número llegan las cotizaciones. Solo dígitos, con código de país.",
-    )
-    whatsapp_display = models.CharField(
-        "WhatsApp como se muestra",
-        max_length=30,
-        default="0412 730 5964",
-        help_text="Cómo se ve el número en el sitio.",
+        help_text=(
+            "A este número llegan las cotizaciones. Solo dígitos, con código de país. "
+            "En el sitio se muestra en formato internacional: +58 412 730 5964."
+        ),
     )
     contact_email = models.EmailField("correo de contacto", default="rpdesings05@gmail.com")
     instagram_handle = models.CharField(
@@ -111,6 +110,18 @@ class SiteSettings(SingletonModel):
         default=DEFAULT_PRICE_NOTE,
         help_text="Se muestra debajo del estimado de la calculadora.",
     )
+    show_whatsapp_button = models.BooleanField(
+        "mostrar el botón flotante de WhatsApp",
+        default=True,
+        help_text="Botón fijo en la esquina inferior derecha de todas las páginas.",
+    )
+    whatsapp_greeting = models.CharField(
+        "mensaje del botón flotante",
+        max_length=200,
+        default=DEFAULT_WHATSAPP_GREETING,
+        help_text="Texto que ya viene escrito cuando alguien pulsa el botón.",
+    )
+
     max_square_meters = models.DecimalField(
         "máximo de m² en la calculadora",
         max_digits=8,
@@ -138,17 +149,28 @@ class SiteSettings(SingletonModel):
 
 class HeroSection(SingletonModel, VisibleModel):
     eyebrow = models.CharField("antetítulo", max_length=120, blank=True)
-    title = models.CharField("título", max_length=160)
+    title = models.CharField(
+        "título",
+        max_length=160,
+        blank=True,
+        help_text="Opcional. Si se deja vacío, el hero no muestra título.",
+    )
     body = models.TextField("párrafo", blank=True)
     primary_cta_text = models.CharField("texto del botón principal", max_length=40)
     secondary_cta_text = models.CharField("texto del botón secundario", max_length=40)
-    image = site_image_field("imagen principal")
+    image = site_image_field(
+        "imagen de respaldo",
+        help_text=(
+            "Solo se usa si ningún proyecto tiene marcado \"Mostrar en el hero\". "
+            "Lo normal es que el hero muestre las portadas de los proyectos."
+        ),
+    )
     image_alt = models.CharField("texto alternativo de la imagen", max_length=150, blank=True)
     video = site_video_field(
-        "video",
+        "video de respaldo",
         help_text=(
-            "Opcional. Se reproduce en bucle y sin sonido en lugar de la imagen. "
-            "Súbelo corto y ya comprimido; la imagen queda como vista previa."
+            "Opcional, y también solo como respaldo. Se reproduce en bucle y sin sonido "
+            "en lugar de la imagen. Súbelo corto y ya comprimido."
         ),
     )
 

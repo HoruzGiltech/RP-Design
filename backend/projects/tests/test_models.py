@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db.models import ProtectedError
 from django.test import TestCase
 from PIL import Image
 
@@ -8,12 +9,18 @@ from core.tests.helpers import (
     make_image_file,
     make_video_file,
 )
-from projects.models import Project, ProjectMedia
+from projects.models import Project, ProjectCategory, ProjectMedia
+
+
+def get_category(slug="residencial"):
+    """Las categorías iniciales las crea la migración projects.0003."""
+    return ProjectCategory.objects.get(slug=slug)
 
 
 def create_project(**fields):
     """Crea un proyecto válido; cada test cambia solo lo que le interesa."""
     values = {
+        "category": get_category(),
         "title": "Casa en El Hatillo",
         "summary": "Remodelación completa.",
         "description": "Descripción del proyecto.",
@@ -63,6 +70,7 @@ class ProjectCoverTests(TempMediaMixin, TestCase):
     def test_fake_image_does_not_pass_validation(self):
         project = Project(
             title="Proyecto",
+            category=get_category(),
             summary="Resumen",
             description="Descripción",
             cover_image=make_fake_file("portada.jpg"),
@@ -76,10 +84,17 @@ class ProjectCoverTests(TempMediaMixin, TestCase):
 
 
 class ProjectSlugTests(TempMediaMixin, TestCase):
+    """La dirección web se genera sola (specs-001, RF-10)."""
+
     def test_slug_is_created_from_the_title(self):
         project = create_project(title="Cocina Moderna en Chacao")
 
         self.assertEqual(project.slug, "cocina-moderna-en-chacao")
+
+    def test_single_word_title_gets_the_word_proyecto_first(self):
+        project = create_project(title="Casa")
+
+        self.assertEqual(project.slug, "proyecto-casa")
 
     def test_repeated_title_gets_a_different_slug(self):
         create_project(title="Baño principal")
@@ -89,18 +104,84 @@ class ProjectSlugTests(TempMediaMixin, TestCase):
         self.assertEqual(second.slug, "bano-principal-2")
         self.assertEqual(third.slug, "bano-principal-3")
 
-    def test_slug_written_by_hand_is_kept(self):
-        project = create_project(slug="mi-direccion")
+    def test_slug_does_not_change_when_the_title_is_edited(self):
+        project = create_project(title="Cocina en Chacao")
 
-        self.assertEqual(project.slug, "mi-direccion")
+        project.title = "Otra cosa distinta"
+        project.save()
+
+        self.assertEqual(project.slug, "cocina-en-chacao")
+
+    def test_slug_cannot_be_written_in_a_form(self):
+        self.assertFalse(Project._meta.get_field("slug").editable)
+
+
+class ProjectCategoryTests(TempMediaMixin, TestCase):
+    def test_three_categories_exist_in_order(self):
+        names = list(ProjectCategory.objects.values_list("name", flat=True))
+
+        self.assertEqual(names, ["Comercial", "Residencial", "Corporativo"])
+
+    def test_category_slug_is_created_from_the_name_without_the_word_proyecto(self):
+        category = ProjectCategory.objects.create(name="Diseño de Oficinas")
+        single_word = ProjectCategory.objects.create(name="Hotelería")
+
+        self.assertEqual(category.slug, "diseno-de-oficinas")
+        self.assertEqual(single_word.slug, "hoteleria")
+
+    def test_category_slug_does_not_change_when_the_name_is_edited(self):
+        category = get_category("comercial")
+
+        category.name = "Locales"
+        category.save()
+
+        self.assertEqual(category.slug, "comercial")
+
+    def test_category_with_projects_cannot_be_deleted(self):
+        project = create_project()
+
+        with self.assertRaises(ProtectedError):
+            project.category.delete()
+
+    def test_project_requires_a_category(self):
+        project = Project(
+            title="Sin categoría",
+            summary="Resumen",
+            description="Descripción",
+            cover_image=make_image_file(),
+            cover_alt="Portada",
+        )
+
+        with self.assertRaises(ValidationError) as error:
+            project.full_clean()
+
+        self.assertIn("category", error.exception.message_dict)
+
+    def test_only_one_project_is_the_cover_of_its_category(self):
+        first = create_project(title="Primero", is_category_cover=True)
+        second = create_project(title="Segundo", is_category_cover=True)
+
+        first.refresh_from_db()
+        self.assertFalse(first.is_category_cover)
+        self.assertTrue(second.is_category_cover)
+
+    def test_cover_of_another_category_is_not_touched(self):
+        residential = create_project(title="Casa grande", is_category_cover=True)
+        create_project(
+            title="Local nuevo", category=get_category("comercial"), is_category_cover=True
+        )
+
+        residential.refresh_from_db()
+        self.assertTrue(residential.is_category_cover)
 
 
 class ProjectDefaultsTests(TempMediaMixin, TestCase):
-    def test_new_project_is_a_draft_and_not_featured(self):
+    def test_new_project_is_a_draft_and_not_in_the_hero(self):
         project = create_project()
 
         self.assertFalse(project.is_published)
-        self.assertFalse(project.is_featured)
+        self.assertFalse(project.show_in_hero)
+        self.assertFalse(project.is_category_cover)
 
     def test_projects_are_sorted_by_order(self):
         create_project(title="Segundo", order=2)
@@ -111,44 +192,46 @@ class ProjectDefaultsTests(TempMediaMixin, TestCase):
         self.assertEqual(titles, ["Primero", "Segundo"])
 
 
-class FeaturedLimitTests(TempMediaMixin, TestCase):
-    def test_three_featured_projects_are_allowed(self):
-        for number in range(3):
-            project = create_project(title=f"Destacado {number}", is_featured=True)
-            project.full_clean()
+class HeroLimitTests(TempMediaMixin, TestCase):
+    """Como máximo 6 proyectos en el hero (specs-001, RF-08.11)."""
 
-    def test_fourth_featured_project_is_rejected(self):
-        for number in range(3):
-            create_project(title=f"Destacado {number}", is_featured=True)
-        fourth = create_project(title="Cuarto")
-        fourth.is_featured = True
-
-        with self.assertRaises(ValidationError) as error:
-            fourth.full_clean()
-
-        self.assertEqual(
-            error.exception.message_dict["is_featured"],
-            ["Ya hay 3 proyectos destacados. Quita uno antes de destacar otro."],
-        )
-
-    def test_editing_a_project_that_is_already_featured_is_allowed(self):
-        projects = [
-            create_project(title=f"Destacado {number}", is_featured=True)
-            for number in range(3)
+    def create_hero_projects(self, amount, **fields):
+        return [
+            create_project(title=f"Proyecto del hero {number}", show_in_hero=True, **fields)
+            for number in range(amount)
         ]
 
+    def test_six_projects_in_the_hero_are_allowed(self):
+        for project in self.create_hero_projects(6):
+            project.full_clean()
+
+    def test_seventh_project_in_the_hero_is_rejected(self):
+        self.create_hero_projects(6)
+        seventh = create_project(title="El séptimo")
+        seventh.show_in_hero = True
+
+        with self.assertRaises(ValidationError) as error:
+            seventh.full_clean()
+
+        self.assertEqual(
+            error.exception.message_dict["show_in_hero"],
+            ["Ya hay 6 proyectos en el hero. Quita uno antes de agregar otro."],
+        )
+
+    def test_editing_a_project_that_is_already_in_the_hero_is_allowed(self):
+        projects = self.create_hero_projects(6)
+
         first = projects[0]
-        first.title = "Título nuevo"
+        first.summary = "Resumen nuevo"
         first.full_clean()
 
     def test_drafts_also_count_towards_the_limit(self):
-        for number in range(3):
-            create_project(title=f"Borrador {number}", is_featured=True, is_published=False)
-        fourth = create_project(title="Cuarto")
-        fourth.is_featured = True
+        self.create_hero_projects(6, is_published=False)
+        seventh = create_project(title="El séptimo")
+        seventh.show_in_hero = True
 
         with self.assertRaises(ValidationError):
-            fourth.full_clean()
+            seventh.full_clean()
 
 
 class ProjectMediaTests(TempMediaMixin, TestCase):

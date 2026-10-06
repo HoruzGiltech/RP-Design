@@ -10,6 +10,7 @@ from site_content.models import (
     ProcessStep,
     Service,
     ServicesSection,
+    SiteSettings,
 )
 
 
@@ -42,16 +43,19 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         site = self.get_site()
 
         self.assertEqual(site["settings"]["brand_name"], "RP DISEÑO")
-        self.assertEqual(site["settings"]["whatsapp_display"], "0412 730 5964")
+        self.assertEqual(site["settings"]["whatsapp_display"], "+58 412 730 5964")
+        self.assertEqual(
+            site["settings"]["whatsapp_greeting"], "Hola! quiero agendar una reunión"
+        )
+        self.assertTrue(site["settings"]["show_whatsapp_button"])
         self.assertEqual(site["settings"]["contact_email"], "rpdesings05@gmail.com")
         self.assertEqual(
             site["settings"]["instagram_url"], "https://www.instagram.com/rpdesign_ve/"
         )
         self.assertEqual(site["settings"]["accent_color"], "#111111")
         self.assertEqual(site["hero"]["eyebrow"], "ESTUDIO DE DISEÑO DE INTERIORES · CARACAS")
-        self.assertEqual(
-            site["hero"]["title"], "Transformamos tus espacios, del plano a la obra."
-        )
+        self.assertEqual(site["hero"]["title"], "")
+        self.assertEqual(site["hero"]["primary_cta_text"], "Agenda una reunión")
         self.assertEqual(
             [item["text"] for item in site["specialties"]],
             ["Diseño residencial", "Diseño comercial", "Renders 3D", "Ejecución de obra"],
@@ -93,6 +97,13 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         hero.save()
 
         self.assertEqual(self.get_site()["hero"]["title"], "Título cambiado en el panel")
+
+    def test_whatsapp_display_follows_the_number_of_the_panel(self):
+        settings = SiteSettings.load()
+        settings.whatsapp_number = "584141112233"
+        settings.save()
+
+        self.assertEqual(self.get_site()["settings"]["whatsapp_display"], "+58 414 111 2233")
 
     def test_hidden_section_arrives_with_is_visible_false(self):
         ServicesSection.objects.update(is_visible=False)

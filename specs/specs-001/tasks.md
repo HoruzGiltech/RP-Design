@@ -21,35 +21,35 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
 ## Fase B — Backend
 
 ### B1. Dirección web automática
-- [ ] **S1-B1** `projects/services.py`: `build_base_slug` y `make_unique_slug`. *(RF-10.2, RF-10.3)*
+- [x] **S1-B1** `projects/services.py`: `build_base_slug` y `make_unique_slug`. *(RF-10.2, RF-10.3)*
   - Verificación: tests: "Remodelación de cocina" → `remodelacion-de-cocina`; "Casa" → `proyecto-casa`; repetido → `-2`; sin letras → `proyecto`.
-- [ ] **S1-B2** `Project.slug` no editable y generado solo al crear; sale del formulario del panel y se muestra en solo lectura. *(RF-10.1, RF-10.4, CA-10.1, CA-10.3)*
+- [x] **S1-B2** `Project.slug` no editable y generado solo al crear; sale del formulario del panel y se muestra en solo lectura. *(RF-10.1, RF-10.4, CA-10.1, CA-10.3)*
   - Verificación: tests de que editar el título no cambia la dirección y de que el formulario no tiene el campo.
 
 ### B2. Categorías
-- [ ] **S1-B3** Modelo `ProjectCategory` y campos nuevos en `Project` (`category_fk`, `show_in_hero`, `hero_order`, `is_category_cover`). Migración `0002`. *(RF-09.1, RF-08.1)*
-- [ ] **S1-B4** Migración de datos `0003`: crea las 3 categorías, asocia los proyectos por el texto antiguo y copia destacados → hero. *(RF-09.2, CA-09.1, CA-09.6)*
+- [x] **S1-B3** Modelo `ProjectCategory` y campos nuevos en `Project` (`category_fk`, `show_in_hero`, `hero_order`, `is_category_cover`). Migración `0002`. *(RF-09.1, RF-08.1)*
+- [x] **S1-B4** Migración de datos `0003`: crea las 3 categorías, asocia los proyectos por el texto antiguo y copia destacados → hero. *(RF-09.2, CA-09.1, CA-09.6)*
   - Verificación: test de migración: "Fachada · Residencial" → Residencial; texto sin coincidencia → vacío.
-- [ ] **S1-B5** Migración `0004`: elimina `category` de texto, `is_featured` y `featured_order`; renombra `category_fk` → `category`. *(RF-08.10)*
+- [x] **S1-B5** Migración `0004`: elimina `category` de texto, `is_featured` y `featured_order`; renombra `category_fk` → `category`. *(RF-08.10)*
   - Verificación: `makemigrations --check` sin cambios pendientes; los proyectos de prueba conservan sus datos.
-- [ ] **S1-B6** Reglas del modelo: máximo 6 en el hero y una sola portada por categoría. *(RF-08.11, RF-09.8)*
+- [x] **S1-B6** Reglas del modelo: máximo 6 en el hero y una sola portada por categoría. *(RF-08.11, RF-09.8)*
   - Verificación: tests: el 7.º falla con mensaje en español; marcar otra portada desmarca la anterior.
-- [ ] **S1-B7** Panel: `ProjectCategory` ordenable y protegida contra borrado con proyectos; `Project` con categoría obligatoria, bloque "Publicación" nuevo, columnas y filtros. *(RF-09.1, RF-09.11)*
+- [x] **S1-B7** Panel: `ProjectCategory` ordenable y protegida contra borrado con proyectos; `Project` con categoría obligatoria, bloque "Publicación" nuevo, columnas y filtros. *(RF-09.1, RF-09.11)*
   - Verificación: tests del panel y prueba en navegador con Playwright.
-- [ ] **S1-B8** Migración `core.0003`: permisos de `ProjectCategory` para Admin y Viewer.
+- [x] **S1-B8** Migración `core.0003`: permisos de `ProjectCategory` para Admin y Viewer.
   - Verificación: pasa el test de roles que avisa de permisos olvidados.
 
 ### B3. API
-- [ ] **S1-B9** `GET /api/projects/`: filtros `?hero=true` y `?category=<slug>`; `category` como objeto; `cover_image` en la tarjeta. Se quita `?featured=true`. *(RF-08.2, RF-09.4, CA-08.3, CA-09.4)*
+- [x] **S1-B9** `GET /api/projects/`: filtros `?hero=true` y `?category=<slug>`; `category` como objeto; `cover_image` en la tarjeta. Se quita `?featured=true`. *(RF-08.2, RF-09.4, CA-08.3, CA-09.4)*
   - Verificación: tests: borradores fuera, orden del hero, máximo 6, slug inexistente devuelve todos.
-- [ ] **S1-B10** `GET /api/project-categories/`. *(RF-09.3, RF-09.7, RF-09.9, CA-09.5)*
+- [x] **S1-B10** `GET /api/project-categories/`. *(RF-09.3, RF-09.7, RF-09.9, CA-09.5)*
   - Verificación: tests: oculta las vacías, cuenta solo publicados, usa la portada marcada o la del primero.
 
 ### B4. WhatsApp y Portada
-- [ ] **S1-B11** `site_content/services.py`: `format_whatsapp_number`. Se elimina `whatsapp_display` del modelo y se calcula en la API. *(RF-11)*
+- [x] **S1-B11** `site_content/services.py`: `format_whatsapp_number`. Se elimina `whatsapp_display` del modelo y se calcula en la API. *(RF-11)*
   - Verificación: tests: `584127305964` → `+58 412 730 5964`; otro país → `+` y dígitos.
-- [ ] **S1-B12** `SiteSettings`: `whatsapp_greeting` y `show_whatsapp_button`, en el panel y en `/api/site/`. *(RF-12.2, RF-12.3)*
-- [ ] **S1-B13** Migración de datos: título de la Portada vacío y botón "Agenda una reunión", solo si siguen con el texto original. `HeroSection.title` admite vacío. *(RF-08.6, RF-08.8, CA-08.9)*
+- [x] **S1-B12** `SiteSettings`: `whatsapp_greeting` y `show_whatsapp_button`, en el panel y en `/api/site/`. *(RF-12.2, RF-12.3)*
+- [x] **S1-B13** Migración de datos: título de la Portada vacío y botón "Agenda una reunión", solo si siguen con el texto original. `HeroSection.title` admite vacío. *(RF-08.6, RF-08.8, CA-08.9)*
   - Verificación: test de que un título cambiado por el cliente no se toca.
 
 - [ ] **S1-B14** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel (categorías, casillas nuevas, botón flotante).
