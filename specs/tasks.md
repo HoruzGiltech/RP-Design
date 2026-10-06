@@ -85,7 +85,7 @@
 - [x] **T-2.25** Configuración de producción en `settings` (DEBUG, cookies seguras, HSTS, SSL), activada por `.env`.
   - Verificación: `python manage.py check --deploy` sin advertencias críticas con `DEBUG=False`.
 
-- [ ] **T-2.26** ✋ **Revisión de fin de fase:** `manage.py test` pasa completo y se hace una demo del panel.
+- [x] **T-2.26** ✋ **Revisión de fin de fase:** `manage.py test` pasa completo y se hace una demo del panel. (Aprobada el 2026-10-06.)
 
 ---
 
