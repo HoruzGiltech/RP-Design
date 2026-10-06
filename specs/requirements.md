@@ -44,7 +44,7 @@ Validado contra la maqueta. Página única con anclas: `#inicio`, `#servicios`, 
 
 **Datos reales que trae la maqueta** (se cargan como datos iniciales, **no** van escritos en el código):
 - WhatsApp: `584127305964` (mostrado como "0412 730 5964")
-- Correo: `rpdesings05@gmail.com` ⚠️ confirmar la ortografía con el cliente ("desings" vs. "designs")
+- Correo: `rpdesings05@gmail.com` (confirmado por el cliente el 2026-10-06)
 - Instagram: `@rpdesign_ve`
 - Ciudad: Caracas, Venezuela
 

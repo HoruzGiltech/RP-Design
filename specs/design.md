@@ -129,7 +129,7 @@ Cada modelo corresponde a una sección del inventario (`requirements.md` §3). E
 | `accent_color` | Choice: `#111111` Negro (por defecto), `#8A5A3B` Terracota, `#3E4A3D` Verde oliva, `#5B6670` Pizarra. Son las 4 opciones que trae la maqueta |
 | `whatsapp_number` | "584127305964". Formato internacional, sin `+` ni espacios; se valida |
 | `whatsapp_display` | "0412 730 5964" (cómo se muestra el número en el sitio) |
-| `contact_email` | "rpdesings05@gmail.com" ⚠️ confirmar ortografía |
+| `contact_email` | "rpdesings05@gmail.com" (confirmado por el cliente) |
 | `instagram_handle` | "rpdesign_ve" (la URL se arma sola) |
 | `city` | "Caracas, Venezuela" |
 | `price_note` | Ver el texto abajo |

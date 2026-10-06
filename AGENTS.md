@@ -283,6 +283,5 @@ Al terminar cada tarea o fase, responde con:
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 
 1. ¿El cliente quiere secciones **Nosotros** y **Testimonios**? No están en la maqueta; hoy están fuera de alcance (`specs/requirements.md` §6).
-2. ¿El correo es `rpdesings05@gmail.com` o `rpdesigns05@gmail.com`? La maqueta trae "desings".
 
-Ninguna de las dos bloquea la Fase 2.
+No bloquea la Fase 2.

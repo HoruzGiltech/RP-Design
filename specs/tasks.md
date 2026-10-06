@@ -13,7 +13,7 @@
 - [x] **T-1.2** Guardar la maqueta en `docs/`: `maqueta-original.html` (el archivo del diseñador, empaquetado) y `maqueta-legible.html` (el HTML extraído, para leerlo y compararlo).
 - [x] **T-1.3** Completar el inventario de secciones (§3 de requirements) y los modelos de `site_content` (§2.3 de design) según la maqueta.
 - [x] **T-1.4** Extraer los design tokens de la maqueta a `design.md` §3.0.
-- [ ] **T-1.4b** Confirmar con el cliente la ortografía del correo (`rpdesings05@gmail.com`) y si quiere secciones Nosotros o Testimonios (hoy están fuera de alcance). No bloquea la Fase 2.
+- [ ] **T-1.4b** Confirmar con el cliente si quiere secciones Nosotros o Testimonios (hoy están fuera de alcance). El correo `rpdesings05@gmail.com` ya está confirmado (2026-10-06). No bloquea la Fase 2.
 - [x] **T-1.5** ✋ **Aprobación del cliente/desarrollador** de las tres specs. *No se programa nada antes de esto.* (Aprobadas el 2026-10-05.)
 - [x] **T-1.6** Alinear `AGENTS.md` y `CLAUDE.md` con las specs (apps `core` y `site_content`, rutas de la maqueta, Nosotros/Testimonios como pregunta abierta) y documentar el uso de las skills en `design.md` §3.5.
 
