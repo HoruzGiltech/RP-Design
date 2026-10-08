@@ -20,10 +20,20 @@
 
 .header__bar {
   display: flex;
-  align-items: center;
+  /* El botón de cotizar queda arriba, a la altura del logo */
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-16);
-  padding-block: 18px;
+  padding-top: 18px;
+  padding-bottom: 6px;
+}
+
+/* Lado izquierdo: el logo y, debajo, el botón del menú */
+.header__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
 
 /* --- Marca: logo + nombre --- */
@@ -75,22 +85,16 @@
   color: var(--color-text-muted);
 }
 
-/* --- Lado derecho: botón de cotizar y botón del menú --- */
-
-.header__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-}
+/* --- Botón del menú: debajo del logo --- */
 
 .header__toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Tamaño cómodo para tocar con el dedo */
-  width: 48px;
-  height: 48px;
-  margin-right: -12px;
+  /* Mismo ancho que el logo: las tres rayas quedan centradas bajo él.
+     44px es además un tamaño cómodo para tocar con el dedo. */
+  width: var(--logo-size);
+  height: 44px;
   padding: 0;
   border: 0;
   background: transparent;

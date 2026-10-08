@@ -22,8 +22,9 @@ function getNavLinks(site) {
 
 /**
  * Encabezado del sitio (specs-002, RF-13).
- * - Las opciones del menú van siempre detrás de un botón y se despliegan
- *   debajo del logo, en todos los tamaños de pantalla.
+ * - Las opciones del menú van siempre detrás de un botón. El botón va debajo
+ *   del logo y las opciones se despliegan debajo de él, en todos los tamaños
+ *   de pantalla.
  * - Se oculta al bajar por la página y vuelve al subir.
  */
 export default function Header() {
@@ -62,32 +63,22 @@ export default function Header() {
   return (
     <header ref={headerRef} className={isHidden ? 'header is-hidden' : 'header'}>
       <div className="container header__bar">
-        <Link to="/#inicio" className="header__brand" onClick={closeMenu}>
-          {settings.logo ? (
-            <img className="header__logo-image" src={settings.logo} alt="" />
-          ) : (
-            <span className="header__logo-circle" aria-hidden="true">
-              {settings.brand_initials}
+        {/* Lado izquierdo: el logo y, debajo de él, el botón del menú */}
+        <div className="header__left">
+          <Link to="/#inicio" className="header__brand" onClick={closeMenu}>
+            {settings.logo ? (
+              <img className="header__logo-image" src={settings.logo} alt="" />
+            ) : (
+              <span className="header__logo-circle" aria-hidden="true">
+                {settings.brand_initials}
+              </span>
+            )}
+            <span className="header__brand-text">
+              <span className="header__brand-name">{settings.brand_name}</span>
+              <span className="header__brand-subtitle">{settings.brand_subtitle}</span>
             </span>
-          )}
-          <span className="header__brand-text">
-            <span className="header__brand-name">{settings.brand_name}</span>
-            <span className="header__brand-subtitle">{settings.brand_subtitle}</span>
-          </span>
-        </Link>
+          </Link>
 
-        <div className="header__actions">
-          {/* En pantallas anchas el botón de cotizar sigue a la vista en la barra */}
-          {showCta && (
-            <Button
-              to="/#contacto"
-              size="small"
-              className="header__cta header__cta--bar"
-              onClick={closeMenu}
-            >
-              {settings.header_cta_text}
-            </Button>
-          )}
           <button
             type="button"
             className="header__toggle"
@@ -99,9 +90,21 @@ export default function Header() {
             <span className="header__toggle-icon" aria-hidden="true" />
           </button>
         </div>
+
+        {/* En pantallas anchas el botón de cotizar sigue a la vista, a la derecha */}
+        {showCta && (
+          <Button
+            to="/#contacto"
+            size="small"
+            className="header__cta header__cta--bar"
+            onClick={closeMenu}
+          >
+            {settings.header_cta_text}
+          </Button>
+        )}
       </div>
 
-      {/* Las opciones se despliegan debajo del logo, alineadas con él */}
+      {/* Las opciones se despliegan debajo del botón, alineadas con el logo */}
       <nav
         id={MENU_ID}
         aria-label="Principal"

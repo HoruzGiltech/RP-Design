@@ -37,7 +37,7 @@ Cambia el encabezado (S1 de `specs/requirements.md`).
 | ID | Requisito |
 |---|---|
 | RF-13.1 | En **todos los tamaños de pantalla**, las opciones del menú (Servicios, Proyectos, Proceso) están detrás de un botón desplegable. Ya no se muestran en línea en escritorio |
-| RF-13.2 | Al pulsar el botón, las opciones se despliegan **debajo del logo**, alineadas con él |
+| RF-13.2 | El **botón del menú va debajo del logo**. Al pulsarlo, las opciones se despliegan debajo de él, alineadas con el logo |
 | RF-13.3 | El botón **"Cotiza tu proyecto" no cambia**: sigue visible en el encabezado en escritorio y dentro del menú en móvil, como hoy |
 | RF-13.4 | El menú se cierra al elegir una opción, con la tecla `Esc` y al pulsar fuera de él |
 | RF-13.5 | El encabezado **se oculta al bajar** por la página y **reaparece al subir**. Arriba del todo está siempre visible |
@@ -169,7 +169,7 @@ Confirmadas por el desarrollador el 2026-10-07. Se numeran desde P-10 para no re
 | P-11 | Tipos del formulario | Son las **mismas categorías** de los proyectos. En el formulario el campo se llama "Tipo de remodelación", pero sus opciones salen de la lista de categorías |
 | P-12 | Reparto de los campos en escritorio | A criterio del agente: **tres columnas** (Nombre · Teléfono · Correo / Tipo · Área · Especifica / Metros en 2 columnas · Estimado / Mensaje a todo el ancho) |
 | P-13 | Barra de progreso en el indicador activo del hero | **Sí** |
-| P-14 | Menú desplegable | Las opciones se despliegan **debajo del logo**. El botón que las abre va a la derecha del encabezado |
+| P-14 | Menú desplegable | El **botón del menú va debajo del logo** (no junto a "Cotiza tu proyecto"), y las opciones se despliegan debajo de él. Corregido el 2026-10-08: en la primera versión el botón quedó a la derecha |
 
 ---
 
