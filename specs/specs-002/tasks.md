@@ -37,7 +37,7 @@ Las tareas llevan el prefijo `S2-` para no confundirlas con las de `specs/tasks.
 - [x] **S2-B7** `HeroSection.show_primary_cta` y `show_secondary_cta`, en el panel y en `/api/site/`. Migración `site_content.0010`. *(RF-14.1)*
 - [x] **S2-B8** "Especialidades": aviso en el panel de que ya no se muestran y `specialties` fuera de `/api/site/`. *(RF-16.2, CA-16.2)*
 
-- [ ] **S2-B9** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel (áreas por categoría, interruptores del hero).
+- [x] **S2-B9** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel (áreas por categoría, interruptores del hero). (Aprobada el 2026-10-08.)
 
 ---
 
@@ -59,7 +59,7 @@ Las tareas llevan el prefijo `S2-` para no confundirlas con las de `specs/tasks.
   - Verificación con Playwright: baja, sube, menú abierto, foco con `Tab` y movimiento reducido.
 - [x] **S2-C10** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo lo nuevo.
 
-- [ ] **S2-C11** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio y prueba en un celular real.
+- [x] **S2-C11** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio y prueba en un celular real. (Aprobada el 2026-10-08.)
 
 ---
 
