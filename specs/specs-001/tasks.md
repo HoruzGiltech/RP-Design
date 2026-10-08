@@ -75,9 +75,9 @@ Las tareas llevan el prefijo `S1-` para no confundirlas con las de `specs/tasks.
 
 - [x] **S1-C10b** Título de la sección de categorías: "Mis Proyectos" (migración `site_content.0008`). *(P-6)*
 
-- [ ] **S1-C10c** Subir la sección Proyectos por encima de Servicios en `HomePage.jsx`. *(P-8, CA-13.1, CA-13.2)* **Pendiente de aprobar la spec.**
+- [x] **S1-C10c** Subir la sección Proyectos por encima de Servicios en `HomePage.jsx`. *(P-8, CA-13.1, CA-13.2)*
   - Verificación con Playwright a 360 y 1280 px: orden correcto y el enlace "Proyectos" del menú llega a la sección.
-- [ ] **S1-C10d** Franja: "Renders 3D" → "Corporativo" (migración `site_content.0009`) con su test. *(P-9, CA-13.3, CA-13.4)* **Pendiente de aprobar la spec.**
+- [x] **S1-C10d** Franja: "Renders 3D" → "Corporativo" (migración `site_content.0009`) con su test. *(P-9, CA-13.3, CA-13.4)*
 
 - [x] **S1-C11** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio con datos cargados desde el panel y prueba en un celular real. (Dada por cerrada el 2026-10-07: el desarrollador revisó el sitio y pasó a specs-002.)
 

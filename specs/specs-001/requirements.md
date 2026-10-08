@@ -153,11 +153,11 @@ Confirmadas por el desarrollador el 2026-10-06.
 | P-6 | Título de la sección de categorías | **"Mis Proyectos"** (antes "Proyectos recientes"). Sigue editable en el panel |
 | P-7 | Proyecto sin categoría | El panel **exige** elegir una al guardar. Los que queden sin categoría por la migración solo aparecen en "Todos" |
 
-### 4.1 Observaciones del cliente pendientes de aprobar
+### 4.1 Observaciones del cliente (segunda revisión)
 
-Salen de la revisión del PDF de observaciones del cliente (observaciones 9 y 10). **Propuestas el 2026-10-07; no se programan hasta que el desarrollador las apruebe.**
+Salen de la revisión del PDF de observaciones del cliente (observaciones 9 y 10). Aprobadas por el desarrollador el 2026-10-07.
 
-| # | Tema | Propuesta |
+| # | Tema | Decisión |
 |---|---|---|
 | P-8 | Orden de las secciones del inicio | La sección **Proyectos sube por encima de Servicios**: Portada → Franja → Proyectos → Servicios → Proceso → Contacto. El menú del encabezado no cambia (el cliente ya lo aprobó) |
 | P-9 | Franja de especialidades | El ítem **"Renders 3D" pasa a "Corporativo"**. Solo cambia la franja: el paso "Renders 3D" de la sección Proceso se queda igual. Sigue editable en el panel |

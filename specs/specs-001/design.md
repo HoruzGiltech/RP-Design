@@ -249,9 +249,9 @@ const { index, isPlaying, goTo, next, previous, toggle, pause, resume } = useSli
 - Cada tarjeta enlaza a `/proyectos?categoria=<slug>`.
 - Si la API no devuelve ninguna categoría, la sección no se dibuja (CA-09.2).
 
-**Orden en el inicio (P-8, pendiente de aprobar):** en `HomePage.jsx`, `<ProjectCategories />` pasa a ir antes de `<Services />`. No cambia ningún componente por dentro; solo se revisa que el paso de la Franja a la sección oscura de Proyectos, y de esta a Servicios, se vea bien.
+**Orden en el inicio (P-8):** en `HomePage.jsx`, `<ProjectCategories />` pasa a ir antes de `<Services />`. No cambia ningún componente por dentro; solo se revisa que el paso de la Franja a la sección oscura de Proyectos, y de esta a Servicios, se vea bien.
 
-**Franja (P-9, pendiente de aprobar):** migración de datos `site_content.0009`, igual que la `0008` del título: cambia la `Specialty` cuyo texto sea exactamente "Renders 3D" a "Corporativo". Si no existe (el cliente ya la editó), no hace nada. Es reversible. No toca `ProcessStep`.
+**Franja (P-9):** migración de datos `site_content.0009`, igual que la `0008` del título: cambia la `Specialty` cuyo texto sea exactamente "Renders 3D" a "Corporativo". Si no existe (el cliente ya la editó), no hace nada. Al deshacerla no restaura el texto viejo. No toca `ProcessStep`.
 
 ### 3.4 Página `/proyectos` (RF-09.4, RF-09.5)
 
