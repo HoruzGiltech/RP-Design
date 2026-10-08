@@ -55,7 +55,7 @@ No se agregan dependencias, ni en el backend ni en el frontend.
 |---|---|---|
 | `quotes` | `0004_area_category` | Agrega `RemodelArea.category`, `Quote.category` y `Quote.category_name`. `RemodelArea.slug` pasa a no editable |
 | `quotes` | `0005_assign_area_categories` (datos) | Asigna a **Residencial** las áreas que no sean "Otro" y no tengan categoría. Crea Oficina y Sala de reuniones (Corporativo) y Showroom (Comercial), sin precio, si no existen. "Otro" queda sin categoría |
-| `site_content` | `0009_hero_cta_switches` | Agrega los dos interruptores del hero. Cambia el nombre de "Especialidades" en el panel |
+| `site_content` | `0010_hero_cta_switches` | Agrega los dos interruptores del hero. Cambia el nombre de "Especialidades" en el panel |
 
 - La migración de datos depende de `projects.0003`, que es la que crea las categorías.
 - Si una categoría inicial ya no existe (el cliente la borró), sus áreas de ejemplo no se crean.

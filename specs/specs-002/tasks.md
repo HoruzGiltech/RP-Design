@@ -34,7 +34,7 @@ Las tareas llevan el prefijo `S2-` para no confundirlas con las de `specs/tasks.
   - Verificación: tests del panel y revisión en navegador con Playwright.
 
 ### B2. Hero y especialidades
-- [ ] **S2-B7** `HeroSection.show_primary_cta` y `show_secondary_cta`, en el panel y en `/api/site/`. Migración `site_content.0009`. *(RF-14.1)*
+- [ ] **S2-B7** `HeroSection.show_primary_cta` y `show_secondary_cta`, en el panel y en `/api/site/`. Migración `site_content.0010`. *(RF-14.1)*
 - [ ] **S2-B8** "Especialidades": aviso en el panel de que ya no se muestran y `specialties` fuera de `/api/site/`. *(RF-16.2, CA-16.2)*
 
 - [ ] **S2-B9** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel (áreas por categoría, interruptores del hero).
