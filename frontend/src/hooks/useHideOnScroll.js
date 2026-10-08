@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 // Movimientos más pequeños que esto se ignoran, para que el encabezado no parpadee
 const MIN_SCROLL_DELTA = 8
 // Cerca del inicio de la página el encabezado se muestra siempre
-const TOP_ZONE = 136
+const TOP_ZONE = 96
 
 /**
  * Dice si el encabezado debe ocultarse: se oculta mientras la persona baja

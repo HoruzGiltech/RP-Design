@@ -8,7 +8,7 @@
 
 html {
   /* Al ir a un ancla (#servicios), el título no queda tapado por el encabezado fijo */
-  scroll-padding-top: 136px;
+  scroll-padding-top: 96px;
   -webkit-text-size-adjust: 100%;
 }
 

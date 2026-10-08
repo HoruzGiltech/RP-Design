@@ -22,9 +22,9 @@ function getNavLinks(site) {
 
 /**
  * Encabezado del sitio (specs-002, RF-13).
- * - Las opciones del menú van siempre detrás de un botón. El botón va debajo
- *   del logo y las opciones se despliegan debajo de él, en todos los tamaños
- *   de pantalla.
+ * - Las opciones del menú van siempre detrás de un botón, que va a la
+ *   izquierda del logo. Las opciones se despliegan debajo, en todos los
+ *   tamaños de pantalla.
  * - Se oculta al bajar por la página y vuelve al subir.
  */
 export default function Header() {
@@ -63,8 +63,19 @@ export default function Header() {
   return (
     <header ref={headerRef} className={isHidden ? 'header is-hidden' : 'header'}>
       <div className="container header__bar">
-        {/* Lado izquierdo: el logo y, debajo de él, el botón del menú */}
+        {/* Lado izquierdo: el botón del menú y, a su derecha, el logo */}
         <div className="header__left">
+          <button
+            type="button"
+            className="header__toggle"
+            aria-expanded={isMenuOpen}
+            aria-controls={MENU_ID}
+            onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
+          >
+            <span className="visually-hidden">{isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}</span>
+            <span className="header__toggle-icon" aria-hidden="true" />
+          </button>
+
           <Link to="/#inicio" className="header__brand" onClick={closeMenu}>
             {settings.logo ? (
               <img className="header__logo-image" src={settings.logo} alt="" />
@@ -78,17 +89,6 @@ export default function Header() {
               <span className="header__brand-subtitle">{settings.brand_subtitle}</span>
             </span>
           </Link>
-
-          <button
-            type="button"
-            className="header__toggle"
-            aria-expanded={isMenuOpen}
-            aria-controls={MENU_ID}
-            onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
-          >
-            <span className="visually-hidden">{isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}</span>
-            <span className="header__toggle-icon" aria-hidden="true" />
-          </button>
         </div>
 
         {/* En pantallas anchas el botón de cotizar sigue a la vista, a la derecha */}
@@ -104,7 +104,7 @@ export default function Header() {
         )}
       </div>
 
-      {/* Las opciones se despliegan debajo del botón, alineadas con el logo */}
+      {/* Las opciones se despliegan debajo del encabezado, alineadas con el botón */}
       <nav
         id={MENU_ID}
         aria-label="Principal"

@@ -171,9 +171,8 @@ Distribución, igual en todos los anchos:
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ (RP) RP DISEÑO                          [Cotiza tu proyecto] │
-│      INTERIOR · ARQUITECTURA                                 │
-│  ☰                                                           │  ← el botón, debajo del logo
+│ ☰  (RP) RP DISEÑO                       [Cotiza tu proyecto] │
+│         INTERIOR · ARQUITECTURA                              │
 ├──────────────────────────────────────────────────────────────┤
 │ Servicios                                                    │  ← solo con el menú abierto
 │ Proyectos                                                    │
@@ -181,10 +180,9 @@ Distribución, igual en todos los anchos:
 └──────────────────────────────────────────────────────────────┘
 ```
 
-- El botón ☰ va **debajo del logo**, con su mismo ancho, así las tres rayas quedan centradas bajo él. Conserva `aria-expanded`, `aria-controls` y el texto oculto "Abrir menú" / "Cerrar menú".
-- Las opciones se despliegan en un panel debajo del encabezado, alineadas a la izquierda con el logo (RF-13.2).
-- El encabezado gana una fila: `scroll-padding-top` sube de 96 a 136 px para que un ancla no quede tapada.
-- "Cotiza tu proyecto": en escritorio sigue en la barra, a la derecha y a la altura del logo; por debajo de 768 px sigue dentro del panel, como hoy (RF-13.3).
+- El botón ☰ va **a la izquierda del logo**, en la misma fila. Conserva `aria-expanded`, `aria-controls` y el texto oculto "Abrir menú" / "Cerrar menú".
+- Las opciones se despliegan en un panel debajo del encabezado, alineadas a la izquierda con el botón (RF-13.2).
+- "Cotiza tu proyecto": en escritorio sigue en la barra, a la derecha; por debajo de 768 px sigue dentro del panel, como hoy (RF-13.3).
 - El panel se cierra al elegir una opción y con `Esc` (ya existe) y, nuevo, al pulsar fuera (`pointerdown` en el documento).
 
 **Ocultar al bajar** (`useHideOnScroll`):
