@@ -58,7 +58,7 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         self.assertEqual(site["hero"]["primary_cta_text"], "Agenda una reunión")
         self.assertEqual(
             [item["text"] for item in site["specialties"]],
-            ["Diseño residencial", "Diseño comercial", "Renders 3D", "Ejecución de obra"],
+            ["Diseño residencial", "Diseño comercial", "Corporativo", "Ejecución de obra"],
         )
         self.assertEqual(site["services"]["title"], "Un solo equipo para todo tu proyecto")
         self.assertEqual(

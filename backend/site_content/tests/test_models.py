@@ -60,7 +60,7 @@ class InitialContentTests(TestCase):
     def test_lists_have_the_items_of_the_mockup_in_order(self):
         self.assertEqual(
             list(Specialty.objects.values_list("text", flat=True)),
-            ["Diseño residencial", "Diseño comercial", "Renders 3D", "Ejecución de obra"],
+            ["Diseño residencial", "Diseño comercial", "Corporativo", "Ejecución de obra"],
         )
         self.assertEqual(
             list(Service.objects.values_list("title", flat=True)),

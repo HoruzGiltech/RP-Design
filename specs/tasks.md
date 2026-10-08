@@ -145,9 +145,9 @@
 
 ---
 
-## Fase 4C — Cambios del cliente (specs-001)
+## Fase 4C — Cambios del cliente (specs-001 y specs-002)
 
-> Las tareas de esta fase están en `specs/specs-001/tasks.md`. **El despliegue no empieza hasta cerrarla.**
+> Las tareas de esta fase están en `specs/specs-001/tasks.md` (implementado) y `specs/specs-002/tasks.md` (en curso). **El despliegue no empieza hasta cerrar specs-002.**
 
 ---
 

@@ -23,7 +23,7 @@ Actúa como **desarrollador fullstack senior** que escribe código **simple, cla
 
 **Referencia visual:** la maqueta `docs/maqueta-legible.html` (el HTML extraído, que es el que se lee y se compara). El original del diseñador está en `docs/maqueta-original.html`, empaquetado y difícil de leer.
 - Es la fuente de verdad estética: colores, tipografías, espaciados y estilo de componentes.
-- **Excepción:** el hero y la sección Proyectos del inicio ya no siguen la distribución de la maqueta, por cambios que pidió el cliente (`specs/specs-001/`). Conservan sus tokens: colores, tipografías y sin bordes redondeados.
+- **Excepción:** el hero, la sección Proyectos del inicio, el encabezado y la sección Contacto ya no siguen la distribución de la maqueta, por cambios que pidió el cliente (`specs/specs-001/` y `specs/specs-002/`). Conservan sus tokens: colores, tipografías y sin bordes redondeados.
 - Los *design tokens* ya están extraídos en `specs/design.md` §3.0. Van a `frontend/src/styles/tokens.css` y se reutilizan siempre. No copies el HTML tal cual a React: conviértelo en componentes.
 
 **Referencia de animaciones:** https://sparquitectosve.com/. De ahí se toma **solo el movimiento** (cómo aparecen y reaccionan los elementos), adaptado al estilo de la maqueta. Los colores, tipografías, espaciados y la distribución siguen saliendo de la maqueta. El detalle está en `specs/requirements.md` RF-06 y `specs/design.md` §3.6.
@@ -49,7 +49,8 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Trabajo en curso: `specs/specs-001/`.** Empieza cada sesión leyendo este archivo, `specs/` y `specs/specs-001/`.
+- **Trabajo en curso: `specs/specs-002/`.** Empieza cada sesión leyendo este archivo, `specs/`, `specs/specs-001/` y `specs/specs-002/`.
+- **El despliegue sigue pendiente** (`specs/tasks.md`, Fase 5). Ningún paquete de cambios lo reemplaza: se hace al cerrar el paquete en curso.
 
 1. **Requisitos:** a partir de la sección 4 de este archivo, crea/actualiza `specs/requirements.md`.
 2. **Diseño:** documenta modelos de datos, endpoints y componentes en `specs/design.md`.
@@ -168,6 +169,15 @@ El detalle está en `specs/specs-001/requirements.md`. En resumen:
 - **RF-11 — WhatsApp en formato internacional:** `+58 412 730 5964`, calculado a partir del número.
 - **RF-12 — Botón flotante de WhatsApp:** el icono clásico (círculo verde), abajo a la derecha, con el mensaje "Hola! quiero agendar una reunión".
 
+### Cambios de specs-002 (RF-13 a RF-18)
+El detalle está en `specs/specs-002/requirements.md`. En resumen:
+- **RF-13 — Menú desplegable:** las opciones del menú van siempre detrás de un botón y se despliegan debajo del logo. El encabezado se oculta al bajar y vuelve al subir. "Cotiza tu proyecto" no cambia.
+- **RF-14 — Botones del hero configurables:** dos interruptores en el panel para mostrarlos u ocultarlos.
+- **RF-15 — Controles discretos en el hero:** una línea fina con indicadores, flechas y pausa, sin recuadros. No se quitan: lo que rota solo debe poder pararse.
+- **RF-16 — Sin cintillo de especialidades:** deja de mostrarse en el inicio; la lista queda en el panel.
+- **RF-17 — Área según el tipo de remodelación:** el formulario pide primero el tipo (las categorías) y muestra solo sus áreas. Todo configurable en el panel; un área sin categoría aparece en todos los tipos.
+- **RF-18 — Contacto en una columna:** el formulario debajo del título y a todo el ancho; los datos de contacto debajo, en fila.
+
 ---
 
 ## 5. Stack técnico
@@ -209,7 +219,8 @@ El detalle está en `specs/specs-001/requirements.md`. En resumen:
 ├── docker-compose.yml
 ├── docs/maqueta-legible.html   # + maqueta-original.html
 ├── specs/          # especificación base (requirements, design, tasks)
-│   └── specs-001/  # cambios pedidos por el cliente (trabajo en curso)
+│   ├── specs-001/  # primer paquete de cambios del cliente (implementado)
+│   └── specs-002/  # segundo paquete de cambios (trabajo en curso)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -302,6 +313,9 @@ Al terminar cada tarea o fase, responde con:
 | Cambios del cliente | Van dentro de `specs/`, en paquetes numerados (`specs/specs-001/`…), que mandan sobre la base |
 | Hero | Portadas de proyectos marcadas en el panel, con rotación; reemplaza a los destacados (specs-001) |
 | Categorías | Comercial, Residencial y Corporativo; un proyecto pertenece a una (specs-001) |
+| Menú | Siempre desplegable; el encabezado se oculta al bajar y vuelve al subir (specs-002) |
+| Formulario | El área a remodelar depende del tipo de remodelación, que son las categorías (specs-002) |
+| Especialidades | El cintillo se quitó del sitio; la lista se conserva en el panel (specs-002) |
 
 ## 11. Fases del proyecto
 
@@ -309,8 +323,9 @@ Al terminar cada tarea o fase, responde con:
 2. **Backend:** modelos, panel, roles y API.
 3. **Frontend:** maqueta convertida a React y conectada a la API.
 4. **Calculadora y WhatsApp**, más las páginas legales.
-5. **specs-001:** cambios pedidos por el cliente (hero, categorías, dirección automática y WhatsApp). **Es la fase en curso.**
-6. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. No empieza hasta cerrar specs-001.
+5. **specs-001:** primer paquete de cambios del cliente (hero, categorías, dirección automática y WhatsApp). Implementado.
+6. **specs-002:** segundo paquete (menú desplegable, hero, formulario por tipo de remodelación y sección Contacto). **Es la fase en curso.**
+7. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente, sin empezar.** No empieza hasta cerrar specs-002.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 

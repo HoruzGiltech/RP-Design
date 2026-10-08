@@ -3,10 +3,11 @@ from importlib import import_module
 from django.apps import apps
 from django.test import TestCase
 
-from site_content.models import HeroSection
+from site_content.models import HeroSection, ProcessStep, Specialty
 
 # El nombre del archivo empieza por un número, así que no se puede importar con "import"
 hero_texts_migration = import_module("site_content.migrations.0007_hero_texts")
+specialty_migration = import_module("site_content.migrations.0009_specialty_corporativo")
 
 
 class HeroTextsMigrationTests(TestCase):
@@ -37,3 +38,31 @@ class HeroTextsMigrationTests(TestCase):
         hero = HeroSection.objects.get()
         self.assertEqual(hero.title, "Un título escrito por el cliente")
         self.assertEqual(hero.primary_cta_text, "Hablemos")
+
+
+class SpecialtyMigrationTests(TestCase):
+    """La migración 0009 cambia "Renders 3D" por "Corporativo" solo en la franja."""
+
+    def run_migration(self):
+        specialty_migration.update_specialty(apps, None)
+
+    def test_original_text_is_replaced(self):
+        Specialty.objects.filter(text="Corporativo").update(text="Renders 3D")
+
+        self.run_migration()
+
+        self.assertFalse(Specialty.objects.filter(text="Renders 3D").exists())
+        self.assertTrue(Specialty.objects.filter(text="Corporativo").exists())
+
+    def test_text_changed_by_the_client_is_kept(self):
+        Specialty.objects.filter(text="Corporativo").update(text="Paisajismo")
+
+        self.run_migration()
+
+        self.assertTrue(Specialty.objects.filter(text="Paisajismo").exists())
+        self.assertFalse(Specialty.objects.filter(text="Corporativo").exists())
+
+    def test_process_step_is_not_changed(self):
+        self.run_migration()
+
+        self.assertTrue(ProcessStep.objects.filter(title="Renders 3D").exists())
