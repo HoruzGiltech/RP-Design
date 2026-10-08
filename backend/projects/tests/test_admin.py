@@ -133,6 +133,8 @@ class ProjectCategoryAdminTests(TempMediaMixin, TestCase):
 
         self.assertContains(response, "Residencial")
         self.assertContains(response, "Corporativo")
+        # specs-002: cuántas áreas del formulario tiene cada categoría
+        self.assertContains(response, "Áreas del formulario")
 
     def test_category_is_created_with_only_its_name(self):
         self.client.post(reverse("admin:projects_projectcategory_add"), {"name": "Hotelería"})

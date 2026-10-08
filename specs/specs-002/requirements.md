@@ -3,7 +3,7 @@
 > **Qué** cambia respecto a lo ya construido y **cómo sabemos que está bien hecho**.
 > Es un paquete de cambios sobre `specs/` y `specs/specs-001/`. Donde este documento los contradice, **manda este**.
 
-**Estado:** Borrador v1 (2026-10-07) — pendiente de aprobación
+**Estado:** Aprobado (v1, 2026-10-07)
 **Base:** `specs/` (RF-01 a RF-07) y `specs/specs-001/` (RF-08 a RF-12), ya implementadas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 
@@ -90,7 +90,7 @@ Elimina S3 de `specs/requirements.md` y RF-06.4.
 | RF-16.2 | La lista **"Especialidades" se conserva en el panel**, con un aviso de que ya no se muestra en el sitio, por si se quiere recuperar más adelante |
 
 **Criterios de aceptación**
-- [ ] CA-16.1 En el inicio, después del hero viene directamente la sección Servicios.
+- [ ] CA-16.1 En el inicio, después del hero viene directamente la sección Proyectos (orden de specs-001: Portada → Proyectos → Servicios → Proceso → Contacto).
 - [ ] CA-16.2 El panel explica, en la propia lista, que las especialidades ya no se muestran.
 
 ### RF-17 — Área a remodelar según el tipo de remodelación
@@ -159,17 +159,17 @@ Confirmadas por el desarrollador el 2026-10-07.
 | Q-3 | Lista "Especialidades" | **Solo se quita del sitio**; se conserva en el panel |
 | Q-4 | Áreas iniciales de Corporativo y Comercial | Oficina y Sala de reuniones; Showroom |
 
-## 5. Decisiones a confirmar
+## 5. Más decisiones confirmadas
 
-Las tomé con el criterio más razonable para poder escribir la spec. Cualquiera se cambia antes de programar.
+Confirmadas por el desarrollador el 2026-10-07. Se numeran desde P-10 para no repetir las de specs-001 (P-1 a P-9).
 
-| # | Tema | Lo que propongo | Alternativa |
-|---|---|---|---|
-| P-8 | Opción "Otro" | Una sola área "Otro" sin categoría, que aparece en todos los tipos | Un "Otro" distinto por cada categoría |
-| P-9 | Tipos del formulario | Son las **mismas categorías** de los proyectos: una sola lista en el panel | Una lista aparte de "tipos de remodelación" |
-| P-10 | Reparto de los campos en escritorio | Tres columnas: Nombre · Teléfono · Correo / Tipo · Área · Especifica / Metros (2 columnas) · Estimado / Mensaje a todo el ancho | Dos columnas |
-| P-11 | Barra de progreso en el indicador activo del hero | Sí: muestra cuánto falta para la siguiente portada | Indicadores lisos, sin progreso |
-| P-12 | Posición del botón del menú | A la derecha del encabezado, junto a "Cotiza tu proyecto"; las opciones se despliegan debajo del logo, a la izquierda | Botón junto al logo |
+| # | Tema | Decisión |
+|---|---|---|
+| P-10 | Opción "Otro" | **Una sola**, sin categoría, que aparece en todos los tipos |
+| P-11 | Tipos del formulario | Son las **mismas categorías** de los proyectos. En el formulario el campo se llama "Tipo de remodelación", pero sus opciones salen de la lista de categorías |
+| P-12 | Reparto de los campos en escritorio | A criterio del agente: **tres columnas** (Nombre · Teléfono · Correo / Tipo · Área · Especifica / Metros en 2 columnas · Estimado / Mensaje a todo el ancho) |
+| P-13 | Barra de progreso en el indicador activo del hero | **Sí** |
+| P-14 | Menú desplegable | Las opciones se despliegan **debajo del logo**. El botón que las abre va a la derecha del encabezado |
 
 ---
 

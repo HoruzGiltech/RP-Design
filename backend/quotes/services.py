@@ -43,6 +43,14 @@ def clean_phone(phone):
     return f"+{digits}" if phone.strip().startswith("+") else digits
 
 
+def area_belongs_to_category(area, category):
+    """
+    Dice si un área se puede elegir dentro de un tipo de remodelación:
+    lo es si pertenece a esa categoría o si es común a todas (sin categoría).
+    """
+    return area.category_id is None or area.category_id == category.pk
+
+
 def build_whatsapp_message(quote):
     """Arma el texto que la persona enviará por WhatsApp."""
     area = quote.area.name
@@ -55,6 +63,11 @@ def build_whatsapp_message(quote):
         f"👤 Nombre: {quote.name}",
         f"📧 Correo: {quote.email}",
         f"📱 Teléfono: {quote.phone}",
+    ]
+    # Las cotizaciones anteriores a specs-002 no tienen tipo: la línea se omite
+    if quote.category_name:
+        lines.append(f"🏗️ Tipo: {quote.category_name}")
+    lines += [
         f"🏠 Área: {area}",
         f"📐 Metros cuadrados: {format_square_meters(quote.square_meters)} m²",
         f"💲 Estimado: {format_usd(quote.estimated_price)}",

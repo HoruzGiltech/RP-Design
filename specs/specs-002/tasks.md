@@ -13,29 +13,29 @@ Las tareas llevan el prefijo `S2-` para no confundirlas con las de `specs/tasks.
 
 - [x] **S2-A1** Crear `specs/specs-002/requirements.md`, `design.md` y `tasks.md`.
 - [x] **S2-A2** Actualizar `AGENTS.md`: specs-002 es el trabajo en curso y el despliegue sigue siendo la última fase.
-- [ ] **S2-A3** ✋ **Aprobación** de specs-002 y de las decisiones a confirmar (P-8 a P-12 de `requirements.md` §5). *No se programa nada antes de esto.*
+- [x] **S2-A3** ✋ **Aprobación** de specs-002 y de las decisiones P-10 a P-14 (`requirements.md` §5). (Aprobado el 2026-10-07.)
 
 ---
 
 ## Fase B — Backend
 
 ### B1. Áreas por tipo de remodelación
-- [ ] **S2-B1** `RemodelArea.category`, `Quote.category` y `Quote.category_name`; el identificador del área se genera solo. Migración `quotes.0004`. *(RF-17.3, RF-17.4, RF-17.7)*
+- [x] **S2-B1** `RemodelArea.category`, `Quote.category` y `Quote.category_name`; el identificador del área se genera solo. Migración `quotes.0004`. *(RF-17.3, RF-17.4, RF-17.7)*
   - Verificación: tests: dos áreas con el mismo nombre en categorías distintas reciben identificadores distintos.
-- [ ] **S2-B2** Migración de datos `quotes.0005`: áreas actuales → Residencial; "Otro" sin categoría; crea Oficina, Sala de reuniones y Showroom. *(RF-17.5)*
+- [x] **S2-B2** Migración de datos `quotes.0005`: áreas actuales → Residencial; "Otro" sin categoría; crea Oficina, Sala de reuniones y Showroom. *(RF-17.5)*
   - Verificación: test de que, en una base nueva, cada categoría tiene las áreas de CA-17.1.
-- [ ] **S2-B3** `services.py`: `area_belongs_to_category` y el tipo en `build_whatsapp_message`. *(RF-17.7, CA-17.6)*
+- [x] **S2-B3** `services.py`: `area_belongs_to_category` y el tipo en `build_whatsapp_message`. *(RF-17.7, CA-17.6)*
   - Verificación: tests: área propia, ajena y común; mensaje con y sin tipo.
-- [ ] **S2-B4** `GET /api/quote-categories/` y eliminación de `/api/quote-areas/`. *(RF-17.1, RF-17.2, RF-17.8)*
+- [x] **S2-B4** `GET /api/quote-categories/` y eliminación de `/api/quote-areas/`. *(RF-17.1, RF-17.2, RF-17.8)*
   - Verificación: tests: agrupa por categoría, "Otro" en todas, respeta el orden, oculta inactivas y categorías sin áreas.
-- [ ] **S2-B5** `POST /api/quotes/`: `category` obligatorio, validación de que el área pertenece al tipo, y guardado del tipo. *(CA-17.3, CA-17.5)*
+- [x] **S2-B5** `POST /api/quotes/`: `category` obligatorio, validación de que el área pertenece al tipo, y guardado del tipo. *(CA-17.3, CA-17.5)*
   - Verificación: tests: falta el tipo → 400; área de otro tipo → 400; "Otro" con cualquier tipo → 201.
-- [ ] **S2-B6** Panel: categoría en la lista de áreas (columna, filtro y edición), "Áreas del formulario" en categorías, y tipo en las cotizaciones. *(RF-17.3, RF-17.9)*
+- [x] **S2-B6** Panel: categoría en la lista de áreas (columna, filtro y edición), "Áreas del formulario" en categorías, y tipo en las cotizaciones. *(RF-17.3, RF-17.9)*
   - Verificación: tests del panel y revisión en navegador con Playwright.
 
 ### B2. Hero y especialidades
-- [ ] **S2-B7** `HeroSection.show_primary_cta` y `show_secondary_cta`, en el panel y en `/api/site/`. Migración `site_content.0010`. *(RF-14.1)*
-- [ ] **S2-B8** "Especialidades": aviso en el panel de que ya no se muestran y `specialties` fuera de `/api/site/`. *(RF-16.2, CA-16.2)*
+- [x] **S2-B7** `HeroSection.show_primary_cta` y `show_secondary_cta`, en el panel y en `/api/site/`. Migración `site_content.0010`. *(RF-14.1)*
+- [x] **S2-B8** "Especialidades": aviso en el panel de que ya no se muestran y `specialties` fuera de `/api/site/`. *(RF-16.2, CA-16.2)*
 
 - [ ] **S2-B9** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel (áreas por categoría, interruptores del hero).
 

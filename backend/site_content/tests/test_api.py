@@ -28,7 +28,6 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
             {
                 "settings",
                 "hero",
-                "specialties",
                 "services",
                 "projects_section",
                 "process",
@@ -56,10 +55,6 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         self.assertEqual(site["hero"]["eyebrow"], "ESTUDIO DE DISEÑO DE INTERIORES · CARACAS")
         self.assertEqual(site["hero"]["title"], "")
         self.assertEqual(site["hero"]["primary_cta_text"], "Agenda una reunión")
-        self.assertEqual(
-            [item["text"] for item in site["specialties"]],
-            ["Diseño residencial", "Diseño comercial", "Corporativo", "Ejecución de obra"],
-        )
         self.assertEqual(site["services"]["title"], "Un solo equipo para todo tu proyecto")
         self.assertEqual(
             [item["title"] for item in site["services"]["items"]],
@@ -97,6 +92,21 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         hero.save()
 
         self.assertEqual(self.get_site()["hero"]["title"], "Título cambiado en el panel")
+
+    def test_specialties_are_no_longer_sent(self):
+        # specs-002: el cintillo se quitó del sitio (la lista sigue en el panel)
+        self.assertNotIn("specialties", self.get_site())
+
+    def test_hero_buttons_are_shown_by_default_and_can_be_hidden(self):
+        hero = self.get_site()["hero"]
+        self.assertTrue(hero["show_primary_cta"])
+        self.assertTrue(hero["show_secondary_cta"])
+
+        HeroSection.objects.update(show_primary_cta=False)
+
+        hero = self.get_site()["hero"]
+        self.assertFalse(hero["show_primary_cta"])
+        self.assertTrue(hero["show_secondary_cta"])
 
     def test_whatsapp_display_follows_the_number_of_the_panel(self):
         settings = SiteSettings.load()

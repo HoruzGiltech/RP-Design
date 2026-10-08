@@ -15,7 +15,6 @@ from site_content.models import (
     Service,
     ServicesSection,
     SiteSettings,
-    Specialty,
 )
 
 
@@ -51,7 +50,6 @@ class SiteContentView(APIView):
             {
                 "settings": section(serializers.SiteSettingsSerializer, SiteSettings),
                 "hero": section(serializers.HeroSectionSerializer, HeroSection),
-                "specialties": visible_items(serializers.SpecialtySerializer, Specialty),
                 "services": services,
                 "projects_section": section(
                     serializers.ProjectsSectionSerializer, ProjectsSection

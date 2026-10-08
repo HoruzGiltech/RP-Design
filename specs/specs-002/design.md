@@ -3,7 +3,7 @@
 > **Cómo** se construye lo que pide `specs/specs-002/requirements.md`.
 > Solo describe lo que cambia. Lo que no aparece aquí sigue como en `specs/design.md` y `specs/specs-001/design.md`.
 
-**Estado:** Borrador v1 (2026-10-07) — pendiente de aprobación
+**Estado:** Aprobado (v1, 2026-10-07)
 
 ---
 
@@ -47,7 +47,7 @@ No se agregan dependencias, ni en el backend ni en el frontend.
 
 **Specialty** (`site_content`): el modelo no cambia. Su nombre en el panel pasa a "especialidades (ya no se muestran en el sitio)".
 
-> **Decisión:** las áreas se enlazan con `ProjectCategory`, el mismo modelo de las categorías de proyectos (P-9). El cliente mantiene una sola lista y el formulario habla el mismo idioma que el portafolio.
+> **Decisión:** las áreas se enlazan con `ProjectCategory`, el mismo modelo de las categorías de proyectos (P-11). El cliente mantiene una sola lista y el formulario habla el mismo idioma que el portafolio.
 
 ### 2.2 Migraciones
 
@@ -234,7 +234,7 @@ Nombre del proyecto →                    ‹  ▰▱ ▭ ▭  ›   ❚❚
 ### 3.4 Inicio sin cintillo (RF-16)
 
 - `HomePage` deja de montar `SpecialtiesStrip`. Se borran ese componente y `Marquee`, y el token `--marquee-duration` y `--col-strip`.
-- Entre el hero (oscuro) y Servicios (claro) ya no hay franja: Servicios empieza directamente con su espacio superior normal.
+- Después del hero viene la sección Proyectos (orden de specs-001, P-8). Las dos son oscuras: se separan con una línea fina (`--color-dark-surface`) para que no parezcan un solo bloque.
 
 ### 3.5 Formulario (RF-17)
 

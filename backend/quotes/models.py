@@ -1,13 +1,32 @@
 from django.db import models
+from django.utils.text import slugify
 
 from core.models import OrderedModel, TimeStampedModel
+from projects.models import ProjectCategory
+from projects.services import make_unique_slug
 
 
 class RemodelArea(OrderedModel):
     """Área que se puede remodelar (baño, cocina...) y su precio por metro cuadrado."""
 
     name = models.CharField("nombre", max_length=60)
-    slug = models.SlugField("identificador", max_length=70, unique=True)
+    # Se genera solo a partir del nombre. Dos áreas pueden llamarse igual en
+    # categorías distintas ("Sala"): la segunda recibe "sala-2".
+    slug = models.SlugField("identificador", max_length=70, unique=True, editable=False)
+    # El tipo de remodelación al que pertenece el área (specs-002, RF-17).
+    # PROTECT: no se puede borrar una categoría que todavía tiene áreas.
+    category = models.ForeignKey(
+        ProjectCategory,
+        on_delete=models.PROTECT,
+        related_name="remodel_areas",
+        verbose_name="categoría",
+        null=True,
+        blank=True,
+        help_text=(
+            "Tipo de remodelación en el que aparece esta área. Déjala vacía para que "
+            "aparezca en todos los tipos (por ejemplo, Otro)."
+        ),
+    )
     price_per_m2 = models.DecimalField(
         "precio por m² (USD)",
         max_digits=10,
@@ -32,6 +51,12 @@ class RemodelArea(OrderedModel):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            existing = set(RemodelArea.objects.values_list("slug", flat=True))
+            self.slug = make_unique_slug(slugify(self.name) or "area", existing)
+        super().save(*args, **kwargs)
+
 
 class Quote(TimeStampedModel):
     """Cotización enviada desde el formulario del sitio."""
@@ -44,6 +69,17 @@ class Quote(TimeStampedModel):
     name = models.CharField("nombre", max_length=120)
     email = models.EmailField("correo")
     phone = models.CharField("teléfono", max_length=30)
+    # Tipo de remodelación elegido. SET_NULL: si la categoría se borra, la
+    # cotización se conserva; por eso también se guarda una copia de su nombre.
+    category = models.ForeignKey(
+        ProjectCategory,
+        on_delete=models.SET_NULL,
+        related_name="quotes",
+        verbose_name="tipo de remodelación",
+        null=True,
+        blank=True,
+    )
+    category_name = models.CharField("tipo (nombre al cotizar)", max_length=60, blank=True)
     # PROTECT: no se puede borrar un área que ya tiene cotizaciones
     area = models.ForeignKey(
         RemodelArea, on_delete=models.PROTECT, related_name="quotes", verbose_name="área"

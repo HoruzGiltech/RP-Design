@@ -49,6 +49,9 @@ class SiteContentAdminTests(TestCase):
 
         self.assertContains(response, "Mostrar en el sitio")
         self.assertNotContains(response, "deletelink")
+        # specs-002: interruptores de los dos botones del hero
+        self.assertContains(response, 'name="show_primary_cta"')
+        self.assertContains(response, 'name="show_secondary_cta"')
 
     def test_hero_text_can_be_edited(self):
         url = reverse("admin:site_content_herosection_change", args=[1])
@@ -150,3 +153,8 @@ class SiteContentAdminTests(TestCase):
         self.assertEqual(page.title, "Términos del servicio")
         self.assertEqual(section.body, "Texto escrito por el cliente")
         self.assertTrue(page.sections.filter(title="Apartado nuevo").exists())
+
+    def test_specialties_list_says_it_is_no_longer_shown_on_the_site(self):
+        response = self.client.get(reverse("admin:site_content_specialty_changelist"))
+
+        self.assertContains(response, "ya no se muestran en el sitio")

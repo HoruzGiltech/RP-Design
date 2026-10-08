@@ -24,12 +24,17 @@ class ProjectCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     Una categoría con proyectos no se puede eliminar (Django lo avisa).
     """
 
-    list_display = ("name", "project_count")
+    list_display = ("name", "project_count", "form_area_count")
     fields = ("name",)
 
     @admin.display(description="Proyectos")
     def project_count(self, category):
         return category.projects.count()
+
+    @admin.display(description="Áreas del formulario")
+    def form_area_count(self, category):
+        # Las áreas propias de la categoría. Las comunes ("Otro") no se cuentan.
+        return category.remodel_areas.filter(is_active=True).count()
 
 
 class ProjectMediaInline(SortableInlineAdminMixin, admin.TabularInline):

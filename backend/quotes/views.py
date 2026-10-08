@@ -1,10 +1,11 @@
 from django.utils import timezone
-from rest_framework import generics, status
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from projects.models import ProjectCategory
 from quotes.models import Quote, RemodelArea
-from quotes.serializers import QuoteCreateSerializer, RemodelAreaSerializer
+from quotes.serializers import QuoteCategorySerializer, QuoteCreateSerializer
 from quotes.services import (
     build_whatsapp_link,
     build_whatsapp_message,
@@ -17,12 +18,29 @@ from site_content.models import SiteSettings
 HONEYPOT_FIELD = "website"
 
 
-class RemodelAreaListView(generics.ListAPIView):
-    """GET /api/quote-areas/ -> áreas activas con su precio por m²."""
+class QuoteCategoryListView(APIView):
+    """
+    GET /api/quote-categories/ -> tipos de remodelación con sus áreas.
 
-    serializer_class = RemodelAreaSerializer
+    Cada tipo es una categoría del panel. Sus áreas son las que pertenecen a
+    esa categoría más las comunes a todas (las que no tienen categoría, como
+    "Otro"), que van al final. Un tipo sin ninguna área no se envía.
+    """
+
     throttle_scope = "public"
-    queryset = RemodelArea.objects.filter(is_active=True)
+
+    def get(self, request):
+        active_areas = list(RemodelArea.objects.filter(is_active=True))
+        common_areas = [area for area in active_areas if area.category_id is None]
+
+        categories = []
+        for category in ProjectCategory.objects.all():
+            own_areas = [area for area in active_areas if area.category_id == category.pk]
+            category.form_areas = own_areas + common_areas
+            if category.form_areas:
+                categories.append(category)
+
+        return Response(QuoteCategorySerializer(categories, many=True).data)
 
 
 class QuoteCreateView(APIView):
@@ -57,6 +75,8 @@ class QuoteCreateView(APIView):
         # privacy_accepted no es un campo de Quote: se cambia por la fecha de aceptación
         data.pop("privacy_accepted")
         quote = Quote(**data)
+        # Copia del nombre del tipo: la cotización lo conserva aunque la categoría cambie
+        quote.category_name = quote.category.name
         quote.privacy_accepted_at = timezone.now()
         quote.price_per_m2_snapshot = quote.area.price_per_m2
         quote.estimated_price = calculate_estimate(quote.area, quote.square_meters)

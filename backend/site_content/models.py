@@ -157,7 +157,9 @@ class HeroSection(SingletonModel, VisibleModel):
     )
     body = models.TextField("párrafo", blank=True)
     primary_cta_text = models.CharField("texto del botón principal", max_length=40)
+    show_primary_cta = models.BooleanField("mostrar el botón principal", default=True)
     secondary_cta_text = models.CharField("texto del botón secundario", max_length=40)
+    show_secondary_cta = models.BooleanField("mostrar el botón secundario", default=True)
     image = site_image_field(
         "imagen de respaldo",
         help_text=(
@@ -289,13 +291,17 @@ class SeoSettings(SingletonModel):
 
 
 class Specialty(OrderedModel, VisibleModel):
-    """Elemento de la franja de especialidades."""
+    """
+    Elemento de la antigua franja de especialidades.
+    Desde specs-002 el sitio no la muestra; el modelo se conserva en el panel.
+    """
 
     text = models.CharField("texto", max_length=60)
 
     class Meta(OrderedModel.Meta):
         verbose_name = "especialidad"
-        verbose_name_plural = "especialidades (franja)"
+        # El cintillo se quitó del sitio (specs-002). La lista se conserva por si se recupera.
+        verbose_name_plural = "especialidades (ya no se muestran en el sitio)"
 
     def __str__(self):
         return self.text

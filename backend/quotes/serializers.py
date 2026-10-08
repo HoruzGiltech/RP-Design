@@ -2,8 +2,9 @@ import re
 
 from rest_framework import serializers
 
+from projects.models import ProjectCategory
 from quotes.models import Quote, RemodelArea
-from quotes.services import clean_phone, format_square_meters
+from quotes.services import area_belongs_to_category, clean_phone, format_square_meters
 from site_content.models import SiteSettings
 
 MIN_PHONE_DIGITS = 7
@@ -14,6 +15,19 @@ class RemodelAreaSerializer(serializers.ModelSerializer):
     class Meta:
         model = RemodelArea
         fields = ["id", "name", "price_per_m2", "is_other"]
+
+
+class QuoteCategorySerializer(serializers.ModelSerializer):
+    """
+    Un tipo de remodelación con las áreas que se pueden elegir en él.
+    La vista le pone a cada categoría la lista `form_areas` ya armada.
+    """
+
+    areas = RemodelAreaSerializer(source="form_areas", many=True, read_only=True)
+
+    class Meta:
+        model = ProjectCategory
+        fields = ["id", "name", "slug", "areas"]
 
 
 class QuoteCreateSerializer(serializers.ModelSerializer):
@@ -35,6 +49,17 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
         },
     )
 
+    # El tipo de remodelación: una de las categorías del panel
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=ProjectCategory.objects.all(),
+        error_messages={
+            "does_not_exist": "Elige el tipo de remodelación.",
+            "incorrect_type": "Elige el tipo de remodelación.",
+            "required": "Elige el tipo de remodelación.",
+            "null": "Elige el tipo de remodelación.",
+        },
+    )
+
     # No es un campo del modelo: solo se comprueba que venga marcada.
     # La fecha de aceptación la pone el backend (ver quotes/views.py).
     privacy_accepted = serializers.BooleanField(
@@ -48,6 +73,7 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
             "name",
             "email",
             "phone",
+            "category",
             "area",
             "area_other",
             "square_meters",
@@ -75,6 +101,10 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
         return accepted
 
     def validate(self, data):
+        # El área tiene que ser del tipo elegido (o común a todos, como "Otro")
+        if not area_belongs_to_category(data["area"], data["category"]):
+            raise serializers.ValidationError({"area": "Elige un área de la lista."})
+
         area_other = data.get("area_other", "").strip()
         if data["area"].is_other and not area_other:
             raise serializers.ValidationError(

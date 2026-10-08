@@ -2,8 +2,10 @@ from decimal import Decimal
 
 from django.test import SimpleTestCase
 
+from projects.models import ProjectCategory
 from quotes.models import Quote, RemodelArea
 from quotes.services import (
+    area_belongs_to_category,
     build_whatsapp_link,
     build_whatsapp_message,
     calculate_estimate,
@@ -21,6 +23,7 @@ def make_quote(**fields):
         "name": "Ana Pérez",
         "email": "ana@mail.com",
         "phone": "+584121234567",
+        "category_name": "Residencial",
         "area": area,
         "square_meters": Decimal("12.5"),
         "estimated_price": Decimal("1250.00"),
@@ -53,6 +56,27 @@ class CalculateEstimateTests(SimpleTestCase):
         self.assertEqual(format_usd(estimate), "A cotizar")
 
 
+class AreaBelongsToCategoryTests(SimpleTestCase):
+    def test_area_of_the_same_category(self):
+        category = ProjectCategory(pk=1, name="Residencial")
+        area = RemodelArea(name="Cocina", category=category)
+
+        self.assertTrue(area_belongs_to_category(area, category))
+
+    def test_area_of_another_category(self):
+        residential = ProjectCategory(pk=1, name="Residencial")
+        corporate = ProjectCategory(pk=2, name="Corporativo")
+        area = RemodelArea(name="Cocina", category=residential)
+
+        self.assertFalse(area_belongs_to_category(area, corporate))
+
+    def test_area_without_category_belongs_to_every_type(self):
+        corporate = ProjectCategory(pk=2, name="Corporativo")
+        other = RemodelArea(name="Otro", is_other=True)
+
+        self.assertTrue(area_belongs_to_category(other, corporate))
+
+
 class FormatTests(SimpleTestCase):
     def test_format_usd(self):
         self.assertEqual(format_usd(Decimal("1250.5")), "USD 1.250,50")
@@ -83,12 +107,20 @@ class WhatsappMessageTests(SimpleTestCase):
             "👤 Nombre: Ana Pérez\n"
             "📧 Correo: ana@mail.com\n"
             "📱 Teléfono: +584121234567\n"
+            "🏗️ Tipo: Residencial\n"
             "🏠 Área: Cocina\n"
             "📐 Metros cuadrados: 12,5 m²\n"
             "💲 Estimado: USD 1.250,00\n"
             "\n"
             "💬 Mensaje: Quiero cambiar los gabinetes.",
         )
+
+    def test_type_line_is_left_out_in_quotes_without_type(self):
+        # Las cotizaciones anteriores a specs-002 no tienen tipo de remodelación
+        message = build_whatsapp_message(make_quote(category_name=""))
+
+        self.assertNotIn("Tipo", message)
+        self.assertIn("📱 Teléfono: +584121234567\n🏠 Área: Cocina", message)
 
     def test_message_line_is_left_out_when_empty(self):
         message = build_whatsapp_message(make_quote(message=""))

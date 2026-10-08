@@ -5,6 +5,7 @@ from django.db.models import ProtectedError
 from django.test import TestCase
 from django.urls import reverse
 
+from projects.models import ProjectCategory
 from quotes.models import Quote, RemodelArea
 
 
@@ -24,22 +25,64 @@ def create_quote(**fields):
 
 
 class InitialAreasTests(TestCase):
-    """Las áreas iniciales las crea una migración de datos."""
+    """Las áreas iniciales las crean las migraciones de datos 0002 y 0005."""
 
-    def test_six_areas_exist_in_order_and_without_price(self):
+    def names(self, **filters):
+        return list(RemodelArea.objects.filter(**filters).values_list("name", flat=True))
+
+    def test_residential_keeps_the_original_areas(self):
+        self.assertEqual(
+            self.names(category__slug="residencial"),
+            ["Baño", "Cocina", "Sala", "Patio", "Piscina"],
+        )
+
+    def test_corporate_and_commercial_get_the_example_areas(self):
+        self.assertEqual(self.names(category__slug="corporativo"), ["Oficina", "Sala de reuniones"])
+        self.assertEqual(self.names(category__slug="comercial"), ["Showroom"])
+
+    def test_other_has_no_category_so_it_appears_in_every_type(self):
+        other = RemodelArea.objects.get(is_other=True)
+
+        self.assertEqual(other.slug, "otro")
+        self.assertIsNone(other.category)
+
+    def test_every_area_starts_active_and_without_price(self):
         areas = RemodelArea.objects.all()
 
-        self.assertEqual(
-            [area.name for area in areas],
-            ["Baño", "Cocina", "Sala", "Patio", "Piscina", "Otro"],
-        )
+        self.assertEqual(areas.count(), 9)
         self.assertTrue(all(area.price_per_m2 is None for area in areas))
         self.assertTrue(all(area.is_active for area in areas))
 
-    def test_only_the_last_one_is_other(self):
-        other_areas = RemodelArea.objects.filter(is_other=True)
 
-        self.assertEqual([area.slug for area in other_areas], ["otro"])
+class AreaSlugTests(TestCase):
+    """El identificador del área se genera solo (specs-002)."""
+
+    def test_slug_is_created_from_the_name(self):
+        area = RemodelArea.objects.create(name="Sala de espera")
+
+        self.assertEqual(area.slug, "sala-de-espera")
+
+    def test_same_name_in_another_category_gets_a_different_slug(self):
+        corporate = ProjectCategory.objects.get(slug="corporativo")
+
+        # Ya existe "Sala" en Residencial
+        area = RemodelArea.objects.create(name="Sala", category=corporate)
+
+        self.assertEqual(area.slug, "sala-2")
+
+    def test_slug_does_not_change_when_the_name_is_edited(self):
+        area = RemodelArea.objects.get(slug="cocina")
+
+        area.name = "Cocina integral"
+        area.save()
+
+        self.assertEqual(area.slug, "cocina")
+
+    def test_category_with_areas_cannot_be_deleted(self):
+        residential = ProjectCategory.objects.get(slug="residencial")
+
+        with self.assertRaises(ProtectedError):
+            residential.delete()
 
 
 class QuoteModelTests(TestCase):
@@ -99,3 +142,35 @@ class QuotesAdminTests(TestCase):
         self.assertEqual(quote.status, Quote.CONTACTED)
         self.assertEqual(quote.name, "Ana Pérez")
         self.assertEqual(quote.estimated_price, Decimal("1250"))
+
+    def test_area_list_shows_the_category_and_lets_filter_by_it(self):
+        response = self.client.get(reverse("admin:quotes_remodelarea_changelist"))
+
+        self.assertContains(response, "Sala de reuniones")
+        self.assertContains(response, "form-0-category")
+        self.assertContains(response, "Por categoría")
+
+    def test_area_form_has_no_field_to_write_the_identifier(self):
+        response = self.client.get(reverse("admin:quotes_remodelarea_add"))
+
+        self.assertNotContains(response, 'name="slug"')
+        self.assertContains(response, 'name="category"')
+
+    def test_area_can_be_created_for_a_category_from_the_panel(self):
+        commercial = ProjectCategory.objects.get(slug="comercial")
+
+        self.client.post(
+            reverse("admin:quotes_remodelarea_add"),
+            {"name": "Vitrina", "category": commercial.pk, "is_active": "on"},
+        )
+
+        area = RemodelArea.objects.get(name="Vitrina")
+        self.assertEqual(area.category, commercial)
+        self.assertEqual(area.slug, "vitrina")
+
+    def test_quote_detail_shows_the_type(self):
+        quote = create_quote(category_name="Residencial")
+
+        response = self.client.get(reverse("admin:quotes_quote_change", args=[quote.pk]))
+
+        self.assertContains(response, "Residencial")

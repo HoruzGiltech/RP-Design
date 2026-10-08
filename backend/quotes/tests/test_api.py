@@ -7,27 +7,80 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.throttling import ScopedRateThrottle
 
+from projects.models import ProjectCategory
 from quotes.models import Quote, RemodelArea
 from site_content.models import SiteSettings
 
 
-class QuoteAreasApiTests(TestCase):
+class QuoteCategoriesApiTests(TestCase):
+    """Tipos de remodelación con sus áreas (specs-002, RF-17)."""
+
     def setUp(self):
         cache.clear()
 
-    def test_active_areas_are_listed_in_order_with_their_price(self):
+    def get_categories(self):
+        return self.client.get(reverse("quote-category-list")).json()
+
+    def area_names(self, category_slug):
+        category = next(c for c in self.get_categories() if c["slug"] == category_slug)
+        return [area["name"] for area in category["areas"]]
+
+    def test_each_type_offers_its_own_areas_and_the_common_ones(self):
+        self.assertEqual(
+            self.area_names("residencial"),
+            ["Baño", "Cocina", "Sala", "Patio", "Piscina", "Otro"],
+        )
+        self.assertEqual(self.area_names("corporativo"), ["Oficina", "Sala de reuniones", "Otro"])
+        self.assertEqual(self.area_names("comercial"), ["Showroom", "Otro"])
+
+    def test_types_follow_the_order_of_the_panel(self):
+        self.assertEqual(
+            [category["name"] for category in self.get_categories()],
+            ["Comercial", "Residencial", "Corporativo"],
+        )
+
+    def test_category_and_area_have_the_fields_the_form_needs(self):
         RemodelArea.objects.filter(slug="cocina").update(price_per_m2=Decimal("100"))
+
+        category = next(c for c in self.get_categories() if c["slug"] == "residencial")
+        kitchen = next(area for area in category["areas"] if area["name"] == "Cocina")
+
+        self.assertEqual(set(category), {"id", "name", "slug", "areas"})
+        self.assertEqual(set(kitchen), {"id", "name", "price_per_m2", "is_other"})
+        self.assertEqual(kitchen["price_per_m2"], "100.00")
+        self.assertTrue(category["areas"][-1]["is_other"])
+
+    def test_inactive_areas_are_not_listed(self):
         RemodelArea.objects.filter(slug="patio").update(is_active=False)
 
-        areas = self.client.get(reverse("quote-area-list")).json()
+        self.assertNotIn("Patio", self.area_names("residencial"))
 
-        self.assertEqual(
-            [area["name"] for area in areas], ["Baño", "Cocina", "Sala", "Piscina", "Otro"]
-        )
-        self.assertEqual(set(areas[0]), {"id", "name", "price_per_m2", "is_other"})
-        self.assertIsNone(areas[0]["price_per_m2"])
-        self.assertEqual(areas[1]["price_per_m2"], "100.00")
-        self.assertTrue(areas[-1]["is_other"])
+    def test_area_created_in_the_panel_appears_in_its_type(self):
+        commercial = ProjectCategory.objects.get(slug="comercial")
+        RemodelArea.objects.create(name="Vitrina", category=commercial, order=99)
+
+        self.assertEqual(self.area_names("comercial"), ["Showroom", "Vitrina", "Otro"])
+
+    def test_type_without_any_area_is_not_listed(self):
+        # Sin áreas propias y sin áreas comunes, el tipo no tiene nada que ofrecer
+        RemodelArea.objects.filter(category__slug="comercial").update(is_active=False)
+        RemodelArea.objects.filter(category__isnull=True).update(is_active=False)
+
+        slugs = [category["slug"] for category in self.get_categories()]
+
+        self.assertNotIn("comercial", slugs)
+        self.assertIn("residencial", slugs)
+
+    def test_new_category_only_offers_the_common_areas(self):
+        ProjectCategory.objects.create(name="Hotelería", order=99)
+
+        self.assertEqual(self.area_names("hoteleria"), ["Otro"])
+
+    def test_api_is_read_only(self):
+        url = reverse("quote-category-list")
+
+        for method in [self.client.post, self.client.put, self.client.delete]:
+            self.assertEqual(method(url).status_code, 405)
 
 
 class QuoteCreateApiTests(TestCase):
@@ -38,9 +91,13 @@ class QuoteCreateApiTests(TestCase):
         self.kitchen.price_per_m2 = Decimal("100")
         self.kitchen.save()
         self.other = RemodelArea.objects.get(slug="otro")
+        # Cocina y Baño son áreas del tipo Residencial
+        self.residential = ProjectCategory.objects.get(slug="residencial")
+        self.corporate = ProjectCategory.objects.get(slug="corporativo")
 
     def form_data(self, **fields):
         data = {
+            "category": self.residential.pk,
             "name": "Ana Pérez",
             "email": "ana@mail.com",
             "phone": "+58 412-1234567",
@@ -172,7 +229,7 @@ class QuoteCreateApiTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             set(response.json()),
-            {"name", "email", "phone", "area", "square_meters", "privacy_accepted"},
+            {"name", "email", "phone", "category", "area", "square_meters", "privacy_accepted"},
         )
         self.assertIn("requerido", response.json()["name"][0])
 
@@ -211,6 +268,45 @@ class QuoteCreateApiTests(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("message", response.json())
+
+    # --- Tipo de remodelación (specs-002) ---
+
+    def test_type_is_saved_with_a_copy_of_its_name(self):
+        self.post()
+
+        quote = Quote.objects.get()
+        self.assertEqual(quote.category, self.residential)
+        self.assertEqual(quote.category_name, "Residencial")
+        self.assertIn("🏗️ Tipo: Residencial", quote.whatsapp_message)
+
+    def test_type_is_required(self):
+        self.assert_field_error(self.post(category=None), "category", "tipo de remodelación")
+        self.assert_field_error(self.post(category=99999), "category", "tipo de remodelación")
+
+    def test_area_of_another_type_is_rejected(self):
+        # Cocina es de Residencial, no de Corporativo
+        response = self.post(category=self.corporate.pk)
+
+        self.assert_field_error(response, "area", "Elige un área de la lista")
+
+    def test_common_area_is_accepted_with_any_type(self):
+        for category in [self.residential, self.corporate]:
+            with self.subTest(category=category.name):
+                response = self.post(
+                    category=category.pk, area=self.other.pk, area_other="Terraza"
+                )
+
+                self.assertEqual(response.status_code, 201)
+
+    def test_quote_keeps_the_type_name_if_the_category_is_deleted(self):
+        hotel = ProjectCategory.objects.create(name="Hotelería", order=99)
+        self.post(category=hotel.pk, area=self.other.pk, area_other="Lobby")
+
+        hotel.delete()
+
+        quote = Quote.objects.get()
+        self.assertIsNone(quote.category)
+        self.assertEqual(quote.category_name, "Hotelería")
 
     # --- Política de privacidad ---
 
@@ -274,6 +370,7 @@ class ThrottleTests(TestCase):
             "name": "Ana",
             "email": "ana@mail.com",
             "phone": "+584121234567",
+            "category": area.category_id,
             "area": area.pk,
             "square_meters": "10",
             "privacy_accepted": True,
@@ -308,7 +405,7 @@ class ThrottleTests(TestCase):
         self.assertEqual(codes[-1], 429)
 
     def test_public_api_has_its_own_limit(self):
-        url = reverse("quote-area-list")
+        url = reverse("quote-category-list")
 
         codes = [self.client.get(url).status_code for _ in range(4)]
 
@@ -316,6 +413,6 @@ class ThrottleTests(TestCase):
 
     def test_reading_does_not_use_up_the_quote_limit(self):
         for _ in range(3):
-            self.client.get(reverse("quote-area-list"), REMOTE_ADDR="10.0.0.1")
+            self.client.get(reverse("quote-category-list"), REMOTE_ADDR="10.0.0.1")
 
         self.assertEqual(self.post_quote(ip="10.0.0.1").status_code, 201)
