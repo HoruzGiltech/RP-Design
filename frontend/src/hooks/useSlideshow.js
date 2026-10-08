@@ -10,7 +10,8 @@ import { prefersReducedMotion } from './useReveal'
  * Devuelve:
  *   index          posición de la portada que se ve ahora
  *   previousIndex  posición de la que se veía antes (se está desvaneciendo)
- *   isPlaying      true si la rotación automática está activa
+ *   isPlaying      true si la rotación automática está activa (no la pausó la persona)
+ *   isRunning      true si además está avanzando ahora mismo (sin cursor ni foco encima)
  *   canRotate      true si hay más de una portada
  *   next, previous, goTo(n)   para cambiar a mano
  *   toggle         pausa o reanuda (botón de pausa)
@@ -64,6 +65,7 @@ export function useSlideshow(total, intervalMs) {
     index,
     previousIndex: position.previousIndex,
     isPlaying,
+    isRunning,
     canRotate,
     next,
     previous,

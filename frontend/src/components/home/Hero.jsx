@@ -61,6 +61,10 @@ export default function Hero() {
   if (!hero.is_visible) return null
 
   const hasSlides = slides.length > 0
+  // Cada botón se muestra si el cliente lo dejó activado en el panel (specs-002,
+  // RF-14) y si la sección a la que lleva está visible.
+  const showPrimaryCta = hero.show_primary_cta && site.contact.is_visible
+  const showSecondaryCta = hero.show_secondary_cta && site.projects_section.is_visible
 
   return (
     <section
@@ -113,18 +117,20 @@ export default function Hero() {
               {hero.body}
             </Reveal>
           )}
-          <Reveal index={3} className="hero__actions">
-            {site.contact.is_visible && (
-              <Button to="/#contacto" onDark>
-                {hero.primary_cta_text}
-              </Button>
-            )}
-            {site.projects_section.is_visible && (
-              <Button to="/#proyectos" variant="secondary" onDark>
-                {hero.secondary_cta_text}
-              </Button>
-            )}
-          </Reveal>
+          {(showPrimaryCta || showSecondaryCta) && (
+            <Reveal index={3} className="hero__actions">
+              {showPrimaryCta && (
+                <Button to="/#contacto" onDark>
+                  {hero.primary_cta_text}
+                </Button>
+              )}
+              {showSecondaryCta && (
+                <Button to="/#proyectos" variant="secondary" onDark>
+                  {hero.secondary_cta_text}
+                </Button>
+              )}
+            </Reveal>
+          )}
         </div>
 
         {hasSlides && <HeroControls slides={slides} slideshow={slideshow} />}

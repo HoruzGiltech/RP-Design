@@ -56,6 +56,20 @@
   }
 }
 
+/* Barra de progreso: el indicador de la portada activa se llena mientras dura */
+.hero__indicator-fill.is-running {
+  animation: hero-progress var(--slide-duration) linear both;
+}
+
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 /* El nombre del proyecto aparece con un fundido corto al cambiar de portada */
 .hero__project {
   animation: hero-project-in 300ms var(--ease-out);
@@ -115,6 +129,11 @@
   }
 
   .hero__project {
+    animation: none;
+  }
+
+  /* La barra activa se muestra llena, sin avanzar */
+  .hero__indicator-fill.is-running {
     animation: none;
   }
 }

@@ -21,15 +21,16 @@ function formatMaximum(number) {
 /**
  * Revisa los valores del formulario.
  *
- * values:           { name, phone, email, area, area_other, square_meters, message,
- *                     privacy_accepted }
+ * values:           { name, phone, email, category, area, area_other, square_meters,
+ *                     message, privacy_accepted }
+ * selectedCategory: el tipo de remodelación elegido (objeto de la API) o undefined
  * selectedArea:     el área elegida (objeto de la API) o undefined
  * maxSquareMeters:  máximo de m² configurado en el panel
  *
  * Devuelve un objeto con un mensaje por cada campo con error.
  * Si está vacío, el formulario es válido.
  */
-export function validateQuote(values, selectedArea, maxSquareMeters) {
+export function validateQuote(values, selectedCategory, selectedArea, maxSquareMeters) {
   const errors = {}
 
   if (!values.name.trim()) {
@@ -47,6 +48,10 @@ export function validateQuote(values, selectedArea, maxSquareMeters) {
     errors.email = 'Escribe tu correo.'
   } else if (!EMAIL_PATTERN.test(values.email.trim())) {
     errors.email = 'Escribe un correo válido, como nombre@correo.com.'
+  }
+
+  if (!selectedCategory) {
+    errors.category = 'Elige el tipo de remodelación.'
   }
 
   if (!selectedArea) {

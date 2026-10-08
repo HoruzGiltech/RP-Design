@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { createQuote, getQuoteAreas } from '../../api/endpoints'
+import { createQuote, getQuoteCategories } from '../../api/endpoints'
 import { useSite } from '../../context/SiteContext'
 import { useFetch } from '../../hooks/useFetch'
 import { parseDecimal } from '../../utils/estimate'
@@ -22,6 +22,7 @@ const EMPTY_FORM = {
   name: '',
   phone: '',
   email: '',
+  category: '',
   area: '',
   area_other: '',
   square_meters: INITIAL_SQUARE_METERS,
@@ -36,6 +37,7 @@ const FIELD_ORDER = [
   'name',
   'phone',
   'email',
+  'category',
   'area',
   'area_other',
   'square_meters',
@@ -49,7 +51,13 @@ const TOO_MANY_REQUESTS = 429
 /** Calculadora de cotización: formulario, estimado en vivo y envío por WhatsApp. */
 export default function QuoteCalculator() {
   const { data: site } = useSite()
-  const { data: areas, loading, error: areasError, reload } = useFetch(getQuoteAreas)
+  // Los tipos de remodelación, cada uno con sus áreas (specs-002, RF-17)
+  const {
+    data: categories,
+    loading,
+    error: categoriesError,
+    reload,
+  } = useFetch(getQuoteCategories)
 
   const [values, setValues] = useState(EMPTY_FORM)
   const [errors, setErrors] = useState({})
@@ -62,9 +70,12 @@ export default function QuoteCalculator() {
   const { settings, contact } = site
 
   if (loading) return <Spinner label="Cargando formulario…" />
-  if (areasError) return <ErrorMessage message={areasError.message} onRetry={reload} />
+  if (categoriesError) return <ErrorMessage message={categoriesError.message} onRetry={reload} />
   if (result) return <QuoteSuccess result={result} onReset={resetForm} />
 
+  const selectedCategory = categories.find((category) => String(category.id) === values.category)
+  // Solo se ofrecen las áreas del tipo elegido; sin tipo, ninguna
+  const areas = selectedCategory ? selectedCategory.areas : []
   const selectedArea = areas.find((area) => String(area.id) === values.area)
   const squareMeters = parseDecimal(values.square_meters)
 
@@ -72,7 +83,15 @@ export default function QuoteCalculator() {
     const { name, type, checked, value } = event.target
     // Una casilla no tiene texto: su valor es si está marcada o no
     const newValue = type === 'checkbox' ? checked : value
-    setValues((current) => ({ ...current, [name]: newValue }))
+    setValues((current) => {
+      const updated = { ...current, [name]: newValue }
+      // Al cambiar el tipo, el área elegida ya no vale: hay que elegirla de nuevo
+      if (name === 'category') {
+        updated.area = ''
+        updated.area_other = ''
+      }
+      return updated
+    })
     // Al corregir un campo, su mensaje de error desaparece
     if (errors[name]) {
       setErrors((current) => ({ ...current, [name]: undefined }))
@@ -97,7 +116,12 @@ export default function QuoteCalculator() {
     event.preventDefault()
     setFormError(null)
 
-    const validationErrors = validateQuote(values, selectedArea, settings.max_square_meters)
+    const validationErrors = validateQuote(
+      values,
+      selectedCategory,
+      selectedArea,
+      settings.max_square_meters,
+    )
     if (Object.keys(validationErrors).length > 0) {
       showErrors(validationErrors)
       return
@@ -107,6 +131,7 @@ export default function QuoteCalculator() {
     try {
       const response = await createQuote({
         ...values,
+        category: Number(values.category),
         area: Number(values.area),
         // El backend espera el decimal con punto: "12,5" -> "12.5"
         square_meters: String(squareMeters),
@@ -172,13 +197,30 @@ export default function QuoteCalculator() {
       />
       <Field
         as="select"
+        name="category"
+        label="Tipo de remodelación"
+        value={values.category}
+        onChange={handleChange}
+        error={errors.category}
+      >
+        <option value="">Elige una opción</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </Field>
+      <Field
+        as="select"
         name="area"
         label="Área a remodelar"
         value={values.area}
         onChange={handleChange}
         error={errors.area}
+        // Las áreas dependen del tipo: hasta elegirlo, no hay nada que ofrecer
+        disabled={!selectedCategory}
       >
-        <option value="">Elige una opción</option>
+        <option value="">{selectedCategory ? 'Elige una opción' : 'Elige primero el tipo'}</option>
         {areas.map((area) => (
           <option key={area.id} value={area.id}>
             {area.name}
@@ -189,6 +231,7 @@ export default function QuoteCalculator() {
         <Field
           name="area_other"
           label="Especifica el área"
+          className="quote-form__area-other"
           placeholder="Ejemplo: terraza"
           value={values.area_other}
           onChange={handleChange}
@@ -207,6 +250,7 @@ export default function QuoteCalculator() {
       <Field
         as="textarea"
         name="message"
+        className="quote-form__full"
         label="Mensaje (opcional)"
         rows={4}
         placeholder="Cuéntanos qué quieres transformar"

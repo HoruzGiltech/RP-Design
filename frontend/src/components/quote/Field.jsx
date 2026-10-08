@@ -6,6 +6,7 @@
  * label:    texto de la etiqueta
  * error:    mensaje de error del campo, si lo hay
  * hint:     ayuda breve bajo la etiqueta (opcional)
+ * className: clase extra para el contenedor (por ejemplo, para colocarlo en la grilla)
  * children: las <option> cuando es un select
  * El resto de propiedades (value, onChange, type, placeholder...) va al control.
  */
@@ -15,6 +16,7 @@ export default function Field({
   label,
   error,
   hint,
+  className = '',
   children,
   ...controlProps
 }) {
@@ -27,7 +29,7 @@ export default function Field({
   const describedBy = [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(' ')
 
   return (
-    <div className="quote-field">
+    <div className={`quote-field ${className}`}>
       <label className="quote-field__label" htmlFor={id}>
         {label}
       </label>

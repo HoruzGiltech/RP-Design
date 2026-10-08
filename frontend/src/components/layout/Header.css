@@ -4,11 +4,22 @@
   z-index: 10;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
+  /* Ocultarlo es solo desplazarlo: no mueve el resto de la página */
+  transition: transform var(--motion-hover) var(--ease-out);
 }
 
-.header__inner {
+/* Al bajar por la página el encabezado sale por arriba (ver useHideOnScroll) */
+.header.is-hidden {
+  transform: translateY(-100%);
+}
+
+/* Si alguien llega con el teclado a un elemento del encabezado, este se muestra */
+.header:focus-within {
+  transform: none;
+}
+
+.header__bar {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
@@ -25,7 +36,7 @@
   text-decoration: none;
 }
 
-/* El círculo del logo es el único borde redondeado de todo el sitio */
+/* El círculo del logo es de las pocas piezas redondas del sitio */
 .header__logo-circle {
   display: flex;
   align-items: center;
@@ -64,19 +75,111 @@
   color: var(--color-text-muted);
 }
 
-/* --- Menú en escritorio --- */
+/* --- Lado derecho: botón de cotizar y botón del menú --- */
 
-.header__nav {
+.header__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-28);
-  font-size: var(--text-nav);
+  gap: var(--space-12);
+}
+
+.header__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Tamaño cómodo para tocar con el dedo */
+  width: 48px;
+  height: 48px;
+  margin-right: -12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Tres rayas dibujadas con un elemento y sus dos pseudo-elementos */
+.header__toggle-icon,
+.header__toggle-icon::before,
+.header__toggle-icon::after {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--color-text);
+  transition: transform var(--motion-hover) var(--ease-out);
+}
+
+.header__toggle-icon {
+  position: relative;
+}
+
+.header__toggle-icon::before,
+.header__toggle-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+
+.header__toggle-icon::before {
+  transform: translateY(-7px);
+}
+
+.header__toggle-icon::after {
+  transform: translateY(7px);
+}
+
+/* Abierto: las rayas forman una X */
+.header__toggle[aria-expanded='true'] .header__toggle-icon {
+  background: transparent;
+}
+
+.header__toggle[aria-expanded='true'] .header__toggle-icon::before {
+  transform: rotate(45deg);
+}
+
+.header__toggle[aria-expanded='true'] .header__toggle-icon::after {
+  transform: rotate(-45deg);
+}
+
+/* --- Menú desplegable: debajo del encabezado, alineado con el logo --- */
+
+.header__menu {
+  display: none;
+  /* Se monta sobre la página: abrirlo no empuja el contenido hacia abajo */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header__menu.is-open {
+  display: block;
+  animation: header-menu-in var(--motion-hover) var(--ease-out);
+}
+
+.header__menu-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: var(--space-16);
 }
 
 .header__link {
+  display: flex;
+  align-items: center;
+  /* Ocupa todo el ancho: es más fácil de tocar */
+  width: 100%;
+  min-height: 52px;
+  border-top: 1px solid var(--color-border);
   color: var(--color-text);
+  font-size: var(--text-lead-small);
   text-decoration: none;
   transition: color var(--motion-hover) var(--ease-out);
+}
+
+.header__link:first-child {
+  border-top: 0;
 }
 
 @media (hover: hover) {
@@ -85,96 +188,20 @@
   }
 }
 
-/* El botón hamburguesa solo existe en móvil */
-.header__toggle {
+/* El botón de cotizar: en la barra en pantallas anchas, dentro del menú en las angostas */
+.header__cta--menu {
   display: none;
+  margin-top: var(--space-12);
 }
 
-/* --- Menú en móvil: botón hamburguesa y panel desplegable --- */
-
 @media (max-width: 767px) {
-  .header__toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Tamaño cómodo para tocar con el dedo */
-    width: 48px;
-    height: 48px;
-    margin-right: -12px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  /* Tres rayas dibujadas con un elemento y sus dos pseudo-elementos */
-  .header__toggle-icon,
-  .header__toggle-icon::before,
-  .header__toggle-icon::after {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: var(--color-text);
-    transition: transform var(--motion-hover) var(--ease-out);
-  }
-
-  .header__toggle-icon {
-    position: relative;
-  }
-
-  .header__toggle-icon::before,
-  .header__toggle-icon::after {
-    content: '';
-    position: absolute;
-    left: 0;
-  }
-
-  .header__toggle-icon::before {
-    transform: translateY(-7px);
-  }
-
-  .header__toggle-icon::after {
-    transform: translateY(7px);
-  }
-
-  /* Abierto: las rayas forman una X */
-  .header__toggle[aria-expanded='true'] .header__toggle-icon {
-    background: transparent;
-  }
-
-  .header__toggle[aria-expanded='true'] .header__toggle-icon::before {
-    transform: rotate(45deg);
-  }
-
-  .header__toggle[aria-expanded='true'] .header__toggle-icon::after {
-    transform: rotate(-45deg);
-  }
-
-  .header__nav {
+  .header__cta--bar {
     display: none;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    /* Ocupa toda la fila de abajo, a lo ancho */
-    flex-basis: 100%;
-    padding-bottom: var(--space-12);
-    font-size: var(--text-lead-small);
   }
 
-  .header__nav.is-open {
-    display: flex;
-    animation: header-menu-in var(--motion-hover) var(--ease-out);
-  }
-
-  .header__link {
-    display: flex;
-    align-items: center;
-    min-height: 52px;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .header__cta {
-    margin-top: var(--space-12);
+  .header__cta--menu {
+    display: inline-flex;
+    width: 100%;
   }
 }
 
@@ -186,13 +213,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .header__nav.is-open {
-    animation: none;
-  }
-
+  .header,
   .header__toggle-icon,
   .header__toggle-icon::before,
   .header__toggle-icon::after {
     transition: none;
+  }
+
+  .header__menu.is-open {
+    animation: none;
   }
 }

@@ -71,7 +71,7 @@ Cambia RF-08.5 de specs-001. Validado con la skill `ui-ux-pro-max`, cuya guía p
 | RF-15.1 | Desaparecen los tres botones con recuadro. Los controles pasan a ser una sola línea fina, abajo a la derecha del hero |
 | RF-15.2 | Los **indicadores** (una barra por portada) son el control principal: se pulsan para ir a una portada, y la barra de la portada activa **se va llenando** mientras dura, a modo de progreso |
 | RF-15.3 | **Anterior** y **siguiente** son dos flechas pequeñas sin recuadro, a los lados de los indicadores, atenuadas; se aclaran al pasar el cursor o al enfocarlas |
-| RF-15.4 | **Pausa** es un icono pequeño sin recuadro, junto a los indicadores. Al pausar, la barra de progreso se detiene |
+| RF-15.4 | **Pausa** es un icono pequeño sin recuadro, junto a los indicadores. Mientras la rotación está detenida (por la pausa, el cursor o el foco), la barra activa se muestra llena y quieta; al reanudar, vuelve a empezar junto con el tiempo de la portada |
 | RF-15.5 | Aunque se vean pequeños, todos los controles conservan un área de pulsación cómoda para el dedo |
 
 **Criterios de aceptación**

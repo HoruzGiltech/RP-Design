@@ -79,7 +79,6 @@
   --logo-size: 44px;
 
   /* Ancho mínimo de columna de cada grilla: repeat(auto-fit, minmax(N, 1fr)) */
-  --col-strip: 200px;
   --col-services: 280px;
   --col-hero: 320px;
   --col-wide: 340px;
@@ -97,7 +96,6 @@
   --motion-reveal: 500ms;
   --motion-stagger: 80ms;
   --reveal-distance: 24px;
-  --marquee-duration: 30s;
   /* Hero: fundido entre portadas y tiempo que se ve cada una.
      --slide-duration debe coincidir con SLIDE_INTERVAL_MS de components/home/Hero.jsx */
   --motion-slide: 900ms;

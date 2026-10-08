@@ -36,9 +36,12 @@ export function getLegalPage(slug) {
   return apiGet(`/legal/${encodeURIComponent(slug)}/`)
 }
 
-/** Áreas a remodelar con su precio por m². */
-export function getQuoteAreas() {
-  return apiGet('/quote-areas/')
+/**
+ * Tipos de remodelación (las categorías del panel), cada uno con las áreas
+ * que se pueden elegir en él y su precio por m².
+ */
+export function getQuoteCategories() {
+  return apiGet('/quote-categories/')
 }
 
 /** Envía una cotización. Devuelve el estimado y el enlace de WhatsApp. */

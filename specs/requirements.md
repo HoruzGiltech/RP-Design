@@ -14,6 +14,12 @@
 > - **Dirección web editable** del proyecto → se genera sola (RF-10).
 > - **"WhatsApp como se muestra"** de RF-04.5 → se calcula en formato internacional (RF-11).
 > - Se agrega el **botón flotante de WhatsApp** (RF-12).
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-002/requirements.md`** (segundo paquete, ya implementado):
+> - **S1 Encabezado** → menú siempre desplegable y encabezado que se oculta al bajar (RF-13).
+> - **S3 Franja de especialidades** y **RF-06.4** → eliminadas del sitio (RF-16). La lista sigue en el panel.
+> - **RF-03.2** (lista única de áreas) → áreas según el tipo de remodelación (RF-17).
+> - **S7 Contacto** y **RF-03.11** → una sola columna, con el formulario a todo el ancho (RF-18).
 
 ---
 

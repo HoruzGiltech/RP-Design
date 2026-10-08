@@ -3,7 +3,6 @@ import Hero from '../components/home/Hero'
 import Process from '../components/home/Process'
 import ProjectCategories from '../components/home/ProjectCategories'
 import Services from '../components/home/Services'
-import SpecialtiesStrip from '../components/home/SpecialtiesStrip'
 import QuoteCalculator from '../components/quote/QuoteCalculator'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
@@ -19,7 +18,6 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <SpecialtiesStrip />
       <ProjectCategories />
       <Services />
       <Process />

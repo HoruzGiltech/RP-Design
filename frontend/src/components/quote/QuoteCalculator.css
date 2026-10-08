@@ -1,11 +1,60 @@
-/* Caja del formulario: clara, con borde, como en la maqueta */
+/*
+  Caja del formulario: clara, con borde, como en la maqueta.
+  Ocupa todo el ancho de la sección (specs-002, RF-18) y reparte sus campos
+  en columnas: 1 en móvil, 2 desde 600px y 3 desde 900px. Los campos se
+  colocan solos, en el mismo orden en que están escritos en el componente.
+*/
 .quote-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: var(--space-24);
+  row-gap: 18px;
+  /* Alinea arriba: un campo con error no estira a sus vecinos de fila */
+  align-items: start;
   padding: 36px;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
+}
+
+@media (min-width: 600px) {
+  .quote-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .quote-form {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Estos ocupan la fila completa */
+.quote-form__full,
+.quote-consent,
+.quote-form__error,
+.quote-form__submit {
+  grid-column: 1 / -1;
+}
+
+/* El control de metros ocupa dos columnas cuando las hay */
+@media (min-width: 600px) {
+  .quote-slider {
+    grid-column: span 2;
+  }
+}
+
+/* "Especifica el área" empieza siempre en la tercera columna, junto a Tipo y Área */
+@media (min-width: 900px) {
+  .quote-form__area-other {
+    grid-column: 3;
+  }
+}
+
+/* Un desplegable deshabilitado se ve apagado */
+.quote-field__control:disabled {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
 }
 
 /* --- Campo: etiqueta, control y error --- */
@@ -179,6 +228,13 @@ textarea.quote-field__control {
   border-block: 1px solid var(--color-border);
 }
 
+/* En una sola columna el estimado también ocupa toda la fila */
+@media (max-width: 599px) {
+  .quote-estimate {
+    grid-column: 1 / -1;
+  }
+}
+
 .quote-estimate__label {
   font-size: var(--text-label);
   font-weight: 600;
@@ -289,7 +345,11 @@ textarea.quote-field__control {
 /* --- Pantalla de éxito --- */
 
 .quote-success {
+  /* Una sola columna, con cada elemento a su ancho */
+  display: flex;
+  flex-direction: column;
   align-items: flex-start;
+  gap: 18px;
 }
 
 .quote-success__title {

@@ -5,6 +5,8 @@
 
 **Estado:** Aprobado (v1, 2026-10-06)
 **Base:** `specs/requirements.md` v3 (RF-01 a RF-07), ya implementada salvo el despliegue.
+> ⚠️ **RF-08.5 (los tres botones con recuadro del hero) quedó sustituido por RF-15 de `specs/specs-002/requirements.md`**: controles discretos en una línea. El resto de este paquete sigue vigente.
+
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 
 ---

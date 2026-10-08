@@ -11,6 +11,14 @@
 > - **§2.7 API:** `?featured=true` se reemplaza por `?hero=true`; se agregan `?category=<slug>` y `/api/project-categories/`.
 > - **§3.2 y §3.3 Frontend:** `FeaturedProjects` se reemplaza por `ProjectCategories`; `Hero` se reescribió; se agregan `WhatsAppButton`, `CategoryCard`, `CategoryFilter` y `useSlideshow`.
 > - **§3.0 Tokens:** `--media-hero` se reemplaza por `--media-hero-max`; se agregan `--color-whatsapp`, `--motion-slide` y `--slide-duration`.
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-002/design.md`** (segundo paquete, ya implementado):
+> - **§2.3 `RemodelArea` y `Quote`:** las áreas tienen `category`; la cotización guarda `category` y `category_name`. El identificador del área se genera solo.
+> - **§2.3 `HeroSection`:** se agregan `show_primary_cta` y `show_secondary_cta`.
+> - **§2.4 Mensaje de WhatsApp:** incluye la línea "Tipo".
+> - **§2.7 API:** `/api/quote-areas/` se reemplaza por `/api/quote-categories/`; `POST /api/quotes/` exige `category`; `/api/site/` ya no envía `specialties`.
+> - **§3.2 y §3.3 Frontend:** se borran `SpecialtiesStrip` y `Marquee`; se agrega `useHideOnScroll`; `Header`, `HeroControls`, `Contact`, `ContactInfo` y `QuoteCalculator` cambiaron.
+> - **§3.0 Tokens:** se quitan `--marquee-duration` y `--col-strip`.
 
 ---
 

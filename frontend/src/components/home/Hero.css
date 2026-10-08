@@ -8,6 +8,8 @@
   min-height: min(78vh, var(--media-hero-max));
   background: var(--color-dark);
   color: var(--color-on-dark);
+  /* Línea fina que lo separa de la sección Proyectos, que también es oscura */
+  border-bottom: 1px solid var(--color-dark-surface);
   /* "clip" y no "hidden": recorta el zoom de las fotos sin crear una zona de scroll propia */
   overflow: clip;
 }
@@ -124,38 +126,46 @@
   line-height: 1.25;
 }
 
+/*
+  Controles discretos (specs-002, RF-15): una sola línea con flechas pequeñas,
+  una barra por portada y la pausa. No tienen recuadro, pero cada uno conserva
+  un área de 44px para poder tocarlo con el dedo.
+*/
 .hero__controls {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-12);
+  align-items: center;
 }
 
-.hero__buttons {
-  display: flex;
-  gap: 4px;
-}
-
-.hero__button {
+.hero__control {
   display: grid;
   place-content: center;
-  /* Tamaño cómodo para tocar con el dedo */
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   padding: 0;
-  border: 1px solid color-mix(in srgb, var(--color-on-dark) 45%, transparent);
+  border: 0;
   background: transparent;
   color: var(--color-on-dark);
-  font-size: var(--text-body);
+  font-size: 22px;
+  line-height: 1;
+  /* Atenuado: se aclara al pasar el cursor o al enfocarlo */
+  opacity: 0.6;
   cursor: pointer;
   transition:
-    background-color var(--motion-hover) var(--ease-out),
-    color var(--motion-hover) var(--ease-out),
+    opacity var(--motion-hover) var(--ease-out),
     transform var(--motion-fast) var(--ease-out);
 }
 
-.hero__button:active {
-  transform: scale(0.97);
+/* El signo de pausa es más ancho que las flechas: va más pequeño */
+.hero__control--pause {
+  font-size: 11px;
+}
+
+.hero__control:active {
+  transform: scale(0.9);
+}
+
+.hero__control:focus-visible {
+  opacity: 1;
 }
 
 .hero__indicators {
@@ -165,30 +175,41 @@
 
 /* El botón es más alto que la barra que se ve, para que sea fácil de tocar */
 .hero__indicator {
-  width: 36px;
-  height: 28px;
+  position: relative;
+  width: 32px;
+  height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
 }
 
+/* La barra de fondo, atenuada */
 .hero__indicator::before {
   content: '';
-  display: block;
-  height: 3px;
-  background: color-mix(in srgb, var(--color-on-dark) 40%, transparent);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: color-mix(in srgb, var(--color-on-dark) 35%, transparent);
   transition: background-color var(--motion-hover) var(--ease-out);
 }
 
-.hero__indicator[aria-current='true']::before {
+/* El relleno de la barra activa. Su animación de progreso está en motion.css */
+.hero__indicator-fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
   background: var(--color-on-dark);
+  transform-origin: left;
 }
 
 @media (hover: hover) {
-  .hero__button:hover {
-    background: var(--color-on-dark);
-    color: var(--color-dark);
+  .hero__control:hover {
+    opacity: 1;
   }
 
   .hero__project:hover .hero__project-title {
@@ -196,7 +217,7 @@
   }
 
   .hero__indicator:hover::before {
-    background: var(--color-on-dark);
+    background: color-mix(in srgb, var(--color-on-dark) 70%, transparent);
   }
 }
 
@@ -222,8 +243,9 @@
 
   /* Controles a la izquierda: la esquina derecha queda libre para el botón flotante de WhatsApp */
   .hero__controls {
-    align-items: flex-start;
     width: 100%;
+    /* Compensa el área de toque de la primera flecha, para alinearla con el texto */
+    margin-left: -14px;
     padding-right: 72px;
   }
 }

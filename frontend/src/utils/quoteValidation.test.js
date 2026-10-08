@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { validateQuote } from './quoteValidation'
 
+const RESIDENTIAL = { id: 1, name: 'Residencial', slug: 'residencial' }
 const KITCHEN = { id: 2, name: 'Cocina', price_per_m2: '100.00', is_other: false }
 const OTHER = { id: 6, name: 'Otro', price_per_m2: null, is_other: true }
 const MAX_SQUARE_METERS = '10000.00'
@@ -11,6 +12,7 @@ function validValues(changes = {}) {
     name: 'Ana Pérez',
     phone: '+58 412-1234567',
     email: 'ana@mail.com',
+    category: '1',
     area: '2',
     area_other: '',
     square_meters: '12,5',
@@ -20,8 +22,8 @@ function validValues(changes = {}) {
   }
 }
 
-function validate(changes, area = KITCHEN) {
-  return validateQuote(validValues(changes), area, MAX_SQUARE_METERS)
+function validate(changes, area = KITCHEN, category = RESIDENTIAL) {
+  return validateQuote(validValues(changes), category, area, MAX_SQUARE_METERS)
 }
 
 describe('validateQuote', () => {
@@ -33,10 +35,26 @@ describe('validateQuote', () => {
     const errors = validateQuote(
       validValues({ name: ' ', phone: '', email: '', square_meters: '' }),
       undefined,
+      undefined,
       MAX_SQUARE_METERS,
     )
 
-    expect(Object.keys(errors).sort()).toEqual(['area', 'email', 'name', 'phone', 'square_meters'])
+    expect(Object.keys(errors).sort()).toEqual([
+      'area',
+      'category',
+      'email',
+      'name',
+      'phone',
+      'square_meters',
+    ])
+  })
+
+  it('pide el tipo de remodelación', () => {
+    // Se llama directo a validateQuote: con el ayudante validate(), pasar undefined
+    // haría que se usara la categoría por defecto
+    const errors = validateQuote(validValues(), undefined, KITCHEN, MAX_SQUARE_METERS)
+
+    expect(errors.category).toContain('tipo de remodelación')
   })
 
   it('el mensaje es opcional', () => {

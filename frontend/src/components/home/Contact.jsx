@@ -5,7 +5,10 @@ import ContactInfo from './ContactInfo'
 import './Contact.css'
 
 /**
- * Sección Contacto: a la izquierda los datos, a la derecha el formulario.
+ * Sección Contacto, en una sola columna (specs-002, RF-18):
+ * título e introducción, el formulario a todo el ancho y, debajo, los datos
+ * de contacto uno al lado del otro.
+ *
  * `children` es el formulario de cotización (components/quote/QuoteCalculator).
  */
 export default function Contact({ children }) {
@@ -16,19 +19,20 @@ export default function Contact({ children }) {
 
   return (
     <Section id="contacto" variant="alt" className="contact">
-      <div className="contact__info-column">
+      <div className="contact__header">
         <Reveal as="h2">{contact.title}</Reveal>
         {contact.intro && (
           <Reveal as="p" index={1} className="contact__intro">
             {contact.intro}
           </Reveal>
         )}
-        <Reveal index={2}>
-          <ContactInfo />
-        </Reveal>
       </div>
 
       {children && <div>{children}</div>}
+
+      <Reveal>
+        <ContactInfo />
+      </Reveal>
     </Section>
   )
 }

@@ -220,7 +220,7 @@ Nombre del proyecto →                    ‹  ▰▱ ▭ ▭  ›   ❚❚
 | Elemento | Detalle |
 |---|---|
 | Indicadores | Barras de 2 px de alto. La activa tiene dentro un relleno que crece de izquierda a derecha con `transform: scaleX(0 → 1)` durante `--slide-duration` |
-| Progreso en pausa | `animation-play-state: paused` mientras el cursor o el foco están encima o la persona pulsó pausa. El hero pone `data-paused` en su contenedor |
+| Progreso en pausa | El relleno solo lleva la animación mientras la rotación corre (`isRunning` de `useSlideshow`). Detenida, se muestra lleno y quieto. Al reanudar, la animación empieza de cero, igual que el temporizador de la portada: así nunca se desincronizan |
 | Flechas | `‹` y `›`, sin borde ni fondo, `opacity: 0.6`; `1` con hover o foco |
 | Pausa | `❚❚` / `▶` pequeño, sin borde, misma opacidad |
 | Área pulsable | Cada botón mide 44 × 44 px aunque su dibujo sea de unos 12 px (CA-15.2) |
@@ -233,7 +233,7 @@ Nombre del proyecto →                    ‹  ▰▱ ▭ ▭  ›   ❚❚
 
 ### 3.4 Inicio sin cintillo (RF-16)
 
-- `HomePage` deja de montar `SpecialtiesStrip`. Se borran ese componente y `Marquee`, y el token `--marquee-duration` y `--col-strip`.
+- `HomePage` deja de montar `SpecialtiesStrip`. Se borran ese componente y `Marquee`, y los tokens `--marquee-duration` y `--col-strip`.
 - Después del hero viene la sección Proyectos (orden de specs-001, P-8). Las dos son oscuras: se separan con una línea fina (`--color-dark-surface`) para que no parezcan un solo bloque.
 
 ### 3.5 Formulario (RF-17)

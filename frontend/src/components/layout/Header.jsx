@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useSite } from '../../context/SiteContext'
+import { useHideOnScroll } from '../../hooks/useHideOnScroll'
 import Button from '../ui/Button'
 import './Header.css'
 
@@ -19,29 +20,49 @@ function getNavLinks(site) {
   ].filter((link) => link.isVisible)
 }
 
+/**
+ * Encabezado del sitio (specs-002, RF-13).
+ * - Las opciones del menú van siempre detrás de un botón y se despliegan
+ *   debajo del logo, en todos los tamaños de pantalla.
+ * - Se oculta al bajar por la página y vuelve al subir.
+ */
 export default function Header() {
   const { data: site } = useSite()
-  // Solo importa en móvil: en escritorio el menú siempre está a la vista
+  const headerRef = useRef(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  // Con el menú abierto no se oculta: se quedaría un menú flotando sin encabezado
+  const isHidden = useHideOnScroll({ disabled: isMenuOpen })
 
-  // El menú móvil también se cierra con la tecla Escape
+  // Con el menú abierto: se cierra con Escape o al pulsar fuera del encabezado
   useEffect(() => {
     if (!isMenuOpen) return undefined
 
     function closeOnEscape(event) {
       if (event.key === 'Escape') setIsMenuOpen(false)
     }
+    function closeOnOutsidePress(event) {
+      if (!headerRef.current.contains(event.target)) setIsMenuOpen(false)
+    }
     document.addEventListener('keydown', closeOnEscape)
-    return () => document.removeEventListener('keydown', closeOnEscape)
+    document.addEventListener('pointerdown', closeOnOutsidePress)
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.removeEventListener('pointerdown', closeOnOutsidePress)
+    }
   }, [isMenuOpen])
 
   const { settings } = site
   const navLinks = getNavLinks(site)
+  const showCta = site.contact.is_visible
+
+  function closeMenu() {
+    setIsMenuOpen(false)
+  }
 
   return (
-    <header className="header">
-      <div className="container header__inner">
-        <Link to="/#inicio" className="header__brand" onClick={() => setIsMenuOpen(false)}>
+    <header ref={headerRef} className={isHidden ? 'header is-hidden' : 'header'}>
+      <div className="container header__bar">
+        <Link to="/#inicio" className="header__brand" onClick={closeMenu}>
           {settings.logo ? (
             <img className="header__logo-image" src={settings.logo} alt="" />
           ) : (
@@ -55,36 +76,53 @@ export default function Header() {
           </span>
         </Link>
 
-        <button
-          type="button"
-          className="header__toggle"
-          aria-expanded={isMenuOpen}
-          aria-controls={MENU_ID}
-          onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
-        >
-          <span className="visually-hidden">{isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}</span>
-          <span className="header__toggle-icon" aria-hidden="true" />
-        </button>
+        <div className="header__actions">
+          {/* En pantallas anchas el botón de cotizar sigue a la vista en la barra */}
+          {showCta && (
+            <Button
+              to="/#contacto"
+              size="small"
+              className="header__cta header__cta--bar"
+              onClick={closeMenu}
+            >
+              {settings.header_cta_text}
+            </Button>
+          )}
+          <button
+            type="button"
+            className="header__toggle"
+            aria-expanded={isMenuOpen}
+            aria-controls={MENU_ID}
+            onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
+          >
+            <span className="visually-hidden">{isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}</span>
+            <span className="header__toggle-icon" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
 
-        <nav
-          id={MENU_ID}
-          aria-label="Principal"
-          className={isMenuOpen ? 'header__nav is-open' : 'header__nav'}
-          // Al elegir cualquier enlace, el menú móvil se cierra
-          onClick={() => setIsMenuOpen(false)}
-        >
+      {/* Las opciones se despliegan debajo del logo, alineadas con él */}
+      <nav
+        id={MENU_ID}
+        aria-label="Principal"
+        className={isMenuOpen ? 'header__menu is-open' : 'header__menu'}
+        // Al elegir cualquier opción, el menú se cierra
+        onClick={closeMenu}
+      >
+        <div className="container header__menu-inner">
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className="header__link">
               {link.label}
             </Link>
           ))}
-          {site.contact.is_visible && (
-            <Button to="/#contacto" size="small" className="header__cta">
+          {/* En pantallas angostas el botón de cotizar va dentro del menú, como antes */}
+          {showCta && (
+            <Button to="/#contacto" size="small" className="header__cta header__cta--menu">
               {settings.header_cta_text}
             </Button>
           )}
-        </nav>
-      </div>
+        </div>
+      </nav>
     </header>
   )
 }

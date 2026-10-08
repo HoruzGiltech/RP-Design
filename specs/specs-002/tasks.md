@@ -43,21 +43,21 @@ Las tareas llevan el prefijo `S2-` para no confundirlas con las de `specs/tasks.
 
 ## Fase C — Frontend
 
-- [ ] **S2-C1** `api/endpoints.js` (`getQuoteCategories`) y `validateQuote` con el tipo, con sus tests en Vitest.
-- [ ] **S2-C2** Formulario: campo "Tipo de remodelación", áreas según el tipo y reinicio del área al cambiar de tipo. *(RF-17.1, RF-17.2, RF-17.6, CA-17.1, CA-17.4)*
+- [x] **S2-C1** `api/endpoints.js` (`getQuoteCategories`) y `validateQuote` con el tipo, con sus tests en Vitest.
+- [x] **S2-C2** Formulario: campo "Tipo de remodelación", áreas según el tipo y reinicio del área al cambiar de tipo. *(RF-17.1, RF-17.2, RF-17.6, CA-17.1, CA-17.4)*
   - Verificación con Playwright: cada tipo ofrece sus áreas; envío real con el tipo en el mensaje.
-- [ ] **S2-C3** Sección Contacto en una columna: formulario a todo el ancho con sus campos en columnas, y datos de contacto en fila debajo. *(RF-18)*
+- [x] **S2-C3** Sección Contacto en una columna: formulario a todo el ancho con sus campos en columnas, y datos de contacto en fila debajo. *(RF-18)*
   - Verificación con Playwright a 360, 768, 1280 y 1920 px; orden de `Tab` igual al visual.
-- [ ] **S2-C4** Revisar el botón flotante de WhatsApp con la nueva sección Contacto (sigue sin tapar el envío). *(CA-12.3 de specs-001)*
-- [ ] **S2-C5** Quitar el cintillo: `HomePage` sin `SpecialtiesStrip`; borrar ese componente, `Marquee` y sus tokens. *(RF-16.1, CA-16.1)*
-- [ ] **S2-C6** Hero: botones según sus interruptores. *(RF-14.2, RF-14.3, CA-14.1)*
+- [x] **S2-C4** Revisar el botón flotante de WhatsApp con la nueva sección Contacto (sigue sin tapar el envío). *(CA-12.3 de specs-001)*
+- [x] **S2-C5** Quitar el cintillo: `HomePage` sin `SpecialtiesStrip`; borrar ese componente, `Marquee` y sus tokens. *(RF-16.1, CA-16.1)*
+- [x] **S2-C6** Hero: botones según sus interruptores. *(RF-14.2, RF-14.3, CA-14.1)*
   - Verificación con Playwright: los dos, uno y ninguno.
-- [ ] **S2-C7** Hero: controles discretos con barra de progreso en el indicador activo. *(RF-15)*
+- [x] **S2-C7** Hero: controles discretos con barra de progreso en el indicador activo. *(RF-15)*
   - Verificación con Playwright: mouse y teclado; áreas pulsables de 44 px; pausa detiene el progreso; movimiento reducido.
-- [ ] **S2-C8** Encabezado: menú siempre desplegable debajo del logo; se cierra al elegir, con `Esc` y al pulsar fuera. *(RF-13.1 a RF-13.4, CA-13.1, CA-13.2)*
-- [ ] **S2-C9** `useHideOnScroll`: el encabezado se oculta al bajar y vuelve al subir. *(RF-13.5, RF-13.6, CA-13.3 a CA-13.5, RNF-11)*
+- [x] **S2-C8** Encabezado: menú siempre desplegable debajo del logo; se cierra al elegir, con `Esc` y al pulsar fuera. *(RF-13.1 a RF-13.4, CA-13.1, CA-13.2)*
+- [x] **S2-C9** `useHideOnScroll`: el encabezado se oculta al bajar y vuelve al subir. *(RF-13.5, RF-13.6, CA-13.3 a CA-13.5, RNF-11)*
   - Verificación con Playwright: baja, sube, menú abierto, foco con `Tab` y movimiento reducido.
-- [ ] **S2-C10** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo lo nuevo.
+- [x] **S2-C10** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo lo nuevo.
 
 - [ ] **S2-C11** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio y prueba en un celular real.
 
@@ -65,8 +65,8 @@ Las tareas llevan el prefijo `S2-` para no confundirlas con las de `specs/tasks.
 
 ## Fase D — Cierre
 
-- [ ] **S2-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
-- [ ] **S2-D2** Anotar en `specs/requirements.md`, `specs/design.md` y `specs/specs-001/` qué apartados quedaron sustituidos por specs-002.
+- [x] **S2-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
+- [x] **S2-D2** Anotar en `specs/requirements.md`, `specs/design.md` y `specs/specs-001/` qué apartados quedaron sustituidos por specs-002.
 - [ ] **S2-D3** ✋ Aprobación final.
 
 ---
