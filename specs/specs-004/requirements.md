@@ -37,7 +37,7 @@
 1. La sección Proyectos del inicio deja de mostrar las tarjetas de categorías. Quedan el **título** de la sección y **un botón** que lleva a `/proyectos`.
 2. El botón es más llamativo que los demás del sitio: más alto, más ancho (ocupa todo el ancho en celular) y con una flecha que se desplaza al pasar el cursor.
 3. El texto del botón sale del panel (campo que ya existe). Pasa a decir **"Ver proyectos"**; si el cliente ya lo había cambiado, se respeta su texto.
-4. El enlace a Instagram de esa sección se quita: Instagram ya está en el pie (RF-33).
+4. El enlace a Instagram de esa sección **se conserva**, junto al título (decisión del desarrollador, 2026-10-09).
 5. Las categorías **no desaparecen**: siguen siendo el filtro de `/proyectos` (RF-09).
 
 **Criterios de aceptación**
@@ -101,12 +101,12 @@
 
 ### RF-40 — Ajustes del formulario
 
-1. "Ubicación del espacio" tiene el **mismo ancho** que "Tipo de remodelación".
+1. "Ubicación del espacio" tiene el **mismo tamaño** que "Tipo de remodelación": mismo ancho y **mismo alto** (el desplegable se veía más bajo que el campo de texto).
 2. La casilla "Tengo fotos del espacio" va **arriba del mensaje**.
 3. La tabla "Campos del formulario" del panel sigue ese mismo orden.
 
 **Criterios de aceptación**
-- [ ] CA-40.1 A 1280 px, Tipo y Ubicación miden lo mismo.
+- [ ] CA-40.1 Tipo y Ubicación miden lo mismo de ancho y de alto, y sus bordes quedan alineados.
 - [ ] CA-40.2 El orden en pantalla y al tabular es: …áreas, visita, estimado, fotos, mensaje, privacidad.
 
 ### RF-41 — Entradas suaves donde no hay cursor
@@ -127,7 +127,6 @@
 | Antes | Qué pasa |
 |---|---|
 | RF-09.1 (specs-001): tarjetas de categorías en el inicio | Sustituido por RF-34: título y botón |
-| Enlace a Instagram en la sección Proyectos (`specs/` S5) | Se quita (RF-34.4) |
 | Casilla "usar como portada de su categoría" del proyecto | Deja de tener uso; se quita del formulario del panel y el dato se conserva |
 | Servicios como tarjetas de texto sobre fondo claro (`specs/` S4) | Sustituido por RF-35: tarjetas con portada sobre fondo oscuro |
 | RF-24 (specs-003): botón "Cotizar" debajo del texto | Sustituido por RF-37: dentro de la capa |

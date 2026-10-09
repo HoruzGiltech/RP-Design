@@ -149,6 +149,16 @@ textarea.quote-field__control {
   resize: vertical;
 }
 
+/*
+  Los campos de una línea y los desplegables miden lo mismo de alto. Sin esto,
+  el navegador dibuja el desplegable más bajo que un campo de texto y la fila
+  queda dispareja (specs-004, RF-40).
+*/
+.quote-field > input.quote-field__control,
+.quote-field > select.quote-field__control {
+  height: 56px;
+}
+
 .quote-field__control:focus-visible {
   border-color: var(--color-text);
   outline-offset: 0;

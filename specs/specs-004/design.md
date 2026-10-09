@@ -148,7 +148,7 @@ Token nuevo en `tokens.css`: `--motion-overlay: 450ms` (hoy la capa usa `--motio
 
 ### 3.4 Proyectos del inicio (RF-34)
 
-- `ProjectsTeaser.jsx`: `<Section id="proyectos" variant="dark">` con el `h2` y el botón. Ya no pide categorías a la API.
+- `ProjectsTeaser.jsx`: `<Section id="proyectos" variant="dark">` con el `h2`, el enlace a Instagram (como hoy) y el botón. Ya no pide categorías a la API.
 - `Button` gana `size="large"`: más alto, `min-width: 320px` (100 % en celular) y una flecha `→` que se desplaza 6px al pasar el cursor (`transform`).
 - Se borran `ProjectCategories.*` y `CategoryCard.jsx`. `getProjectCategories` se conserva para `/proyectos`.
 
@@ -160,6 +160,7 @@ Token nuevo en `tokens.css`: `--motion-overlay: 450ms` (hoy la capa usa `--motio
 ### 3.6 Formulario (RF-40)
 
 - Se quita la regla que hacía que "Ubicación" ocupara dos columnas.
+- Los campos de una línea y los desplegables llevan el mismo alto fijo (56px): el navegador dibujaba el desplegable 9px más bajo.
 - En `QuoteCalculator.jsx`, la casilla `has_photos` se mueve antes del campo `message`.
 
 ### 3.7 Tests del frontend
