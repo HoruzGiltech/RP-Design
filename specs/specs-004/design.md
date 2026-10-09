@@ -11,7 +11,7 @@
 
 | Bloque | Backend | Frontend |
 |---|---|---|
-| **Formulario** (RF-40) | Migración de datos: orden de `QuoteFormField` | `QuoteCalculator.jsx` y `.css` |
+| **Formulario** (RF-40) | Migración de datos `0013`: orden de `QuoteFormField` | `QuoteCalculator.jsx` y `.css` |
 | **Servicios** (RF-35 a RF-37, RF-41) | `Service.image`, `Service.image_alt`, nombre de la sección, `/api/site/` | `Services.jsx` y `.css`, `ServiceCard.jsx` (nuevo), `overlay.css` (nuevo) |
 | **Proyectos** (RF-34, RF-38, RF-39, RF-41) | Migración de datos: texto del botón; panel sin "portada de su categoría" | `ProjectsTeaser.jsx` (reemplaza a `ProjectCategories`), `ProjectCard`, `ProjectDetailPage`, `Button` |
 
@@ -37,8 +37,11 @@ class Service(OrderedModel, VisibleModel):
 
 | Migración | Qué hace |
 |---|---|
-| `site_content.0013_service_image` | Agrega `image` e `image_alt` a `Service`; cambia el nombre visible de `ServicesSection` |
-| `site_content.0014_specs_004_texts` (datos) | `ProjectsSection.view_all_text`: "Ver todos los proyectos" → "Ver proyectos", **solo si sigue con el texto original**. `QuoteFormField`: `has_photos` pasa a ir antes de `message` |
+| `site_content.0013_form_field_order` (datos, bloque 1) | `QuoteFormField`: `has_photos` pasa a ir antes de `message` |
+| `site_content.0014_service_image` (bloque 2) | Agrega `image` e `image_alt` a `Service`; cambia el nombre visible de `ServicesSection` |
+| `site_content.0015_projects_button_text` (datos, bloque 3) | `ProjectsSection.view_all_text`: "Ver todos los proyectos" → "Ver proyectos", **solo si sigue con el texto original** |
+
+Una migración por bloque, para que cada bloque se pueda probar y subir por separado.
 
 Como no hay modelos nuevos, no hace falta migración de permisos en `core`.
 
@@ -62,7 +65,7 @@ Cada elemento de `services.items` agrega:
 
 - API: `image` e `image_alt` en cada servicio; `null` sin imagen; dirección completa con imagen.
 - Panel: el servicio acepta una imagen dentro de "Servicios"; un archivo falso se rechaza; el menú dice "Servicios".
-- Migración 0014: el texto original se cambia y el del cliente se respeta; `has_photos` queda antes de `message`.
+- Migraciones de datos: `has_photos` queda antes de `message`; el texto original del botón se cambia y el del cliente se respeta.
 - Roles: un Viewer no puede cambiar la imagen de un servicio.
 
 ---

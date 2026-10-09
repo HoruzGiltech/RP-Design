@@ -46,8 +46,8 @@ const TEXT_KEYS = [
   'area_other',
   'square_meters',
   'needs_visit',
-  'message',
   'has_photos',
+  'message',
 ]
 
 const BAD_REQUEST = 400
@@ -282,7 +282,6 @@ export default function QuoteCalculator() {
       </Field>
       <Field
         name="location"
-        className="quote-form__location"
         label={texts.location.label}
         placeholder={texts.location.placeholder}
         autoComplete="off"
@@ -349,6 +348,16 @@ export default function QuoteCalculator() {
         />
       )}
 
+      <CheckboxField
+        id="quote-has_photos"
+        name="has_photos"
+        className="quote-form__full"
+        checked={values.has_photos}
+        onChange={handleChange}
+      >
+        {texts.has_photos.label}
+      </CheckboxField>
+
       <Field
         as="textarea"
         name="message"
@@ -361,16 +370,6 @@ export default function QuoteCalculator() {
         onChange={handleChange}
         error={errors.message}
       />
-
-      <CheckboxField
-        id="quote-has_photos"
-        name="has_photos"
-        className="quote-form__full"
-        checked={values.has_photos}
-        onChange={handleChange}
-      >
-        {texts.has_photos.label}
-      </CheckboxField>
 
       <CheckboxField
         id="quote-privacy_accepted"

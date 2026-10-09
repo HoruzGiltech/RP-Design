@@ -38,13 +38,6 @@
   grid-column: 1 / -1;
 }
 
-/* La ubicación ocupa el resto de la fila, junto a "Tipo de remodelación" */
-@media (min-width: 900px) {
-  .quote-form__location {
-    grid-column: span 2;
-  }
-}
-
 /* --- Áreas a remodelar: una casilla por área (specs-003, RF-27) --- */
 
 .quote-areas {

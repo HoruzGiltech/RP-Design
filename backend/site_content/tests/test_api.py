@@ -194,6 +194,13 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         self.assertEqual(form_fields["name"], {"label": "Nombre", "placeholder": "Tu nombre"})
         self.assertEqual(form_fields["has_photos"]["label"], "Tengo fotos del espacio")
 
+    def test_photos_checkbox_goes_before_the_message(self):
+        # specs-004, RF-40: el mensaje es el último campo del formulario
+        keys = list(QuoteFormField.objects.values_list("key", flat=True))
+
+        self.assertEqual(keys[-2:], ["has_photos", "message"])
+        self.assertEqual(len(keys), 11)
+
     def test_form_field_text_changed_in_the_panel_is_seen_right_away(self):
         QuoteFormField.objects.filter(key="phone").update(label="WhatsApp")
 

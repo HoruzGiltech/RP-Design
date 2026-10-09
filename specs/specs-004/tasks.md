@@ -20,15 +20,15 @@ Las tareas llevan el prefijo `S4-`. **Este paquete se entrega por bloques** (P-4
 
 ## Bloque 1 — Formulario
 
-- [ ] **S4-B1** "Ubicación del espacio" con el mismo ancho que "Tipo de remodelación". *(RF-40.1, CA-40.1)*
-- [ ] **S4-B2** "Tengo fotos del espacio" arriba del mensaje, en el sitio y en la tabla del panel (migración de datos `site_content.0014`, parte del orden). *(RF-40.2, RF-40.3, CA-40.2)*
+- [x] **S4-B1** "Ubicación del espacio" con el mismo ancho que "Tipo de remodelación". *(RF-40.1, CA-40.1)*
+- [x] **S4-B2** "Tengo fotos del espacio" arriba del mensaje, en el sitio y en la tabla del panel (migración de datos `site_content.0013`). *(RF-40.2, RF-40.3, CA-40.2)*
 - [ ] **S4-B3** ✋ **Prueba del bloque 1:** el desarrollador revisa el formulario.
 
 ---
 
 ## Bloque 2 — Servicios
 
-- [ ] **S4-C1** `Service.image` e `image_alt`; "Servicios (encabezado)" pasa a "Servicios". Migración `site_content.0013`. *(RF-36)*
+- [ ] **S4-C1** `Service.image` e `image_alt`; "Servicios (encabezado)" pasa a "Servicios". Migración `site_content.0014`. *(RF-36)*
 - [ ] **S4-C2** Imagen en la tabla de servicios del panel y en `/api/site/`, con sus tests (API, panel, archivo falso, Viewer). *(RF-36, CA-36.1 a CA-36.3)*
 - [ ] **S4-C3** `styles/overlay.css` y el token `--motion-overlay`: capa compartida con entrada suave, barra fina y degradado. *(RF-37.2, RF-38)*
 - [ ] **S4-C4** `ServiceCard` y sección Servicios con fondo oscuro y cuadrícula de portadas. *(RF-35, CA-35.1, CA-35.2)*
@@ -41,7 +41,7 @@ Las tareas llevan el prefijo `S4-`. **Este paquete se entrega por bloques** (P-4
 ## Bloque 3 — Proyectos
 
 - [ ] **S4-D1** Sección Proyectos del inicio con título y botón grande; `Button` tamaño "large"; se borran `ProjectCategories` y `CategoryCard`. *(RF-34, CA-34.1 a CA-34.3)*
-- [ ] **S4-D2** Texto del botón "Ver proyectos" (migración `site_content.0014`, parte del texto, con su test) y panel sin "usar como portada de su categoría". *(RF-34.3, P-37, P-38)*
+- [ ] **S4-D2** Texto del botón "Ver proyectos" (migración de datos `site_content.0015`, con su test) y panel sin "usar como portada de su categoría". *(RF-34.3, P-37, P-38)*
 - [ ] **S4-D3** Tarjetas de proyecto con la capa compartida (barra fina y degradado). *(RF-38, CA-38.1, CA-38.2)*
 - [ ] **S4-D4** Capa con la descripción sobre la portada del detalle. *(RF-39, CA-39.1, CA-39.2)*
 - [ ] **S4-D5** En táctil, el texto de las tarjetas de proyecto entra suave. *(RF-41.3)*
