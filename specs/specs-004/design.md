@@ -26,7 +26,7 @@ No hay modelos nuevos ni dependencias nuevas.
 ```python
 class Service(OrderedModel, VisibleModel):
     ...
-    image = site_image_field("imagen", blank=True)      # mismo ayudante que Portada y Proceso
+    image = site_image_field("imagen")      # mismo ayudante que Portada y Proceso; es opcional
     image_alt = models.CharField("texto alternativo de la imagen", max_length=150, blank=True)
 ```
 

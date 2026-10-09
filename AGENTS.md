@@ -50,7 +50,7 @@ specs/
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
 - **Paquetes cerrados:** `specs/specs-001/`, `specs/specs-002/` y `specs/specs-003/`, los tres implementados.
-- **Siguiente paquete: `specs/specs-004/`**, todavía sin especificar (el desarrollador entregará los cambios). Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Trabajo en curso: `specs/specs-004/`.** Se entrega por bloques (Formulario, Servicios, Proyectos), con una pausa de prueba al final de cada uno. Empieza cada sesión leyendo este archivo, `specs/` y los cuatro paquetes.
 - **El despliegue sigue pendiente** (`specs/tasks.md`, Fase 5) y todavía no se ha empezado. Ningún paquete de cambios lo reemplaza: viene después de los paquetes de cambios. No se empieza sin que el desarrollador lo pida.
 
 1. **Requisitos:** a partir de la sección 4 de este archivo, crea/actualiza `specs/requirements.md`.
@@ -190,6 +190,14 @@ El detalle está en `specs/specs-003/requirements.md`. En resumen:
 - **RF-27 a RF-32 — Formulario:** varias áreas, cada una con sus m² (también escritos a mano); mensaje de WhatsApp sin emojis; estimado ocultable; títulos y textos de ejemplo editables; campos nuevos de fotos, visita y ubicación.
 - **RF-33 — Pie de página:** iconos de WhatsApp, correo e Instagram; se quitan los datos de la sección Contacto.
 
+### Cambios de specs-004 (RF-34 a RF-41)
+El detalle está en `specs/specs-004/requirements.md`. En resumen:
+- **RF-34 — Proyectos del inicio:** quedan el título y un botón grande "Ver proyectos". Las categorías siguen como filtro en `/proyectos`.
+- **RF-35 a RF-37 — Servicios con portada:** tarjetas con foto sobre fondo oscuro; cada servicio tiene su imagen en el panel ("Servicios"); al pasar el mouse salen la descripción y "Cotizar", con una entrada suave.
+- **RF-38 y RF-39 — Descripción sobre la portada:** barra de scroll fina con degradado, y la misma capa en el detalle del proyecto.
+- **RF-40 — Formulario:** Ubicación del mismo ancho que Tipo; "Tengo fotos" arriba del mensaje.
+- **RF-41 — Pantallas táctiles:** lo que depende del cursor entra solo al aparecer en pantalla.
+
 ---
 
 ## 5. Stack técnico
@@ -233,7 +241,8 @@ El detalle está en `specs/specs-003/requirements.md`. En resumen:
 ├── specs/          # especificación base (requirements, design, tasks)
 │   ├── specs-001/  # primer paquete de cambios del cliente (implementado)
 │   ├── specs-002/  # segundo paquete de cambios (implementado)
-│   └── specs-003/  # tercer paquete de cambios (implementado)
+│   ├── specs-003/  # tercer paquete de cambios (implementado)
+│   └── specs-004/  # cuarto paquete de cambios (trabajo en curso)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -332,6 +341,8 @@ Al terminar cada tarea o fase, responde con:
 | Cotización | Varias áreas por cotización, cada una con sus m²; el total es la suma (specs-003) |
 | Mensaje de WhatsApp | Sin emojis: en algunas versiones llegaban como "?" (specs-003) |
 | Tipografía | Dos fuentes cargables desde el panel, con las originales de respaldo (specs-003) |
+| Servicios | Tarjetas con portada; la descripción y "Cotizar" salen en una capa sobre la foto (specs-004) |
+| Forma de entrega | specs-004 se entrega por bloques, con una pausa de prueba en cada uno |
 
 ## 11. Fases del proyecto
 
@@ -342,7 +353,7 @@ Al terminar cada tarea o fase, responde con:
 5. **specs-001:** primer paquete de cambios del cliente (hero, categorías, dirección automática y WhatsApp). Implementado.
 6. **specs-002:** segundo paquete (menú desplegable, hero, formulario por tipo de remodelación y sección Contacto). Implementado y cerrado el 2026-10-08.
 7. **specs-003:** tercer paquete (tipografía, categorías ocultables, video en el hero, formulario con varias áreas y pie con iconos). Implementado y cerrado el 2026-10-09.
-8. **specs-004:** cuarto paquete de cambios del cliente. **Es la fase siguiente; falta su especificación.**
+8. **specs-004:** cuarto paquete (servicios con portada, sección Proyectos con solo el botón, descripción en el detalle y ajustes del formulario). **Es la fase en curso.**
 9. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente, sin empezar.** Viene después de los paquetes de cambios.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
