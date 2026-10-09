@@ -49,8 +49,9 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` y `specs/specs-002/`, los dos implementados. Empieza cada sesión leyendo este archivo, `specs/` y los dos paquetes.
-- **Trabajo pendiente: el despliegue** (`specs/tasks.md`, Fase 5), que todavía no se ha empezado. Ningún paquete de cambios lo reemplaza. No se empieza sin que el desarrollador lo pida.
+- **Paquetes cerrados:** `specs/specs-001/` y `specs/specs-002/`, los dos implementados.
+- **Trabajo en curso: `specs/specs-003/`.** Empieza cada sesión leyendo este archivo, `specs/` y los tres paquetes.
+- **El despliegue sigue pendiente** (`specs/tasks.md`, Fase 5) y todavía no se ha empezado. Ningún paquete de cambios lo reemplaza: viene después del paquete en curso. No se empieza sin que el desarrollador lo pida.
 
 1. **Requisitos:** a partir de la sección 4 de este archivo, crea/actualiza `specs/requirements.md`.
 2. **Diseño:** documenta modelos de datos, endpoints y componentes en `specs/design.md`.
@@ -178,6 +179,17 @@ El detalle está en `specs/specs-002/requirements.md`. En resumen:
 - **RF-17 — Área según el tipo de remodelación:** el formulario pide primero el tipo (las categorías) y muestra solo sus áreas. Todo configurable en el panel; un área sin categoría aparece en todos los tipos.
 - **RF-18 — Contacto en una columna:** el formulario debajo del título y a todo el ancho; los datos de contacto debajo, en fila.
 
+### Cambios de specs-003 (RF-19 a RF-33)
+El detalle está en `specs/specs-003/requirements.md`. En resumen:
+- **RF-19 — Tipografía desde el panel:** dos fuentes cargables (títulos y texto); vacías, se usan las originales.
+- **RF-20 — Categorías visibles u ocultas:** una categoría oculta sale del inicio, del filtro y del formulario; sus proyectos siguen en "Todos".
+- **RF-21 y RF-22 — Página de proyectos:** lleva el título de la sección, y las tarjetas muestran la descripción completa al pasar el mouse.
+- **RF-23 y RF-24 — Servicios:** Proceso va antes que Servicios (el menú no cambia), y cada tarjeta de servicio tiene un botón "Cotizar".
+- **RF-25 — Pasos y servicios:** se editan dentro de su sección en el panel.
+- **RF-26 — Video en el hero:** es una portada más de la rotación.
+- **RF-27 a RF-32 — Formulario:** varias áreas, cada una con sus m² (también escritos a mano); mensaje de WhatsApp sin emojis; estimado ocultable; títulos y textos de ejemplo editables; campos nuevos de fotos, visita y ubicación.
+- **RF-33 — Pie de página:** iconos de WhatsApp, correo e Instagram; se quitan los datos de la sección Contacto.
+
 ---
 
 ## 5. Stack técnico
@@ -220,7 +232,8 @@ El detalle está en `specs/specs-002/requirements.md`. En resumen:
 ├── docs/maqueta-legible.html   # + maqueta-original.html
 ├── specs/          # especificación base (requirements, design, tasks)
 │   ├── specs-001/  # primer paquete de cambios del cliente (implementado)
-│   └── specs-002/  # segundo paquete de cambios (implementado)
+│   ├── specs-002/  # segundo paquete de cambios (implementado)
+│   └── specs-003/  # tercer paquete de cambios (trabajo en curso)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -316,6 +329,9 @@ Al terminar cada tarea o fase, responde con:
 | Menú | Siempre desplegable; el encabezado se oculta al bajar y vuelve al subir (specs-002) |
 | Formulario | El área a remodelar depende del tipo de remodelación, que son las categorías (specs-002) |
 | Especialidades | El cintillo se quitó del sitio; la lista se conserva en el panel (specs-002) |
+| Cotización | Varias áreas por cotización, cada una con sus m²; el total es la suma (specs-003) |
+| Mensaje de WhatsApp | Sin emojis: en algunas versiones llegaban como "?" (specs-003) |
+| Tipografía | Dos fuentes cargables desde el panel, con las originales de respaldo (specs-003) |
 
 ## 11. Fases del proyecto
 
@@ -325,7 +341,8 @@ Al terminar cada tarea o fase, responde con:
 4. **Calculadora y WhatsApp**, más las páginas legales.
 5. **specs-001:** primer paquete de cambios del cliente (hero, categorías, dirección automática y WhatsApp). Implementado.
 6. **specs-002:** segundo paquete (menú desplegable, hero, formulario por tipo de remodelación y sección Contacto). Implementado y cerrado el 2026-10-08.
-7. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Es la fase siguiente; pendiente, sin empezar.**
+7. **specs-003:** tercer paquete (tipografía, categorías ocultables, video en el hero, formulario con varias áreas y pie con iconos). **Es la fase en curso.**
+8. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente, sin empezar.** Viene después de specs-003.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 
