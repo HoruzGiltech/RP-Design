@@ -1,0 +1,122 @@
+/*
+  Capa con texto que aparece sobre una foto (specs-004, RF-37 y RF-38).
+  La comparten las tarjetas de servicio, las de proyecto y la portada del
+  detalle, para que el fundido, el scroll y el degradado sean iguales en todo
+  el sitio.
+
+  Cómo se usa:
+    <div class="has-cover-overlay">        el contenedor de la foto (position: relative)
+      <img ... />
+      <div class="cover-overlay">          la capa oscura
+        <div class="cover-overlay__content">
+          <p class="cover-overlay__text">…</p>   el texto; si no cabe, se desplaza
+          …botón opcional…
+        </div>
+      </div>
+    </div>
+*/
+
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  /* El color oscuro del sitio al 82 %: un párrafo necesita buen contraste sobre cualquier foto */
+  background: color-mix(in srgb, var(--color-dark) 82%, transparent);
+  color: var(--color-on-dark);
+  opacity: 0;
+  /* Mientras no se ve, no debe atrapar el dedo ni la rueda del mouse */
+  pointer-events: none;
+  transition: opacity var(--motion-overlay) var(--ease-soft);
+}
+
+.cover-overlay__content {
+  display: flex;
+  flex-direction: column;
+  /* El contenido se apoya abajo: un texto corto no queda flotando arriba */
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: var(--space-16);
+  height: 100%;
+  padding: var(--space-24);
+  /* Sube unos píxeles mientras la capa aparece: por eso la entrada se siente suave */
+  transform: translateY(12px);
+  transition: transform var(--motion-overlay) var(--ease-soft);
+}
+
+.cover-overlay__text {
+  /* Puede encogerse: si el texto no cabe, se desplaza aquí dentro en vez de recortarse */
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  /* Respeta los saltos de línea que el cliente escribió en el panel */
+  white-space: pre-line;
+  line-height: 1.5;
+  /* Barra fina y del color del sitio, en lugar de la del sistema */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-on-dark-muted) transparent;
+  /* Degradado en el borde inferior: avisa que el texto continúa */
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+  /* Con este espacio, al llegar al final la última línea queda por encima del degradado */
+  padding-bottom: 28px;
+}
+
+/* Safari no entiende scrollbar-width: se le da la barra fina con sus propias reglas */
+.cover-overlay__text::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cover-overlay__text::-webkit-scrollbar-thumb {
+  background: var(--color-on-dark-muted);
+}
+
+/* --- Con cursor: aparece al pasar por encima o al llegar con el teclado --- */
+@media (hover: hover) {
+  .has-cover-overlay:hover .cover-overlay,
+  .has-cover-overlay:focus-within .cover-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .has-cover-overlay:hover .cover-overlay__content,
+  .has-cover-overlay:focus-within .cover-overlay__content {
+    transform: none;
+  }
+}
+
+/*
+  --- Sin cursor (pantallas táctiles) ---
+  No existe "pasar por encima". Las capas marcadas con --auto entran solas
+  cuando su tarjeta aparece en pantalla (clase .is-visible que pone Reveal),
+  un momento después de la foto (specs-004, RF-41).
+*/
+@media (hover: none) {
+  .cover-overlay--auto {
+    /* Más clara arriba: la foto se sigue viendo detrás del texto */
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-dark) 92%, transparent) 35%,
+      color-mix(in srgb, var(--color-dark) 25%, transparent)
+    );
+    transition-delay: var(--motion-reveal);
+  }
+
+  .cover-overlay--auto .cover-overlay__content {
+    transition-delay: var(--motion-reveal);
+  }
+
+  .reveal.is-visible .cover-overlay--auto {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .reveal.is-visible .cover-overlay--auto .cover-overlay__content {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-overlay,
+  .cover-overlay__content {
+    transition: none;
+    transform: none;
+  }
+}

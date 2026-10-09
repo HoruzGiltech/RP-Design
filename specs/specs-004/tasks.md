@@ -28,12 +28,12 @@ Las tareas llevan el prefijo `S4-`. **Este paquete se entrega por bloques** (P-4
 
 ## Bloque 2 — Servicios
 
-- [ ] **S4-C1** `Service.image` e `image_alt`; "Servicios (encabezado)" pasa a "Servicios". Migración `site_content.0014`. *(RF-36)*
-- [ ] **S4-C2** Imagen en la tabla de servicios del panel y en `/api/site/`, con sus tests (API, panel, archivo falso, Viewer). *(RF-36, CA-36.1 a CA-36.3)*
-- [ ] **S4-C3** `styles/overlay.css` y el token `--motion-overlay`: capa compartida con entrada suave, barra fina y degradado. *(RF-37.2, RF-38)*
-- [ ] **S4-C4** `ServiceCard` y sección Servicios con fondo oscuro y cuadrícula de portadas. *(RF-35, CA-35.1, CA-35.2)*
-- [ ] **S4-C5** Capa con la descripción y "Cotizar": con cursor, con teclado y con "reducir movimiento". *(RF-37, CA-37.1 a CA-37.3)*
-- [ ] **S4-C6** En táctil, la descripción y "Cotizar" entran al aparecer la tarjeta. *(RF-41.2, CA-41.2)*
+- [x] **S4-C1** `Service.image` e `image_alt`; "Servicios (encabezado)" pasa a "Servicios". Migración `site_content.0014`. *(RF-36)*
+- [x] **S4-C2** Imagen en la tabla de servicios del panel y en `/api/site/`, con sus tests (API, panel, archivo falso, Viewer). *(RF-36, CA-36.1 a CA-36.3)*
+- [x] **S4-C3** `styles/overlay.css` y el token `--motion-overlay`: capa compartida con entrada suave, barra fina y degradado. *(RF-37.2, RF-38)*
+- [x] **S4-C4** `ServiceCard` y sección Servicios con fondo oscuro y cuadrícula de portadas. *(RF-35, CA-35.1, CA-35.2)*
+- [x] **S4-C5** Capa con la descripción y "Cotizar": con cursor, con teclado y con "reducir movimiento". *(RF-37, CA-37.1 a CA-37.3)*
+- [x] **S4-C6** En táctil, la descripción y "Cotizar" entran al aparecer la tarjeta. *(RF-41.2, CA-41.2)*
 - [ ] **S4-C7** ✋ **Prueba del bloque 2:** el desarrollador carga una imagen en un servicio y revisa la sección en computadora y celular.
 
 ---

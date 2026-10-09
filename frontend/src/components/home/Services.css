@@ -13,84 +13,82 @@
 
 .services__intro {
   font-size: var(--text-lead-small);
-  color: var(--color-text-secondary);
+  color: var(--color-on-dark-secondary);
 }
 
-/*
-  Las líneas entre tarjetas son el contorno (outline) de cada una. Entre dos
-  tarjetas hay 1px de separación, y los dos contornos caen en ese mismo píxel:
-  por eso la línea no se ve doble.
-  (La maqueta pinta el fondo de la grilla con el color de la línea, pero así
-  una celda vacía se ve como un bloque gris: pasa con 3 tarjetas en 2 columnas.)
-*/
-.services__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-services), 100%), 1fr));
-  gap: 1px;
-  /* Deja sitio al contorno de las tarjetas del borde */
-  padding: 1px;
-  /* Una tarjeta que entra desde un lado no debe provocar scroll horizontal */
-  overflow: hidden;
-}
+/* --- Tarjeta de servicio: portada arriba y título debajo --- */
 
-.services__card {
+.service-card {
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
-  padding: 40px var(--space-32);
-  background: var(--color-bg);
-  outline: 1px solid var(--color-border);
 }
 
-.services__number {
+.service-card__media {
+  position: relative;
+  height: var(--media-project);
+  /* Recorta el zoom de la foto al pasar el cursor */
+  overflow: hidden;
+  background: var(--color-dark-surface);
+}
+
+.service-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--motion-reveal) var(--ease-out);
+}
+
+/* El número va sobre la foto, arriba a la izquierda, también con la capa encima */
+.service-card__number {
+  position: absolute;
+  top: var(--space-24);
+  left: var(--space-24);
   font-family: var(--font-display);
   font-size: var(--text-service-number);
   font-weight: 700;
   line-height: 1;
-  color: var(--color-accent);
+  color: var(--color-on-dark);
+  /* No estorba al pasar el cursor ni al desplazar el texto de la capa */
+  pointer-events: none;
 }
 
-.services__title {
+.service-card__title {
   font-size: var(--text-h3-large);
-}
-
-.services__description {
-  color: var(--color-text-secondary);
-}
-
-/* Botón "Cotizar": abajo a la izquierda de la tarjeta */
-.services__cta {
-  align-self: flex-start;
-  /* Lo empuja al fondo: los botones quedan alineados aunque los textos midan distinto */
-  margin-top: auto;
-  transition: opacity var(--motion-hover) var(--ease-out);
+  color: var(--color-on-dark);
 }
 
 /*
-  Con mouse, el botón aparece al pasar el cursor por la tarjeta (o al llegar a
-  él con el teclado). En pantallas táctiles no existe "pasar el cursor": ahí
-  esta regla no aplica y el botón se ve siempre.
+  El texto de la capa deja libre la franja del número: así una descripción
+  larga se desplaza por debajo de él sin taparlo.
 */
-@media (hover: hover) {
-  .services__cta {
-    opacity: 0;
-  }
+.service-card .cover-overlay__content {
+  padding-top: calc(var(--space-24) * 2 + var(--text-service-number));
+}
 
-  .services__card:hover .services__cta,
-  .services__card:focus-within .services__cta {
-    opacity: 1;
+@media (hover: hover) {
+  .service-card__media:hover .service-card__image {
+    transform: scale(1.04);
+  }
+}
+
+/*
+  En pantallas angostas la tarjeta es más alta que ancha: sobre la foto deben
+  caber el número, la descripción y el botón sin tener que desplazar el texto.
+*/
+@media (max-width: 767px) {
+  .service-card__media {
+    height: auto;
+    aspect-ratio: 4 / 5;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .services__cta {
+  .service-card__image {
     transition: none;
   }
-}
 
-/* En pantallas angostas las tarjetas van una bajo otra: todas entran desde abajo */
-@media (max-width: 899px) {
-  .services__card.reveal:not(.is-visible) {
-    transform: translateY(var(--reveal-distance));
+  .service-card__media:hover .service-card__image {
+    transform: none;
   }
 }

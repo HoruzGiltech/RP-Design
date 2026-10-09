@@ -121,7 +121,7 @@ Una sola clase para las tres capas (tarjeta de proyecto, tarjeta de servicio y p
 | Táctil (`@media (hover: none)`) | Solo en las tarjetas de servicio: cuando `Reveal` les pone `.is-visible`, con un retraso corto para que entre después de la foto |
 | "Reducir movimiento" | Mismas reglas, sin transición ni desplazamiento |
 
-Token nuevo en `tokens.css`: `--motion-overlay: 450ms` (hoy la capa usa `--motion-hover`, más corto, y por eso se siente brusca).
+Tokens nuevos en `tokens.css`: `--motion-overlay: 450ms` (antes la capa usaba `--motion-hover`, de 200ms) y `--ease-soft`, una curva que arranca y termina despacio. Con `--ease-out`, la capa hacía el 95 % del cambio en los primeros 150ms y por eso se sentía brusca.
 
 ### 3.3 Servicios (RF-35 a RF-37)
 

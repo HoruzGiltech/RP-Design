@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from core.tests.helpers import TempMediaMixin, make_fake_file, make_font_file
+from core.tests.helpers import TempMediaMixin, make_fake_file, make_font_file, make_image_file
 from site_content.models import (
     HeroSection,
     LegalPage,
@@ -155,6 +155,47 @@ class SiteContentAdminTests(TempMediaMixin, TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(first.title, "Título cambiado")
         self.assertEqual(Service.objects.last().title, "Asesoría")
+
+    # --- specs-004: "Servicios" e imagen de cada servicio (RF-36) ---
+
+    def test_services_entry_is_called_just_services(self):
+        index = self.client.get(reverse("admin:index"))
+
+        self.assertNotContains(index, "Servicios (encabezado)")
+        self.assertContains(index, ">Servicios</a>")
+
+    def service_items(self):
+        return [
+            {"id": service.pk, "title": service.title, "order": service.order}
+            for service in Service.objects.all()
+        ]
+
+    def test_service_image_is_uploaded_inside_the_section(self):
+        url = reverse("admin:site_content_servicessection_change", args=[1])
+        items = self.service_items()
+        items[0]["image"] = make_image_file("servicio.jpg", size=(3000, 2000))
+        items[0]["image_alt"] = "Medición de una sala"
+
+        response = self.client.post(url, self.section_form("items", items))
+
+        service = Service.objects.first()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(service.image_alt, "Medición de una sala")
+        # Se guarda con nombre nuevo y reducida, como las demás imágenes del sitio
+        self.assertNotIn("servicio", service.image.name)
+        self.assertLessEqual(service.image.width, 1920)
+
+    def test_fake_service_image_is_rejected(self):
+        url = reverse("admin:site_content_servicessection_change", args=[1])
+        items = self.service_items()
+        items[0]["image"] = make_fake_file("servicio.jpg")
+
+        response = self.client.post(url, self.section_form("items", items))
+
+        # El formulario vuelve a mostrarse con el error, sin guardar nada
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "errorlist")
+        self.assertFalse(Service.objects.first().image)
 
     def test_process_steps_are_reordered_inside_the_section(self):
         url = reverse("admin:site_content_processsection_change", args=[1])

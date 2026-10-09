@@ -99,6 +99,7 @@ class SectionItemInline(SortableInlineAdminMixin, admin.StackedInline):
 
 class ServiceInline(SectionItemInline):
     model = Service
+    fields = ("title", "description", "image", "image_alt", "is_visible")
 
 
 class ProcessStepInline(SectionItemInline):
@@ -107,7 +108,7 @@ class ProcessStepInline(SectionItemInline):
 
 @admin.register(ServicesSection)
 class ServicesSectionAdmin(SingletonAdmin):
-    """El encabezado de Servicios y, debajo, sus tarjetas."""
+    """El título de la sección Servicios y, debajo, sus tarjetas con imagen."""
 
     inlines = [ServiceInline]
 

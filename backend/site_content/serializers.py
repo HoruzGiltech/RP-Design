@@ -131,7 +131,7 @@ class SpecialtySerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ["id", "title", "description"]
+        fields = ["id", "title", "description", "image", "image_alt"]
 
 
 class ProcessStepSerializer(serializers.ModelSerializer):

@@ -233,11 +233,11 @@ class ServicesSection(SingletonModel, VisibleModel):
     )
 
     class Meta:
-        verbose_name = "servicios (encabezado)"
-        verbose_name_plural = "servicios (encabezado)"
+        verbose_name = "servicios"
+        verbose_name_plural = "servicios"
 
     def __str__(self):
-        return "Servicios (encabezado)"
+        return "Servicios"
 
 
 class ProjectsSection(SingletonModel, VisibleModel):
@@ -351,7 +351,7 @@ class Service(OrderedModel, VisibleModel):
     """Tarjeta de Servicios. Su número (01, 02...) lo calcula el sitio según el orden."""
 
     # La sección es un registro único (pk=1). Esta relación existe para poder editar
-    # los servicios dentro del formulario de "Servicios (encabezado)" en el panel.
+    # los servicios dentro del formulario de "Servicios" en el panel.
     section = models.ForeignKey(
         ServicesSection,
         on_delete=models.CASCADE,
@@ -361,13 +361,28 @@ class Service(OrderedModel, VisibleModel):
     )
     title = models.CharField("título", max_length=80)
     description = models.TextField("descripción")
+    # Portada de la tarjeta (specs-004). Sin imagen, el sitio muestra un fondo liso.
+    image = site_image_field(
+        "imagen", help_text="Foto que se ve en la tarjeta del servicio. Opcional."
+    )
+    image_alt = models.CharField(
+        "texto alternativo de la imagen",
+        max_length=150,
+        blank=True,
+        help_text="Describe la foto para quien no puede verla.",
+    )
 
     class Meta(OrderedModel.Meta):
         verbose_name = "servicio"
-        verbose_name_plural = "servicios"
+        # "tarjetas": la sección que las contiene ya se llama "Servicios" en el panel
+        verbose_name_plural = "tarjetas de servicios"
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        optimize_image_field(self, "image")
+        super().save(*args, **kwargs)
 
 
 class ProcessStep(OrderedModel, VisibleModel):

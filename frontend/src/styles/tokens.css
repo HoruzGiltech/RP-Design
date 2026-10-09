@@ -91,8 +91,12 @@
 
   /* --- Movimiento (specs/design.md §3.6) --- */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Arranca y termina despacio. --ease-out hace casi todo el cambio al principio y se siente brusco en una capa grande */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-fast: 160ms;
   --motion-hover: 200ms;
+  /* Capa con texto sobre una foto: más lenta que un hover, para que entre suave */
+  --motion-overlay: 450ms;
   --motion-reveal: 500ms;
   --motion-stagger: 80ms;
   --reveal-distance: 24px;

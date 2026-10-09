@@ -172,6 +172,26 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
     def test_services_have_the_text_of_the_quote_button(self):
         self.assertEqual(self.get_site()["services"]["cta_text"], "Cotizar")
 
+    # --- specs-004: servicios con portada ---
+
+    def test_service_without_image_arrives_with_null(self):
+        service = self.get_site()["services"]["items"][0]
+
+        self.assertEqual(set(service), {"id", "title", "description", "image", "image_alt"})
+        self.assertIsNone(service["image"])
+        self.assertEqual(service["image_alt"], "")
+
+    def test_service_image_has_a_full_url(self):
+        service = Service.objects.first()
+        service.image = make_image_file()
+        service.image_alt = "Medición de una sala"
+        service.save()
+
+        item = self.get_site()["services"]["items"][0]
+
+        self.assertEqual(item["image"], f"http://testserver{service.image.url}")
+        self.assertEqual(item["image_alt"], "Medición de una sala")
+
     def test_contact_has_the_texts_of_every_form_field(self):
         form_fields = self.get_site()["contact"]["form_fields"]
 
