@@ -14,50 +14,69 @@ import './Hero.css'
 const SLIDE_INTERVAL_MS = 6000
 
 /**
- * Fondo de respaldo: se usa cuando ningún proyecto tiene marcado
- * "Mostrar en el hero". Es la imagen o el video de la Portada del panel.
+ * La portada propia de la sección "Portada" del panel, o null si no hay.
+ *
+ * - Con video: el video es la primera portada de la rotación (specs-003, RF-26).
+ * - Con "reducir movimiento" nada se reproduce solo: en su lugar va la imagen
+ *   de la Portada, y si no hay imagen, no hay portada.
+ * - Sin video: la imagen solo se usa de respaldo, cuando ningún proyecto está
+ *   marcado para el hero.
  */
-function HeroFallback({ hero }) {
-  // Con "reducir movimiento" no se reproduce nada solo: se muestra la foto
+function buildCoverSlide(hero, hasProjects) {
   if (hero.video && !prefersReducedMotion()) {
-    return (
-      <video
-        className="hero__slide is-active"
-        src={hero.video}
-        poster={hero.image || undefined}
-        aria-label={hero.image_alt || undefined}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-      />
-    )
+    return {
+      type: 'video',
+      key: 'portada-video',
+      label: 'Video',
+      video: hero.video,
+      poster: hero.image,
+      alt: hero.image_alt,
+    }
   }
-  if (hero.image) {
-    return (
-      <img
-        className="hero__slide is-active"
-        src={hero.image}
-        alt={hero.image_alt}
-        fetchPriority="high"
-      />
-    )
+  const useImage = hero.image && (hero.video || !hasProjects)
+  if (useImage) {
+    return {
+      type: 'image',
+      key: 'portada-imagen',
+      label: 'Portada',
+      image: hero.image,
+      alt: hero.image_alt,
+    }
   }
-  // Sin nada que mostrar queda el fondo oscuro de la sección
   return null
 }
 
-/** Hero del inicio: las portadas de los proyectos elegidos en el panel (specs-001, RF-08). */
+/** La portada de un proyecto marcado como "Mostrar en el hero". */
+function buildProjectSlide(project) {
+  return {
+    type: 'project',
+    key: project.slug,
+    label: project.title,
+    image: project.cover_image,
+    alt: project.cover_alt,
+    project,
+  }
+}
+
+/**
+ * Hero del inicio: rotan el video de la Portada y las portadas de los
+ * proyectos elegidos en el panel (specs-001, RF-08; specs-003, RF-26).
+ */
 export default function Hero() {
   const { data: site } = useSite()
   const { data: projects } = useFetch(getHeroProjects)
 
-  // Mientras carga, o si la petición falla, no hay portadas: se usa el respaldo
-  const slides = projects ?? []
-  const slideshow = useSlideshow(slides.length, SLIDE_INTERVAL_MS)
-
   const { hero } = site
+  // Mientras carga, o si la petición falla, no hay proyectos: queda la portada del panel
+  const projectSlides = (projects ?? []).map(buildProjectSlide)
+  const coverSlide = buildCoverSlide(hero, projectSlides.length > 0)
+  const slides = coverSlide ? [coverSlide, ...projectSlides] : projectSlides
+
+  // El video, si lo hay, es siempre la primera portada. No cambia por tiempo:
+  // se pasa a la siguiente cuando termina.
+  const videoIndex = coverSlide?.type === 'video' ? 0 : null
+  const slideshow = useSlideshow(slides.length, SLIDE_INTERVAL_MS, videoIndex)
+
   if (!hero.is_visible) return null
 
   const hasSlides = slides.length > 0
@@ -81,16 +100,17 @@ export default function Hero() {
         // Para lectores de pantalla: con varias portadas, esto es un grupo de imágenes que rota
         role={slideshow.canRotate ? 'group' : undefined}
         aria-roledescription={slideshow.canRotate ? 'carrusel' : undefined}
-        aria-label={slideshow.canRotate ? 'Proyectos' : undefined}
+        aria-label={slideshow.canRotate ? 'Portadas' : undefined}
       >
-        {hasSlides ? (
+        {/* Sin nada que mostrar queda el fondo oscuro de la sección */}
+        {hasSlides && (
           <HeroSlides
             slides={slides}
             index={slideshow.index}
             previousIndex={slideshow.previousIndex}
+            shouldAdvance={slideshow.isRunning}
+            onVideoEnded={slideshow.next}
           />
-        ) : (
-          <HeroFallback hero={hero} />
         )}
         {/* Capa oscura: asegura que el texto se lea sobre cualquier foto */}
         <div className="hero__shade" aria-hidden="true" />

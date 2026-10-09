@@ -43,3 +43,18 @@ export function calculateEstimate(pricePerM2, squareMeters) {
   const product = toHundredths(Number(pricePerM2)) * toHundredths(squareMeters)
   return roundToCents(product) / 100
 }
+
+/**
+ * Suma los subtotales de todas las áreas marcadas.
+ *
+ * Si alguna está "A cotizar" (null), el total también lo está: mostrar una
+ * suma parcial haría creer que ese es el precio de todo. Es la misma regla
+ * que calculate_total() del backend.
+ */
+export function calculateTotal(subtotals) {
+  if (subtotals.length === 0 || subtotals.includes(null)) return null
+
+  // Se suma en centavos enteros para no arrastrar errores de decimales
+  const cents = subtotals.reduce((sum, subtotal) => sum + toHundredths(subtotal), 0)
+  return cents / 100
+}

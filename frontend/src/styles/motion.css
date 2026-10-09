@@ -47,6 +47,13 @@
   animation: hero-slide-zoom var(--slide-duration) linear both;
 }
 
+/* El video ya tiene su propio movimiento: no lleva el zoom de las fotos */
+.hero__slide--video,
+.hero__slide--video.is-active {
+  animation: none;
+  transform: none;
+}
+
 @keyframes hero-slide-zoom {
   from {
     transform: scale(1);

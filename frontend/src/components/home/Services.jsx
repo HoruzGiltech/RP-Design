@@ -1,4 +1,5 @@
 import { useSite } from '../../context/SiteContext'
+import Button from '../ui/Button'
 import Reveal from '../ui/Reveal'
 import Section from '../ui/Section'
 import './Services.css'
@@ -27,6 +28,9 @@ export default function Services() {
   // Oculta desde el panel, o sin servicios que mostrar: no se deja un título suelto
   if (!services.is_visible || services.items.length === 0) return null
 
+  // El botón lleva al formulario: sin sección Contacto (o sin texto) no se muestra
+  const showCta = site.contact.is_visible && Boolean(services.cta_text)
+
   return (
     <Section id="servicios" className="services">
       <div className="services__header">
@@ -52,6 +56,17 @@ export default function Services() {
             </span>
             <h3 className="services__title">{service.title}</h3>
             <p className="services__description">{service.description}</p>
+            {showCta && (
+              <Button
+                to="/#contacto"
+                size="small"
+                className="services__cta"
+                // Varias tarjetas tienen el mismo botón: el nombre dice de cuál es
+                aria-label={`${services.cta_text}: ${service.title}`}
+              >
+                {services.cta_text}
+              </Button>
+            )}
           </Reveal>
         ))}
       </div>

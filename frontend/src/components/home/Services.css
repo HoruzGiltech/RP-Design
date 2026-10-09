@@ -58,6 +58,36 @@
   color: var(--color-text-secondary);
 }
 
+/* Botón "Cotizar": abajo a la izquierda de la tarjeta */
+.services__cta {
+  align-self: flex-start;
+  /* Lo empuja al fondo: los botones quedan alineados aunque los textos midan distinto */
+  margin-top: auto;
+  transition: opacity var(--motion-hover) var(--ease-out);
+}
+
+/*
+  Con mouse, el botón aparece al pasar el cursor por la tarjeta (o al llegar a
+  él con el teclado). En pantallas táctiles no existe "pasar el cursor": ahí
+  esta regla no aplica y el botón se ve siempre.
+*/
+@media (hover: hover) {
+  .services__cta {
+    opacity: 0;
+  }
+
+  .services__card:hover .services__cta,
+  .services__card:focus-within .services__cta {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services__cta {
+    transition: none;
+  }
+}
+
 /* En pantallas angostas las tarjetas van una bajo otra: todas entran desde abajo */
 @media (max-width: 899px) {
   .services__card.reveal:not(.is-visible) {

@@ -1,4 +1,4 @@
-/* Una sola columna: título, formulario y datos de contacto */
+/* Una sola columna: título y formulario */
 .contact {
   display: flex;
   flex-direction: column;

@@ -5,13 +5,18 @@ import { prefersReducedMotion } from './useReveal'
 /**
  * Lleva la cuenta de qué portada se muestra en el hero y cuándo toca cambiar.
  *
- *   const slideshow = useSlideshow(slides.length, 6000)
+ *   const slideshow = useSlideshow(slides.length, 6000, videoIndex)
+ *
+ * untimedIndex (opcional) es la posición de una portada que no cambia por
+ * tiempo: el video, que dura lo que dure. Mientras se ve, el reloj no corre;
+ * quien la muestra llama a next() cuando el video termina.
  *
  * Devuelve:
  *   index          posición de la portada que se ve ahora
  *   previousIndex  posición de la que se veía antes (se está desvaneciendo)
  *   isPlaying      true si la rotación automática está activa (no la pausó la persona)
  *   isRunning      true si además está avanzando ahora mismo (sin cursor ni foco encima)
+ *   isTimed        true si la portada actual cambia por tiempo (false en el video)
  *   canRotate      true si hay más de una portada
  *   next, previous, goTo(n)   para cambiar a mano
  *   toggle         pausa o reanuda (botón de pausa)
@@ -21,7 +26,7 @@ import { prefersReducedMotion } from './useReveal'
  * pausa, el cursor o el foco están encima, o la pestaña no está a la vista.
  * Con "reducir movimiento" activo, arranca en pausa.
  */
-export function useSlideshow(total, intervalMs) {
+export function useSlideshow(total, intervalMs, untimedIndex = null) {
   const [position, setPosition] = useState({ index: 0, previousIndex: null })
   const [isPausedByUser, setIsPausedByUser] = useState(prefersReducedMotion)
   const [isHeld, setIsHeld] = useState(false)
@@ -31,6 +36,8 @@ export function useSlideshow(total, intervalMs) {
   const index = canRotate ? position.index % total : 0
   const isPlaying = canRotate && !isPausedByUser
   const isRunning = isPlaying && !isHeld
+  // false mientras se ve la portada que no cambia por tiempo (el video)
+  const isTimed = index !== untimedIndex
 
   function goTo(newIndex) {
     setPosition((current) => ({ index: newIndex, previousIndex: current.index }))
@@ -45,7 +52,7 @@ export function useSlideshow(total, intervalMs) {
   }
 
   useEffect(() => {
-    if (!isRunning) return undefined
+    if (!isRunning || !isTimed) return undefined
 
     const timer = setInterval(() => {
       // Con la pestaña en segundo plano no se avanza: nadie lo está viendo
@@ -59,13 +66,14 @@ export function useSlideshow(total, intervalMs) {
     return () => clearInterval(timer)
     // `index` está en la lista a propósito: cada cambio de portada (también a
     // mano) reinicia la cuenta, y así todas se ven el tiempo completo.
-  }, [isRunning, total, intervalMs, index])
+  }, [isRunning, isTimed, total, intervalMs, index])
 
   return {
     index,
     previousIndex: position.previousIndex,
     isPlaying,
     isRunning,
+    isTimed,
     canRotate,
     next,
     previous,

@@ -7,11 +7,13 @@ import ErrorMessage from '../components/ui/ErrorMessage'
 import Reveal from '../components/ui/Reveal'
 import Section from '../components/ui/Section'
 import Spinner from '../components/ui/Spinner'
+import { useSite } from '../context/SiteContext'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useFetch } from '../hooks/useFetch'
 import './ProjectsPage.css'
 
-const PAGE_TITLE = 'Proyectos'
+// Título de respaldo, por si el cliente deja vacío el de la sección
+const DEFAULT_TITLE = 'Proyectos'
 // Nombre del parámetro en la dirección: /proyectos?categoria=residencial
 const CATEGORY_PARAM = 'categoria'
 
@@ -20,6 +22,7 @@ const CATEGORY_PARAM = 'categoria'
  * si la dirección trae ?categoria=<slug> (specs-001, RF-09).
  */
 export default function ProjectsPage() {
+  const { data: site } = useSite()
   const [searchParams] = useSearchParams()
   const requestedSlug = searchParams.get(CATEGORY_PARAM)
 
@@ -34,9 +37,11 @@ export default function ProjectsPage() {
 
   // Si la categoría de la dirección no existe, la página se comporta como "Todos"
   const activeCategory = (categories ?? []).find((category) => category.slug === requestedSlug)
-  const title = activeCategory ? activeCategory.name : PAGE_TITLE
+  // La página se llama igual que la sección Proyectos del inicio (specs-003, RF-21)
+  const pageTitle = site.projects_section.title || DEFAULT_TITLE
+  const title = activeCategory ? activeCategory.name : pageTitle
 
-  useDocumentTitle(activeCategory ? `${activeCategory.name} | ${PAGE_TITLE}` : PAGE_TITLE)
+  useDocumentTitle(activeCategory ? `${activeCategory.name} | ${pageTitle}` : pageTitle)
 
   return (
     <Section variant="dark" className="projects-page">

@@ -24,14 +24,18 @@
 .project-card__overlay {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: flex-end;
   padding: var(--space-24);
-  /* El color oscuro del sitio al 55 % de opacidad */
-  background: color-mix(in srgb, var(--color-dark) 55%, transparent);
+  /* Si la descripción no cabe en la foto, se desplaza dentro de la capa (no se recorta) */
+  overflow-y: auto;
+  /* Respeta los saltos de línea que el cliente escribió en el panel */
+  white-space: pre-line;
+  /* El color oscuro del sitio al 82 %: un párrafo entero necesita más fondo que una frase */
+  background: color-mix(in srgb, var(--color-dark) 82%, transparent);
   color: var(--color-on-dark);
-  font-weight: 600;
+  line-height: 1.5;
   opacity: 0;
+  /* Mientras no se ve, no debe atrapar el dedo ni la rueda del mouse */
+  pointer-events: none;
   transition: opacity var(--motion-hover) var(--ease-out);
 }
 
@@ -59,12 +63,14 @@
 /* Con teclado: la capa aparece al enfocar la tarjeta */
 .project-card__link:focus-visible .project-card__overlay {
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* Con mouse. En pantallas táctiles no hay hover y la capa se quedaría pegada */
 @media (hover: hover) {
   .project-card__link:hover .project-card__overlay {
     opacity: 1;
+    pointer-events: auto;
   }
 
   .project-card__link:hover .project-card__image {

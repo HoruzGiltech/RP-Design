@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { formatUSD } from './currency'
-import { calculateEstimate, parseDecimal } from './estimate'
+import { calculateEstimate, calculateTotal, parseDecimal } from './estimate'
 
 // Los mismos casos que el backend (backend/quotes/tests/test_services.py)
 describe('calculateEstimate', () => {
@@ -31,6 +31,30 @@ describe('calculateEstimate', () => {
   it('no hay estimado si el área no tiene precio', () => {
     expect(calculateEstimate(null, 20)).toBeNull()
     expect(formatUSD(calculateEstimate(null, 20))).toBe('A cotizar')
+  })
+})
+
+// specs-003, RF-27: el estimado es la suma de todas las áreas marcadas
+describe('calculateTotal', () => {
+  it('suma los subtotales de todas las áreas', () => {
+    const total = calculateTotal([1000, 400.5])
+
+    expect(total).toBe(1400.5)
+    expect(formatUSD(total)).toBe('USD 1.400,50')
+  })
+
+  it('no sufre los errores de decimales de JavaScript', () => {
+    // En JavaScript, 0.1 + 0.2 da 0.30000000000000004
+    expect(calculateTotal([0.1, 0.2])).toBe(0.3)
+  })
+
+  it('si un área está "A cotizar", todo el total lo está', () => {
+    expect(calculateTotal([1000, null])).toBeNull()
+    expect(formatUSD(calculateTotal([1000, null]))).toBe('A cotizar')
+  })
+
+  it('sin áreas no hay total', () => {
+    expect(calculateTotal([])).toBeNull()
   })
 })
 

@@ -156,6 +156,34 @@ Para trabajar solo en la computadora, se puede volver a `http://localhost:8000/a
 
 Si la IP es correcta y aun así el celular no abre el sitio, revisa que la VPN esté pausada y que el firewall de Windows permita Docker en redes privadas.
 
+## 11. `npm run lint` falla con `Cannot find native binding`
+
+**Cuándo aparece:** al ejecutar `cd frontend && npm run lint` directamente en Windows.
+
+**Causa:** oxlint necesita un archivo distinto para cada sistema operativo, y en `frontend/node_modules` de la computadora falta el de Windows (es un fallo conocido de npm con las dependencias opcionales).
+
+**Solución:** ejecutar el linter dentro del contenedor, que sí tiene el suyo:
+
+```bash
+docker compose exec frontend npm run lint
+```
+
+Si se quiere que funcione también en Windows: borrar `frontend/node_modules` y volver a ejecutar `npm install` dentro de `frontend/`.
+
+## 12. `sh: 1: vitest: not found` al ejecutar los tests del frontend en el contenedor
+
+**Cuándo aparece:** con `docker compose exec frontend npm test`.
+
+**Causa:** el contenedor del frontend guarda sus propias dependencias, y las instaló antes de que Vitest se agregara al proyecto.
+
+**Solución:** ejecutar los tests en Windows, donde sí está instalado:
+
+```bash
+cd frontend && npm test
+```
+
+O reconstruir el contenedor para que instale lo que falta: `docker compose up --build -d frontend`.
+
 ---
 
 ## Cómo agregar un problema nuevo

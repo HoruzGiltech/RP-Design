@@ -8,12 +8,16 @@ import { Link } from 'react-router-dom'
  * por portada, dos flechas pequeñas y la pausa, sin recuadros. No se quitan:
  * lo que rota solo debe poder pararse y manejarse a mano.
  *
- * slides:    proyectos del hero
+ * slides:    portadas del hero. Las de proyecto traen `project`; el video y la
+ *            imagen de la Portada no, y por eso no muestran enlace.
  * slideshow: lo que devuelve useSlideshow
  */
 export default function HeroControls({ slides, slideshow }) {
-  const { index, isPlaying, isRunning, canRotate } = slideshow
-  const project = slides[index]
+  const { index, isPlaying, isRunning, isTimed, canRotate } = slideshow
+  const { project } = slides[index]
+  // La barra solo avanza como reloj en las portadas que cambian por tiempo.
+  // En el video se muestra llena y quieta: no se sabe cuánto dura.
+  const showsProgress = isRunning && isTimed
 
   return (
     <div className="hero__footer">
@@ -24,14 +28,16 @@ export default function HeroControls({ slides, slideshow }) {
       */}
       <div className="hero__project-region" aria-live={isPlaying ? 'off' : 'polite'}>
         {/* key: al cambiar de proyecto se repite el fundido de entrada */}
-        <Link key={project.slug} to={`/proyectos/${project.slug}`} className="hero__project">
-          {project.category && (
-            <span className="hero__project-category">{project.category.name}</span>
-          )}
-          <span className="hero__project-title">
-            {project.title} <span aria-hidden="true">→</span>
-          </span>
-        </Link>
+        {project && (
+          <Link key={project.slug} to={`/proyectos/${project.slug}`} className="hero__project">
+            {project.category && (
+              <span className="hero__project-category">{project.category.name}</span>
+            )}
+            <span className="hero__project-title">
+              {project.title} <span aria-hidden="true">→</span>
+            </span>
+          </Link>
+        )}
       </div>
 
       {canRotate && (
@@ -50,22 +56,23 @@ export default function HeroControls({ slides, slideshow }) {
               const isActive = position === index
               return (
                 <button
-                  key={slide.slug}
+                  key={slide.key}
                   type="button"
                   className="hero__indicator"
                   onClick={() => slideshow.goTo(position)}
-                  aria-label={`Ir a la portada ${position + 1} de ${slides.length}: ${slide.title}`}
+                  aria-label={`Ir a la portada ${position + 1} de ${slides.length}: ${slide.label}`}
                   aria-current={isActive ? 'true' : undefined}
                 >
                   {/*
                     Relleno de la barra activa. Mientras la rotación corre, crece
-                    como barra de progreso; en pausa se muestra llena y quieta.
+                    como barra de progreso; en pausa (y en el video) se muestra
+                    llena y quieta.
                     Al aparecer de nuevo, la animación empieza desde cero.
                   */}
                   {isActive && (
                     <span
                       className={
-                        isRunning ? 'hero__indicator-fill is-running' : 'hero__indicator-fill'
+                        showsProgress ? 'hero__indicator-fill is-running' : 'hero__indicator-fill'
                       }
                     />
                   )}

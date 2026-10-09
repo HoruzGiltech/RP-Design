@@ -55,32 +55,32 @@ Las tareas llevan el prefijo `S3-` para no confundirlas con las de `specs/tasks.
 ## Fase C — Frontend
 
 ### C1. Cambios simples
-- [ ] **S3-C1** Inicio: Proceso antes que Servicios; el menú no cambia. *(RF-23)*
-- [ ] **S3-C2** `/proyectos` con el título de la sección. *(RF-21)*
-- [ ] **S3-C3** Pie con los iconos de WhatsApp, correo e Instagram; Contacto sin datos; se borra `ContactInfo`. *(RF-33)*
+- [x] **S3-C1** Inicio: Proceso antes que Servicios; el menú no cambia. *(RF-23)*
+- [x] **S3-C2** `/proyectos` con el título de la sección. *(RF-21)*
+- [x] **S3-C3** Pie con los iconos de WhatsApp, correo e Instagram; Contacto sin datos; se borra `ContactInfo`. *(RF-33)*
   - Verificación con Playwright: enlaces, áreas de 44 px y que el botón flotante no tape los iconos a 360 px.
-- [ ] **S3-C4** Botón "Cotizar" en las tarjetas de Servicios. *(RF-24)*
+- [x] **S3-C4** Botón "Cotizar" en las tarjetas de Servicios. *(RF-24)*
   - Verificación con Playwright: aparece con mouse y con teclado; la tarjeta no cambia de tamaño.
-- [ ] **S3-C5** Descripción completa en la capa de las tarjetas de proyecto. *(RF-22)*
+- [x] **S3-C5** Descripción completa en la capa de las tarjetas de proyecto. *(RF-22)*
   - Verificación con Playwright: descripción larga con scroll; contraste del texto.
 
 ### C2. Fuentes y hero
-- [ ] **S3-C6** `useCustomFonts`. *(RF-19.2, RF-19.5, CA-19.2 a CA-19.4)*
+- [x] **S3-C6** `useCustomFonts`. *(RF-19.2, RF-19.5, CA-19.2 a CA-19.4)*
   - Verificación con Playwright: subir una fuente de prueba al panel, ver el cambio y quitarla.
-- [ ] **S3-C7** Hero: el video como primera portada; `useSlideshow` avanza al terminar el video. *(RF-26)*
+- [x] **S3-C7** Hero: el video como primera portada; `useSlideshow` avanza al terminar el video. *(RF-26)*
   - Verificación con Playwright: video + imágenes, pausa, vuelta al video y movimiento reducido.
 
 ### C3. Formulario
-- [ ] **S3-C8** `utils/estimate.js` (`calculateTotal`) y `utils/quoteValidation.js` con renglones y campos nuevos, con tests en Vitest. *(RF-27, RF-32)*
-- [ ] **S3-C9** `SquareMetersSlider` con campo numérico y barra sincronizados. *(RF-29)*
-- [ ] **S3-C10** `AreaItem` y áreas con casillas en `QuoteCalculator`; total como suma. *(RF-27, CA-27.1, CA-27.2)*
-- [ ] **S3-C11** Campos nuevos: ubicación, "tengo fotos" y "no sé cuántos m²". *(RF-32)*
-- [ ] **S3-C12** Títulos y textos de ejemplo desde el panel. *(RF-31, CA-31.1, CA-31.2)*
-- [ ] **S3-C13** Interruptor del estimado en el formulario y en la pantalla de confirmación. *(RF-30)*
-- [ ] **S3-C14** Prueba completa del formulario con Playwright: dos áreas, m² a mano, suma, visita, envío real y mensaje sin emojis; y con el estimado apagado. *(CA-27.5, CA-28.1, CA-30.1)*
+- [x] **S3-C8** `utils/estimate.js` (`calculateTotal`) y `utils/quoteValidation.js` con renglones y campos nuevos, con tests en Vitest. *(RF-27, RF-32)*
+- [x] **S3-C9** `SquareMetersSlider` con campo numérico y barra sincronizados. *(RF-29)*
+- [x] **S3-C10** `AreaItem` y áreas con casillas en `QuoteCalculator`; total como suma. *(RF-27, CA-27.1, CA-27.2)*
+- [x] **S3-C11** Campos nuevos: ubicación, "tengo fotos" y "no sé cuántos m²". *(RF-32)*
+- [x] **S3-C12** Títulos y textos de ejemplo desde el panel. *(RF-31, CA-31.1, CA-31.2)*
+- [x] **S3-C13** Interruptor del estimado en el formulario y en la pantalla de confirmación. *(RF-30)*
+- [x] **S3-C14** Prueba completa del formulario con Playwright: dos áreas, m² a mano, suma, visita, envío real y mensaje sin emojis; y con el estimado apagado. *(CA-27.5, CA-28.1, CA-30.1)*
 
 ### C4. Revisión
-- [ ] **S3-C15** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo lo nuevo: teclado en las casillas y los m², contraste, nombres accesibles. *(RNF-12, RNF-13)*
+- [x] **S3-C15** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo lo nuevo: teclado en las casillas y los m², contraste, nombres accesibles. *(RNF-12, RNF-13)*
 
 - [ ] **S3-C16** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio y prueba en un celular real (sobre todo, que el mensaje llegue bien a WhatsApp).
 
@@ -88,7 +88,7 @@ Las tareas llevan el prefijo `S3-` para no confundirlas con las de `specs/tasks.
 
 ## Fase D — Cierre
 
-- [ ] **S3-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
+- [x] **S3-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
 - [ ] **S3-D2** Anotar en `specs/requirements.md`, `specs/design.md` y los paquetes anteriores qué apartados quedaron sustituidos por specs-003.
 - [ ] **S3-D3** ✋ Aprobación final.
 

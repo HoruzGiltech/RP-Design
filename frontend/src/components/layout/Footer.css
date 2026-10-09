@@ -47,6 +47,31 @@
   transition: color var(--motion-hover) var(--ease-out);
 }
 
+/* Iconos de contacto: WhatsApp, correo e Instagram */
+.footer__social {
+  display: flex;
+  gap: 8px;
+  /* Cada icono va centrado en un área de 44px: el margen negativo alinea el dibujo con el texto */
+  margin: 0 -11px;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__social-link {
+  display: grid;
+  place-content: center;
+  /* 44px: tamaño cómodo para tocar con el dedo */
+  width: 44px;
+  height: 44px;
+  color: var(--color-on-dark-muted);
+  transition: color var(--motion-hover) var(--ease-out);
+}
+
+.footer__social-icon {
+  width: 22px;
+  height: 22px;
+}
+
 /* En pantallas angostas se deja sitio abajo para el botón flotante de WhatsApp */
 @media (max-width: 767px) {
   .footer__inner {
@@ -55,7 +80,8 @@
 }
 
 @media (hover: hover) {
-  .footer__link:hover {
+  .footer__link:hover,
+  .footer__social-link:hover {
     color: var(--color-on-dark);
   }
 }

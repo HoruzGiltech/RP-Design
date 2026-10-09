@@ -29,10 +29,16 @@ export default function ProjectCard({ project, index = 0, titleAs: Title = 'h3' 
           ) : (
             <MediaPlaceholder variant="dark" />
           )}
-          {/* Capa que aparece al pasar el cursor; es un adorno, el enlace ya tiene su texto */}
-          <span className="project-card__overlay" aria-hidden="true">
-            Ver proyecto
-          </span>
+          {/*
+            Capa que aparece al pasar el cursor, con la descripción completa del
+            proyecto (specs-003, RF-22). Va oculta para lectores de pantalla: el
+            enlace ya tiene su texto y la descripción se lee en la página del proyecto.
+          */}
+          {project.description && (
+            <span className="project-card__overlay" aria-hidden="true">
+              {project.description}
+            </span>
+          )}
         </div>
 
         {project.category && (

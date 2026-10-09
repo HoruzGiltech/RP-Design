@@ -21,9 +21,12 @@ export default function QuoteSuccess({ result, onReset }) {
       <h3 className="quote-success__title" ref={headingRef} tabIndex={-1}>
         Tu solicitud quedó registrada
       </h3>
-      <p>
-        Estimado: <strong>{result.estimated_price_display}</strong>
-      </p>
+      {/* Si el cliente apagó el estimado en el panel, el backend no envía el monto */}
+      {result.estimated_price_display && (
+        <p>
+          Estimado: <strong>{result.estimated_price_display}</strong>
+        </p>
+      )}
       <p className="quote-success__text">
         Solo falta enviar el mensaje por WhatsApp. Si no se abrió solo, usa este botón.
       </p>

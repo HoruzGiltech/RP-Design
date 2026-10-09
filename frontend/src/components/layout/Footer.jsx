@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { useSite } from '../../context/SiteContext'
+import SocialIcons from './SocialIcons'
 import './Footer.css'
 
 // El año se calcula solo: no hay que acordarse de cambiarlo cada enero
@@ -22,7 +23,7 @@ export default function Footer() {
         <div className="footer__row">
           <span className="footer__name">{footer.name}</span>
           {footer.tagline && <span>{footer.tagline}</span>}
-          <span>© {CURRENT_YEAR}</span>
+          <SocialIcons />
         </div>
 
         <div className="footer__row footer__row--secondary">
@@ -33,7 +34,9 @@ export default function Footer() {
               </Link>
             ))}
           </nav>
-          <span>{DEVELOPER_CREDIT}</span>
+          <span>
+            © {CURRENT_YEAR} · {DEVELOPER_CREDIT}
+          </span>
         </div>
       </div>
     </footer>

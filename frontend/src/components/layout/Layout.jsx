@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 import { useSite } from '../../context/SiteContext'
 import { useAccentColor } from '../../hooks/useAccentColor'
+import { useCustomFonts } from '../../hooks/useCustomFonts'
 import { useFavicon } from '../../hooks/useFavicon'
 import { useScrollToHash } from '../../hooks/useScrollToHash'
 import ErrorMessage from '../ui/ErrorMessage'
@@ -24,6 +25,7 @@ export default function Layout() {
 
   useFavicon(site?.settings)
   useAccentColor(site?.settings.accent_color)
+  useCustomFonts(site?.settings)
 
   if (loading) return <Spinner />
   if (error) return <ErrorMessage message={error.message} onRetry={reload} />

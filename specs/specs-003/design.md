@@ -287,6 +287,7 @@ document.documentElement.style.setProperty('--font-display', "'RP Títulos', 'Ar
 - La variable CSS solo se cambia **después** de que la fuente cargó. Si falla, el sitio se queda con la original (RF-19.5).
 - La fuente original queda siempre como respaldo en la lista (`'RP Títulos', 'Archivo Narrow', sans-serif`).
 - Las fuentes Archivo siguen incluidas en el sitio: son el respaldo y lo que se ve mientras llega la del panel.
+- **Grosores (agregado al implementar):** la fuente se registra primero con el rango `100 900`, para que una fuente variable use sus grosores reales. Si al medir un texto en normal y en negrita el ancho no cambia, el archivo trae un solo grosor: se registra de nuevo sin rango y el navegador la engrosa él mismo para las negritas.
 
 ### 3.3 Hero con video (RF-26)
 

@@ -3,6 +3,7 @@
   Ocupa todo el ancho de la sección (specs-002, RF-18) y reparte sus campos
   en columnas: 1 en móvil, 2 desde 600px y 3 desde 900px. Los campos se
   colocan solos, en el mismo orden en que están escritos en el componente.
+  Las áreas, las casillas, el estimado y el mensaje ocupan la fila completa.
 */
 .quote-form {
   display: grid;
@@ -30,31 +31,95 @@
 
 /* Estos ocupan la fila completa */
 .quote-form__full,
-.quote-consent,
+.quote-areas,
+.quote-estimate,
 .quote-form__error,
 .quote-form__submit {
   grid-column: 1 / -1;
 }
 
-/* El control de metros ocupa dos columnas cuando las hay */
-@media (min-width: 600px) {
-  .quote-slider {
+/* La ubicación ocupa el resto de la fila, junto a "Tipo de remodelación" */
+@media (min-width: 900px) {
+  .quote-form__location {
     grid-column: span 2;
   }
 }
 
-/* "Especifica el área" empieza siempre en la tercera columna, junto a Tipo y Área */
-@media (min-width: 900px) {
-  .quote-form__area-other {
-    grid-column: 3;
+/* --- Áreas a remodelar: una casilla por área (specs-003, RF-27) --- */
+
+.quote-areas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  /* Un <fieldset> trae borde, relleno y ancho mínimo propios del navegador */
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.quote-areas > legend {
+  /* Sin esto el <legend> no deja espacio con lo que tiene debajo */
+  margin-bottom: var(--space-12);
+  padding: 0;
+}
+
+/* El foco llega aquí solo para mostrar el error "elige al menos un área" */
+.quote-areas:focus {
+  outline: none;
+}
+
+.quote-areas__empty {
+  color: var(--color-text-muted);
+}
+
+.quote-areas__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  /* Una tarjeta abierta no estira a su vecina de fila */
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 600px) {
+  .quote-areas__list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Un desplegable deshabilitado se ve apagado */
-.quote-field__control:disabled {
-  background: var(--color-bg);
-  color: var(--color-text-muted);
-  cursor: not-allowed;
+@media (min-width: 900px) {
+  .quote-areas__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.quote-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: var(--space-16);
+  border: 1px solid var(--color-border-input);
+  background: var(--color-white);
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+
+.quote-area.is-selected {
+  border-color: var(--color-text);
+}
+
+.quote-area__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-area {
+    transition: none;
+  }
 }
 
 /* --- Campo: etiqueta, control y error --- */
@@ -118,17 +183,25 @@ textarea.quote-field__control {
 
 .quote-slider__header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
 }
 
-.quote-slider__value {
-  font-family: var(--font-display);
-  font-size: var(--text-h3-large);
-  font-weight: 700;
-  line-height: 1;
-  color: var(--color-accent);
+/* El campo para escribir los metros, con su unidad al lado */
+.quote-slider__number {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-secondary);
+}
+
+.quote-slider__text {
+  /* Caben cinco cifras y la coma decimal */
+  width: 7ch;
+  box-sizing: content-box;
+  padding: 10px;
+  text-align: right;
   /* Las cifras ocupan el mismo ancho: el número no "baila" al deslizar */
   font-variant-numeric: tabular-nums;
 }
@@ -228,13 +301,6 @@ textarea.quote-field__control {
   border-block: 1px solid var(--color-border);
 }
 
-/* En una sola columna el estimado también ocupa toda la fila */
-@media (max-width: 599px) {
-  .quote-estimate {
-    grid-column: 1 / -1;
-  }
-}
-
 .quote-estimate__label {
   font-size: var(--text-label);
   font-weight: 600;
@@ -254,19 +320,19 @@ textarea.quote-field__control {
   color: var(--color-text-muted);
 }
 
-/* --- Casilla de aceptación de la política de privacidad --- */
+/* --- Casillas: áreas, visita, fotos y política de privacidad --- */
 
-.quote-consent {
+.quote-check {
   display: grid;
   /* Casilla a la izquierda y texto a la derecha; el error ocupa la fila de abajo */
   grid-template-columns: auto 1fr;
-  align-items: start;
+  align-items: center;
   column-gap: var(--space-12);
   row-gap: 8px;
 }
 
 /* Se quita la casilla del navegador y se dibuja una cuadrada, como el resto del sitio */
-.quote-consent__checkbox {
+.quote-check__box {
   appearance: none;
   display: grid;
   place-content: center;
@@ -281,7 +347,7 @@ textarea.quote-field__control {
 }
 
 /* La marca: un cuadrado más pequeño que aparece al marcar la casilla */
-.quote-consent__checkbox::before {
+.quote-check__box::before {
   content: '';
   width: 12px;
   height: 12px;
@@ -290,36 +356,49 @@ textarea.quote-field__control {
   transition: transform var(--motion-fast) var(--ease-out);
 }
 
-.quote-consent__checkbox:checked {
+.quote-check__box:checked {
   border-color: var(--color-accent);
   background: var(--color-accent);
 }
 
-.quote-consent__checkbox:checked::before {
+.quote-check__box:checked::before {
   transform: scale(1);
 }
 
-.quote-consent__checkbox[aria-invalid='true'] {
+.quote-check__box[aria-invalid='true'] {
   border-color: var(--color-error);
 }
 
-.quote-consent__label {
-  font-size: var(--text-label);
-  color: var(--color-text-secondary);
+.quote-check__label {
+  /* Alto cómodo para tocar con el dedo: el texto también marca la casilla */
+  display: flex;
+  align-items: center;
+  min-height: 24px;
   cursor: pointer;
 }
 
-.quote-consent__label a {
+.quote-check__label a {
   color: var(--color-text);
 }
 
-.quote-consent__error {
+.quote-check__error {
   grid-column: 1 / -1;
 }
 
+/* El texto legal de la privacidad va más pequeño y ocupa varias líneas */
+.quote-check--small {
+  align-items: start;
+}
+
+.quote-check--small .quote-check__label {
+  display: block;
+  font-size: var(--text-label);
+  color: var(--color-text-secondary);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .quote-consent__checkbox,
-  .quote-consent__checkbox::before {
+  .quote-check__box,
+  .quote-check__box::before {
     transition: none;
   }
 }

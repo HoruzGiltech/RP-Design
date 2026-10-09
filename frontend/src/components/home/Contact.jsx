@@ -1,13 +1,12 @@
 import { useSite } from '../../context/SiteContext'
 import Reveal from '../ui/Reveal'
 import Section from '../ui/Section'
-import ContactInfo from './ContactInfo'
 import './Contact.css'
 
 /**
- * Sección Contacto, en una sola columna (specs-002, RF-18):
- * título e introducción, el formulario a todo el ancho y, debajo, los datos
- * de contacto uno al lado del otro.
+ * Sección Contacto, en una sola columna (specs-002, RF-18): título e
+ * introducción y el formulario a todo el ancho. Los datos de contacto están
+ * en el pie de página (specs-003, RF-33).
  *
  * `children` es el formulario de cotización (components/quote/QuoteCalculator).
  */
@@ -29,10 +28,6 @@ export default function Contact({ children }) {
       </div>
 
       {children && <div>{children}</div>}
-
-      <Reveal>
-        <ContactInfo />
-      </Reveal>
     </Section>
   )
 }
