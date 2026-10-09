@@ -36,6 +36,9 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             "whatsapp_display",
             "whatsapp_greeting",
             "show_whatsapp_button",
+            "heading_font",
+            "body_font",
+            "show_estimate",
             "contact_email",
             "instagram_handle",
             "instagram_url",
@@ -74,7 +77,7 @@ class HeroSectionSerializer(serializers.ModelSerializer):
 class ServicesSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServicesSection
-        fields = ["is_visible", "title", "intro"]
+        fields = ["is_visible", "title", "intro", "cta_text"]
 
 
 class ProjectsSectionSerializer(serializers.ModelSerializer):
@@ -90,9 +93,21 @@ class ProcessSectionSerializer(serializers.ModelSerializer):
 
 
 class ContactSectionSerializer(serializers.ModelSerializer):
+    form_fields = serializers.SerializerMethodField()
+
     class Meta:
         model = ContactSection
-        fields = ["is_visible", "title", "intro", "submit_text"]
+        fields = ["is_visible", "title", "intro", "submit_text", "form_fields"]
+
+    def get_form_fields(self, contact):
+        """
+        Textos del formulario, indexados por campo para que el sitio los lea directo:
+        { "name": { "label": "Nombre", "placeholder": "Tu nombre" }, ... }
+        """
+        return {
+            form_field.key: {"label": form_field.label, "placeholder": form_field.placeholder}
+            for form_field in contact.form_fields.all()
+        }
 
 
 class FooterSectionSerializer(serializers.ModelSerializer):

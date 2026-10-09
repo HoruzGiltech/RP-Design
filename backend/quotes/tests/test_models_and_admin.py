@@ -6,22 +6,28 @@ from django.test import TestCase
 from django.urls import reverse
 
 from projects.models import ProjectCategory
-from quotes.models import Quote, RemodelArea
+from quotes.models import Quote, QuoteItem, RemodelArea
 
 
 def create_quote(**fields):
+    """Cotización de un solo renglón: 12,5 m² de cocina a USD 100 el m²."""
     values = {
         "name": "Ana Pérez",
         "email": "ana@mail.com",
         "phone": "+584121234567",
-        "area": RemodelArea.objects.get(slug="cocina"),
-        "square_meters": Decimal("12.5"),
-        "price_per_m2_snapshot": Decimal("100"),
         "estimated_price": Decimal("1250"),
         "whatsapp_message": "Hola RP Design, quiero una cotización",
     }
     values.update(fields)
-    return Quote.objects.create(**values)
+    quote = Quote.objects.create(**values)
+    QuoteItem.objects.create(
+        quote=quote,
+        area=RemodelArea.objects.get(slug="cocina"),
+        square_meters=Decimal("12.5"),
+        price_per_m2_snapshot=Decimal("100"),
+        subtotal=Decimal("1250"),
+    )
+    return quote
 
 
 class InitialAreasTests(TestCase):
@@ -99,7 +105,12 @@ class QuoteModelTests(TestCase):
         quote = create_quote()
 
         with self.assertRaises(ProtectedError):
-            quote.area.delete()
+            quote.items.get().area.delete()
+
+    def test_deleting_a_quote_deletes_its_items(self):
+        create_quote().delete()
+
+        self.assertEqual(QuoteItem.objects.count(), 0)
 
 
 class QuotesAdminTests(TestCase):
@@ -115,6 +126,8 @@ class QuotesAdminTests(TestCase):
 
         self.assertContains(areas, "Piscina")
         self.assertContains(quotes, "USD 1.250,00")
+        # specs-003: la lista resume las áreas de cada cotización
+        self.assertContains(quotes, "Cocina")
 
     def test_quotes_cannot_be_added_from_the_panel(self):
         response = self.client.get(reverse("admin:quotes_quote_add"))
@@ -129,13 +142,33 @@ class QuotesAdminTests(TestCase):
         self.assertContains(response, "Hola RP Design, quiero una cotización")
         self.assertContains(response, "https://wa.me/584121234567")
 
+    def test_quote_detail_shows_its_areas_and_the_new_fields(self):
+        quote = create_quote(location="Chacao, Caracas", has_photos=True)
+
+        response = self.client.get(reverse("admin:quotes_quote_change", args=[quote.pk]))
+
+        self.assertContains(response, "Áreas cotizadas")
+        self.assertContains(response, "Cocina")
+        self.assertContains(response, "12,50")
+        self.assertContains(response, "Chacao, Caracas")
+        self.assertContains(response, "Tiene fotos del espacio")
+        # Las áreas solo se leen: no hay campos para cambiarlas ni fila para agregar
+        self.assertNotContains(response, 'name="items-0-square_meters"')
+
     def test_only_the_status_can_be_changed(self):
         quote = create_quote()
         url = reverse("admin:quotes_quote_change", args=[quote.pk])
 
         # Se intenta cambiar también el nombre y el estimado
         self.client.post(
-            url, {"status": Quote.CONTACTED, "name": "Otro nombre", "estimated_price": "1"}
+            url,
+            {
+                "status": Quote.CONTACTED,
+                "name": "Otro nombre",
+                "estimated_price": "1",
+                "items-TOTAL_FORMS": 0,
+                "items-INITIAL_FORMS": 0,
+            },
         )
 
         quote.refresh_from_db()

@@ -50,3 +50,8 @@ def make_video_file(name="video.mp4", extra_bytes=1024):
 def make_fake_file(name):
     """Crea un .exe con el nombre que se le pida (para simular un archivo disfrazado)."""
     return SimpleUploadedFile(name, EXE_HEADER + b"\x00" * 1024)
+
+
+def make_font_file(name="fuente.woff2", signature=b"wOF2", extra_bytes=1024):
+    """Crea un archivo que empieza con la firma de una fuente real, relleno con ceros."""
+    return SimpleUploadedFile(name, signature + b"\x00" * extra_bytes)

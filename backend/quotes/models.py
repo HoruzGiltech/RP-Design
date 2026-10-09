@@ -80,19 +80,16 @@ class Quote(TimeStampedModel):
         blank=True,
     )
     category_name = models.CharField("tipo (nombre al cotizar)", max_length=60, blank=True)
-    # PROTECT: no se puede borrar un área que ya tiene cotizaciones
-    area = models.ForeignKey(
-        RemodelArea, on_delete=models.PROTECT, related_name="quotes", verbose_name="área"
+    location = models.CharField("ubicación del espacio", max_length=160, blank=True)
+    has_photos = models.BooleanField("tiene fotos del espacio", default=False)
+    needs_visit = models.BooleanField(
+        "pide una visita",
+        default=False,
+        help_text="La persona no sabe los metros cuadrados: sus áreas no tienen m² ni precio.",
     )
-    area_other = models.CharField("área especificada", max_length=120, blank=True)
-    square_meters = models.DecimalField("metros cuadrados", max_digits=8, decimal_places=2)
-    # Copia del precio del momento: si el cliente cambia sus precios después,
-    # las cotizaciones viejas conservan su valor.
-    price_per_m2_snapshot = models.DecimalField(
-        "precio por m² usado (USD)", max_digits=10, decimal_places=2, null=True, blank=True
-    )
+    # Las áreas elegidas están en QuoteItem (quote.items). Esto es la suma de sus subtotales.
     estimated_price = models.DecimalField(
-        "estimado (USD)",
+        "estimado total (USD)",
         max_digits=12,
         decimal_places=2,
         null=True,
@@ -114,4 +111,42 @@ class Quote(TimeStampedModel):
         verbose_name_plural = "cotizaciones"
 
     def __str__(self):
-        return f"{self.name} — {self.area}"
+        return f"{self.name} — {self.created_at:%d/%m/%Y}"
+
+
+class QuoteItem(models.Model):
+    """Un renglón de la cotización: un área, con sus metros cuadrados y su precio."""
+
+    quote = models.ForeignKey(
+        Quote, on_delete=models.CASCADE, related_name="items", verbose_name="cotización"
+    )
+    # PROTECT: no se puede borrar un área que ya tiene cotizaciones
+    area = models.ForeignKey(
+        RemodelArea, on_delete=models.PROTECT, related_name="quote_items", verbose_name="área"
+    )
+    area_other = models.CharField("área especificada", max_length=120, blank=True)
+    # Vacío cuando la persona pidió una visita porque no sabe los metros
+    square_meters = models.DecimalField(
+        "metros cuadrados", max_digits=8, decimal_places=2, null=True, blank=True
+    )
+    # Copia del precio del momento: si el cliente cambia sus precios después,
+    # las cotizaciones viejas conservan su valor.
+    price_per_m2_snapshot = models.DecimalField(
+        "precio por m² usado (USD)", max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    subtotal = models.DecimalField(
+        "subtotal (USD)",
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text='Vacío significa "A cotizar".',
+    )
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "área cotizada"
+        verbose_name_plural = "áreas cotizadas"
+
+    def __str__(self):
+        return self.area.name

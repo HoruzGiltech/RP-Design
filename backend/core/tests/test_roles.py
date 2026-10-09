@@ -7,11 +7,11 @@ from django.urls import reverse
 
 from core.roles import ADMIN_GROUP, VIEWER_GROUP
 from core.tests.helpers import TempMediaMixin, make_image_file
-from projects.models import Project
+from projects.models import Project, ProjectCategory
 from projects.tests.test_models import create_project
 from quotes.models import Quote, RemodelArea
 from quotes.tests.test_models_and_admin import create_quote
-from site_content.models import HeroSection, Service
+from site_content.models import HeroSection, QuoteFormField, Service
 
 User = get_user_model()
 
@@ -22,6 +22,7 @@ CONTENT_MODELS = [
     ("projects", "projectmedia"),
     ("quotes", "remodelarea"),
     ("quotes", "quote"),
+    ("quotes", "quoteitem"),
     ("site_content", "sitesettings"),
     ("site_content", "herosection"),
     ("site_content", "servicessection"),
@@ -35,6 +36,7 @@ CONTENT_MODELS = [
     ("site_content", "processstep"),
     ("site_content", "legalpage"),
     ("site_content", "legalsection"),
+    ("site_content", "quoteformfield"),
 ]
 
 # Páginas de lista que tienen entrada en el menú del panel
@@ -44,8 +46,6 @@ LIST_PAGES = [
     "quotes_remodelarea",
     "quotes_quote",
     "site_content_specialty",
-    "site_content_service",
-    "site_content_processstep",
     "site_content_legalpage",
 ]
 
@@ -119,6 +119,10 @@ class ViewerPermissionsTests(TempMediaMixin, TestCase):
             reverse("admin:quotes_quote_change", args=[self.quote.pk]),
             reverse("admin:site_content_herosection_change", args=[1]),
             reverse("admin:site_content_sitesettings_change", args=[1]),
+            # Secciones que llevan una tabla dentro (specs-003)
+            reverse("admin:site_content_servicessection_change", args=[1]),
+            reverse("admin:site_content_processsection_change", args=[1]),
+            reverse("admin:site_content_contactsection_change", args=[1]),
         ]
         for url in pages:
             with self.subTest(url=url):
@@ -137,7 +141,7 @@ class ViewerPermissionsTests(TempMediaMixin, TestCase):
         self.assertNotContains(areas, "form-0-price_per_m2")
 
     def test_cannot_add(self):
-        for app, model in [("projects", "project"), ("site_content", "service")]:
+        for app, model in [("projects", "project"), ("projects", "projectcategory")]:
             with self.subTest(model=model):
                 url = reverse(f"admin:{app}_{model}_add")
 
@@ -170,6 +174,44 @@ class ViewerPermissionsTests(TempMediaMixin, TestCase):
         self.assertEqual(self.project.title, "Casa en El Hatillo")
         self.assertEqual(hero_response.status_code, 403)
         self.assertNotEqual(HeroSection.objects.get().title, "Cambiado")
+
+    def test_cannot_edit_the_lists_inside_a_section(self):
+        # specs-003: servicios y textos del formulario se editan dentro de su sección
+        service = Service.objects.first()
+        form_field = QuoteFormField.objects.get(key="name")
+
+        services_response = self.client.post(
+            reverse("admin:site_content_servicessection_change", args=[1]),
+            {
+                "title": "x",
+                "items-TOTAL_FORMS": 1,
+                "items-INITIAL_FORMS": 1,
+                "items-0-id": service.pk,
+                "items-0-section": 1,
+                "items-0-title": "Cambiado por el visor",
+                "items-0-description": "x",
+                "items-0-order": 1,
+            },
+        )
+        contact_response = self.client.post(
+            reverse("admin:site_content_contactsection_change", args=[1]),
+            {
+                "title": "x",
+                "submit_text": "x",
+                "form_fields-TOTAL_FORMS": 1,
+                "form_fields-INITIAL_FORMS": 1,
+                "form_fields-0-id": form_field.pk,
+                "form_fields-0-section": 1,
+                "form_fields-0-label": "Cambiado por el visor",
+            },
+        )
+
+        service.refresh_from_db()
+        form_field.refresh_from_db()
+        self.assertEqual(services_response.status_code, 403)
+        self.assertEqual(contact_response.status_code, 403)
+        self.assertNotEqual(service.title, "Cambiado por el visor")
+        self.assertEqual(form_field.label, "Nombre")
 
     def test_cannot_delete(self):
         url = reverse("admin:projects_project_delete", args=[self.project.pk])
@@ -231,18 +273,40 @@ class AdminRoleTests(TempMediaMixin, TestCase):
         self.assertFalse(self.user.is_superuser)
 
     def test_can_create_edit_and_delete_content(self):
-        add_url = reverse("admin:site_content_service_add")
-        self.client.post(add_url, {"title": "Asesoría", "description": "x", "is_visible": "on"})
-        service = Service.objects.get(title="Asesoría")
+        add_url = reverse("admin:projects_projectcategory_add")
+        self.client.post(add_url, {"name": "Hotelería", "is_visible": "on"})
+        category = ProjectCategory.objects.get(name="Hotelería")
 
-        change_url = reverse("admin:site_content_service_change", args=[service.pk])
-        self.client.post(change_url, {"title": "Asesoría 2", "description": "x"})
-        service.refresh_from_db()
-        self.assertEqual(service.title, "Asesoría 2")
+        change_url = reverse("admin:projects_projectcategory_change", args=[category.pk])
+        self.client.post(change_url, {"name": "Hoteles", "is_visible": "on"})
+        category.refresh_from_db()
+        self.assertEqual(category.name, "Hoteles")
 
-        delete_url = reverse("admin:site_content_service_delete", args=[service.pk])
+        delete_url = reverse("admin:projects_projectcategory_delete", args=[category.pk])
         self.client.post(delete_url, {"post": "yes"})
-        self.assertFalse(Service.objects.filter(pk=service.pk).exists())
+        self.assertFalse(ProjectCategory.objects.filter(pk=category.pk).exists())
+
+    def test_can_edit_the_services_inside_their_section(self):
+        # specs-003: los servicios ya no tienen entrada propia en el menú
+        Service.objects.all().delete()
+
+        self.client.post(
+            reverse("admin:site_content_servicessection_change", args=[1]),
+            {
+                "is_visible": "on",
+                "title": "Servicios",
+                "cta_text": "Cotizar",
+                "items-TOTAL_FORMS": 1,
+                "items-INITIAL_FORMS": 0,
+                "items-0-section": 1,
+                "items-0-title": "Asesoría",
+                "items-0-description": "x",
+                "items-0-is_visible": "on",
+                "items-0-order": 1,
+            },
+        )
+
+        self.assertTrue(Service.objects.filter(title="Asesoría").exists())
 
     def test_can_reorder_projects(self):
         project = create_project()
@@ -266,7 +330,8 @@ class AdminRoleTests(TempMediaMixin, TestCase):
             {"name": area.name, "slug": area.slug, "price_per_m2": "100", "is_active": "on"},
         )
         self.client.post(
-            reverse("admin:quotes_quote_change", args=[quote.pk]), {"status": Quote.CONTACTED}
+            reverse("admin:quotes_quote_change", args=[quote.pk]),
+            {"status": Quote.CONTACTED, "items-TOTAL_FORMS": 0, "items-INITIAL_FORMS": 0},
         )
 
         area.refresh_from_db()

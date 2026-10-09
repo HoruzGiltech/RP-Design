@@ -2,12 +2,13 @@ from django.core.cache import cache
 from django.test import TestCase
 from django.urls import reverse
 
-from core.tests.helpers import TempMediaMixin, make_image_file
+from core.tests.helpers import TempMediaMixin, make_font_file, make_image_file
 from site_content.models import (
     HeroSection,
     LegalPage,
     LegalSection,
     ProcessStep,
+    QuoteFormField,
     Service,
     ServicesSection,
     SiteSettings,
@@ -140,6 +141,63 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
     def test_api_is_read_only(self):
         for method in [self.client.post, self.client.put, self.client.delete]:
             self.assertEqual(method(self.url).status_code, 405)
+
+    # --- specs-003 ---
+
+    def test_fonts_are_null_until_the_client_uploads_them(self):
+        settings = self.get_site()["settings"]
+
+        self.assertIsNone(settings["heading_font"])
+        self.assertIsNone(settings["body_font"])
+
+    def test_uploaded_font_has_a_full_url(self):
+        settings = SiteSettings.load()
+        settings.heading_font = make_font_file()
+        settings.save()
+
+        site_settings = self.get_site()["settings"]
+
+        self.assertEqual(
+            site_settings["heading_font"], f"http://testserver{settings.heading_font.url}"
+        )
+        self.assertIsNone(site_settings["body_font"])
+
+    def test_estimate_is_shown_by_default_and_can_be_hidden(self):
+        self.assertTrue(self.get_site()["settings"]["show_estimate"])
+
+        SiteSettings.objects.update(show_estimate=False)
+
+        self.assertFalse(self.get_site()["settings"]["show_estimate"])
+
+    def test_services_have_the_text_of_the_quote_button(self):
+        self.assertEqual(self.get_site()["services"]["cta_text"], "Cotizar")
+
+    def test_contact_has_the_texts_of_every_form_field(self):
+        form_fields = self.get_site()["contact"]["form_fields"]
+
+        self.assertEqual(
+            set(form_fields),
+            {
+                "name",
+                "phone",
+                "email",
+                "category",
+                "location",
+                "areas",
+                "area_other",
+                "square_meters",
+                "needs_visit",
+                "message",
+                "has_photos",
+            },
+        )
+        self.assertEqual(form_fields["name"], {"label": "Nombre", "placeholder": "Tu nombre"})
+        self.assertEqual(form_fields["has_photos"]["label"], "Tengo fotos del espacio")
+
+    def test_form_field_text_changed_in_the_panel_is_seen_right_away(self):
+        QuoteFormField.objects.filter(key="phone").update(label="WhatsApp")
+
+        self.assertEqual(self.get_site()["contact"]["form_fields"]["phone"]["label"], "WhatsApp")
 
     def test_site_has_the_links_to_the_legal_pages(self):
         self.assertEqual(

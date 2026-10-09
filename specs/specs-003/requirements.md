@@ -3,7 +3,7 @@
 > **Qué** cambia respecto a lo ya construido y **cómo sabemos que está bien hecho**.
 > Es un paquete de cambios sobre `specs/`, `specs/specs-001/` y `specs/specs-002/`. Donde este documento los contradice, **manda este**.
 
-**Estado:** Borrador v1 (2026-10-09) — pendiente de aprobación
+**Estado:** Aprobado (v1, 2026-10-09)
 **Base:** `specs/` (RF-01 a RF-07), `specs/specs-001/` (RF-08 a RF-12) y `specs/specs-002/` (RF-13 a RF-18), ya implementadas y cerradas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 
@@ -291,20 +291,20 @@ Confirmadas por el desarrollador el 2026-10-09. Se numeran desde P-15 para no re
 | P-21 | Campos nuevos del formulario | **Todos opcionales**, incluida la ubicación |
 | P-22 | Menú tras el cambio de orden | **No cambia** |
 
-## 5. Decisiones a confirmar
+## 5. Más decisiones confirmadas
 
-Las tomé con el criterio más razonable para poder escribir la spec. Cualquiera se cambia antes de programar.
+Propuestas por el agente y aceptadas por el desarrollador el 2026-10-09.
 
-| # | Tema | Lo que propongo | Alternativa |
-|---|---|---|---|
-| P-23 | Descripción más larga que la foto | Scroll dentro de la capa | Recortar a unas líneas con "…" |
-| P-24 | Posición del video en la rotación | Primera portada | Última, o elegible en el panel |
-| P-25 | Botón "Cotizar" en celulares | Siempre visible | No mostrarlo en celulares |
-| P-26 | Pasos y servicios en el panel | Dentro de su sección; desaparecen las entradas sueltas del menú | Mantener también las entradas sueltas |
-| P-27 | Texto de la casilla de privacidad | No editable desde la tabla de campos | Editable, con el enlace fijo |
-| P-28 | Ciudad ("Caracas, Venezuela") | Deja de mostrarse en Contacto; el lema del pie ya la menciona | Mostrarla junto a los iconos del pie |
-| P-29 | Total cuando un área no tiene precio | "A cotizar" para todo el total | Sumar solo las que tienen precio y avisar que es parcial |
-| P-30 | Formatos y tamaño de las fuentes | `woff2`, `woff`, `ttf`, `otf`; 2 MB | Solo `woff2` (el más liviano) |
+| # | Tema | Decisión |
+|---|---|---|
+| P-23 | Descripción más larga que la foto | **Scroll dentro de la capa**, sin recortar |
+| P-24 | Posición del video en la rotación | **Primera portada** |
+| P-25 | Botón "Cotizar" en celulares | **Siempre visible** |
+| P-26 | Pasos y servicios en el panel | **Solo dentro de su sección**; desaparecen las entradas sueltas del menú |
+| P-27 | Texto de la casilla de privacidad | **No editable** desde la tabla de campos |
+| P-28 | Ciudad ("Caracas, Venezuela") | Deja de mostrarse en Contacto; el lema del pie ya la menciona |
+| P-29 | Total cuando un área no tiene precio | **"A cotizar"** para todo el total |
+| P-30 | Formatos y tamaño de las fuentes | `woff2`, `woff`, `ttf`, `otf`; **2 MB** |
 
 ---
 

@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from core.tests.helpers import TempMediaMixin, make_image_file, make_video_file
-from projects.models import ProjectMedia
+from projects.models import ProjectCategory, ProjectMedia
 from projects.tests.test_models import create_project, get_category
 
 
@@ -42,12 +42,15 @@ class ProjectListApiTests(TempMediaMixin, TestCase):
                 "slug",
                 "title",
                 "summary",
+                "description",
                 "category",
                 "cover_image",
                 "cover_thumbnail",
                 "cover_alt",
             },
         )
+        # specs-003: la descripción completa se muestra sobre la portada
+        self.assertEqual(card["description"], "Descripción del proyecto.")
         self.assertEqual(card["category"], {"name": "Residencial", "slug": "residencial"})
         self.assertEqual(
             card["cover_thumbnail"], f"http://testserver{project.cover_thumbnail.url}"
@@ -108,6 +111,25 @@ class ProjectListApiTests(TempMediaMixin, TestCase):
         response = self.client.get(self.url, {"category": "no-existe"})
 
         self.assertEqual(len(response.json()), 2)
+
+    def test_hidden_category_filter_returns_every_project(self):
+        # specs-003: el filtro de una categoría oculta se comporta como "Todos"
+        create_project(title="Casa", is_published=True)
+        create_project(title="Tienda", is_published=True, category=get_category("comercial"))
+        ProjectCategory.objects.filter(slug="comercial").update(is_visible=False)
+
+        response = self.client.get(self.url, {"category": "comercial"})
+
+        self.assertEqual(len(response.json()), 2)
+
+    def test_project_of_a_hidden_category_is_still_listed_with_its_label(self):
+        create_project(title="Tienda", is_published=True, category=get_category("comercial"))
+        ProjectCategory.objects.filter(slug="comercial").update(is_visible=False)
+
+        card = self.client.get(self.url).json()[0]
+
+        self.assertEqual(card["title"], "Tienda")
+        self.assertEqual(card["category"]["name"], "Comercial")
 
     def test_project_without_category_is_listed_with_null(self):
         project = create_project(is_published=True)
@@ -189,6 +211,14 @@ class ProjectCategoryApiTests(TempMediaMixin, TestCase):
 
     def test_without_published_projects_the_list_is_empty(self):
         self.assertEqual(self.get_categories(), [])
+
+    def test_hidden_category_is_not_listed(self):
+        # specs-003: la casilla "mostrar en el sitio" de la categoría
+        create_project(title="Casa", is_published=True)
+        create_project(title="Tienda", is_published=True, category=get_category("comercial"))
+        ProjectCategory.objects.filter(slug="comercial").update(is_visible=False)
+
+        self.assertEqual([category["slug"] for category in self.get_categories()], ["residencial"])
 
     def test_categories_follow_the_order_of_the_panel(self):
         create_project(title="Oficina", is_published=True, category=get_category("corporativo"))

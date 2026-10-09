@@ -1,8 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase, override_settings
 
-from core.tests.helpers import make_fake_file, make_image_file, make_video_file
+from core.tests.helpers import make_fake_file, make_font_file, make_image_file, make_video_file
 from core.validators import (
+    validate_font_file,
     validate_image_file,
     validate_media_file,
     validate_video_file,
@@ -81,3 +82,36 @@ class MediaValidatorTests(SimpleTestCase):
     def test_rejects_exe_renamed_to_video(self):
         with self.assertRaisesMessage(ValidationError, "no es un video válido"):
             validate_media_file(make_fake_file("video.webm"))
+
+
+class FontValidatorTests(SimpleTestCase):
+    """Fuentes que el cliente carga desde el panel (specs-003, RF-19)."""
+
+    def test_every_allowed_format_is_accepted(self):
+        validate_font_file(make_font_file("fuente.woff2", b"wOF2"))
+        validate_font_file(make_font_file("fuente.woff", b"wOFF"))
+        validate_font_file(make_font_file("fuente.otf", b"OTTO"))
+        validate_font_file(make_font_file("fuente.ttf", b"\x00\x01\x00\x00"))
+        validate_font_file(make_font_file("FUENTE.TTF", b"true"))
+
+    def test_extension_not_allowed_is_rejected(self):
+        with self.assertRaisesMessage(ValidationError, "Formato no permitido"):
+            validate_font_file(make_font_file("fuente.eot", b"wOF2"))
+
+    def test_exe_renamed_to_font_is_rejected(self):
+        with self.assertRaisesMessage(ValidationError, "no es una fuente válida"):
+            validate_font_file(make_fake_file("fuente.woff2"))
+
+    @override_settings(MAX_FONT_MB=1)
+    def test_too_big_font_is_rejected_with_the_limit_in_the_message(self):
+        big_font = make_font_file(extra_bytes=2 * 1024 * 1024)
+
+        with self.assertRaisesMessage(ValidationError, "El máximo es 1 MB"):
+            validate_font_file(big_font)
+
+    def test_file_can_be_read_again_after_validation(self):
+        font = make_font_file()
+
+        validate_font_file(font)
+
+        self.assertEqual(font.tell(), 0)

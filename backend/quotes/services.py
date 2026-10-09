@@ -13,10 +13,25 @@ TWO_DECIMALS = Decimal("0.01")
 
 
 def calculate_estimate(area, square_meters):
-    """Devuelve m² × precio del área, o None si el área no tiene precio."""
-    if area.price_per_m2 is None:
+    """
+    Devuelve m² × precio del área. Devuelve None ("A cotizar") si el área no
+    tiene precio o si no se dieron los metros (la persona pidió una visita).
+    """
+    if area.price_per_m2 is None or square_meters is None:
         return None
     return (area.price_per_m2 * square_meters).quantize(TWO_DECIMALS)
+
+
+def calculate_total(subtotals):
+    """
+    Suma los subtotales de todas las áreas.
+
+    Si alguna área está "A cotizar" (None), el total también lo está: mostrar
+    una suma parcial haría creer que ese es el precio de todo.
+    """
+    if not subtotals or None in subtotals:
+        return None
+    return sum(subtotals, Decimal("0")).quantize(TWO_DECIMALS)
 
 
 def _to_venezuelan_format(number_text):
@@ -51,29 +66,55 @@ def area_belongs_to_category(area, category):
     return area.category_id is None or area.category_id == category.pk
 
 
-def build_whatsapp_message(quote):
-    """Arma el texto que la persona enviará por WhatsApp."""
-    area = quote.area.name
-    if quote.area.is_other and quote.area_other:
-        area = f"{area}: {quote.area_other}"
+def describe_item(item, show_estimate=True):
+    """
+    Texto de un renglón para el mensaje: 'Cocina: 10 m² (USD 1.000,00)'.
+    Sin metros (visita pedida) queda solo el nombre del área.
+    """
+    name = item.area.name
+    if item.area.is_other and item.area_other:
+        name = f"{name} ({item.area_other})"
+    if item.square_meters is None:
+        return name
 
+    text = f"{name}: {format_square_meters(item.square_meters)} m²"
+    if show_estimate:
+        text += f" ({format_usd(item.subtotal)})"
+    return text
+
+
+def build_whatsapp_message(quote, items, show_estimate=True):
+    """
+    Arma el texto que la persona enviará por WhatsApp.
+
+    No lleva emojis: algunas versiones de WhatsApp los muestran como "?"
+    cuando llegan dentro de un enlace. Cada línea empieza con un guion.
+    Con show_estimate apagado no se menciona ningún precio.
+    """
     lines = [
         "Hola RP Design, quiero una cotización:",
         "",
-        f"👤 Nombre: {quote.name}",
-        f"📧 Correo: {quote.email}",
-        f"📱 Teléfono: {quote.phone}",
+        f"- Nombre: {quote.name}",
+        f"- Correo: {quote.email}",
+        f"- Teléfono: {quote.phone}",
     ]
+    if quote.location:
+        lines.append(f"- Ubicación: {quote.location}")
     # Las cotizaciones anteriores a specs-002 no tienen tipo: la línea se omite
     if quote.category_name:
-        lines.append(f"🏗️ Tipo: {quote.category_name}")
-    lines += [
-        f"🏠 Área: {area}",
-        f"📐 Metros cuadrados: {format_square_meters(quote.square_meters)} m²",
-        f"💲 Estimado: {format_usd(quote.estimated_price)}",
-    ]
+        lines.append(f"- Tipo: {quote.category_name}")
+
+    lines.append("- Áreas:")
+    lines += [f"  - {describe_item(item, show_estimate)}" for item in items]
+
+    if show_estimate:
+        lines.append(f"- Estimado total: {format_usd(quote.estimated_price)}")
+    if quote.has_photos:
+        lines.append("- Tengo fotos del espacio")
+    if quote.needs_visit:
+        lines.append("- No sé los m²: quiero agendar una visita")
     if quote.message:
-        lines += ["", f"💬 Mensaje: {quote.message}"]
+        lines += ["", f"- Mensaje: {quote.message}"]
     return "\n".join(lines)
 
 

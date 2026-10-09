@@ -10,7 +10,10 @@ from django.db import models
 from core.images import optimize_image_field
 from core.models import OrderedModel, SingletonModel, VisibleModel
 from core.uploads import build_unique_path
-from core.validators import validate_image_file, validate_video_file
+from core.validators import validate_font_file, validate_image_file, validate_video_file
+
+# Las secciones únicas (SingletonModel) siempre usan este id
+SINGLETON_PK = 1
 
 DEFAULT_PRICE_NOTE = (
     "Precio referencial en USD, sujeto a modificación tras visita técnica. "
@@ -18,6 +21,13 @@ DEFAULT_PRICE_NOTE = (
 )
 
 DEFAULT_WHATSAPP_GREETING = "Hola! quiero agendar una reunión"
+
+FONT_HELP_TEXT = (
+    "Opcional. Formatos: woff2, woff, ttf u otf. Lo ideal es una fuente variable "
+    "(un solo archivo con todos los grosores): con un archivo de un solo grosor, las "
+    "negritas se ven peor. Debes tener licencia para usarla en la web. "
+    "Vacío = fuente original del sitio."
+)
 
 whatsapp_number_validator = RegexValidator(
     regex=r"^\d{10,15}$",
@@ -105,6 +115,30 @@ class SiteSettings(SingletonModel):
     )
     city = models.CharField("ciudad", max_length=80, default="Caracas, Venezuela")
 
+    # Tipografía (specs-003). Vacías, el sitio usa sus fuentes originales.
+    heading_font = models.FileField(
+        "fuente de títulos",
+        upload_to=site_upload_path,
+        blank=True,
+        validators=[validate_font_file],
+        help_text=FONT_HELP_TEXT,
+    )
+    body_font = models.FileField(
+        "fuente de texto",
+        upload_to=site_upload_path,
+        blank=True,
+        validators=[validate_font_file],
+        help_text=FONT_HELP_TEXT,
+    )
+
+    show_estimate = models.BooleanField(
+        "mostrar el estimado de precio",
+        default=True,
+        help_text=(
+            "Si se desmarca, el visitante no ve ningún precio en el formulario ni en el "
+            "mensaje de WhatsApp. El estimado se sigue guardando en cada cotización del panel."
+        ),
+    )
     price_note = models.TextField(
         "nota de precio",
         default=DEFAULT_PRICE_NOTE,
@@ -191,6 +225,12 @@ class HeroSection(SingletonModel, VisibleModel):
 class ServicesSection(SingletonModel, VisibleModel):
     title = models.CharField("título", max_length=160)
     intro = models.TextField("introducción", blank=True)
+    cta_text = models.CharField(
+        "texto del botón de cada servicio",
+        max_length=40,
+        default="Cotizar",
+        help_text="Botón que aparece en cada tarjeta y lleva al formulario de contacto.",
+    )
 
     class Meta:
         verbose_name = "servicios (encabezado)"
@@ -310,6 +350,15 @@ class Specialty(OrderedModel, VisibleModel):
 class Service(OrderedModel, VisibleModel):
     """Tarjeta de Servicios. Su número (01, 02...) lo calcula el sitio según el orden."""
 
+    # La sección es un registro único (pk=1). Esta relación existe para poder editar
+    # los servicios dentro del formulario de "Servicios (encabezado)" en el panel.
+    section = models.ForeignKey(
+        ServicesSection,
+        on_delete=models.CASCADE,
+        related_name="items",
+        default=SINGLETON_PK,
+        editable=False,
+    )
     title = models.CharField("título", max_length=80)
     description = models.TextField("descripción")
 
@@ -324,6 +373,14 @@ class Service(OrderedModel, VisibleModel):
 class ProcessStep(OrderedModel, VisibleModel):
     """Entregable de Proceso. Su letra (A, B...) la calcula el sitio según el orden."""
 
+    # Igual que en Service: permite editar los pasos dentro de "Proceso (encabezado)"
+    section = models.ForeignKey(
+        ProcessSection,
+        on_delete=models.CASCADE,
+        related_name="steps",
+        default=SINGLETON_PK,
+        editable=False,
+    )
     title = models.CharField("título", max_length=80)
     description = models.TextField("descripción")
 
@@ -385,3 +442,57 @@ class LegalSection(OrderedModel):
         # Editar un apartado también cuenta como actualizar la página:
         # así cambia la fecha de "última actualización" que ve el visitante.
         self.page.save()
+
+
+# ---------------------------------------------------------------------------
+# Textos del formulario de cotización (specs-003, RF-31)
+# ---------------------------------------------------------------------------
+
+
+class QuoteFormField(models.Model):
+    """
+    Título y texto de ejemplo de un campo del formulario de cotización.
+
+    Las filas son fijas y las crea una migración: el cliente cambia los
+    textos, pero no agrega ni borra campos. `key` le dice al sitio a qué
+    campo corresponde cada fila.
+    """
+
+    KEY_CHOICES = [
+        ("name", "Nombre"),
+        ("phone", "Teléfono"),
+        ("email", "Correo"),
+        ("category", "Tipo de remodelación"),
+        ("location", "Ubicación del espacio"),
+        ("areas", "Áreas a remodelar"),
+        ("area_other", "Especificar el área (opción Otro)"),
+        ("square_meters", "Metros cuadrados"),
+        ("needs_visit", "Casilla: no sé cuántos m² son"),
+        ("message", "Mensaje"),
+        ("has_photos", "Casilla: tengo fotos del espacio"),
+    ]
+
+    section = models.ForeignKey(
+        ContactSection,
+        on_delete=models.CASCADE,
+        related_name="form_fields",
+        default=SINGLETON_PK,
+        editable=False,
+    )
+    key = models.CharField("campo", max_length=30, unique=True, choices=KEY_CHOICES, editable=False)
+    label = models.CharField("título", max_length=120)
+    placeholder = models.CharField(
+        "texto de ejemplo",
+        max_length=120,
+        blank=True,
+        help_text="Lo que se lee dentro del campo antes de escribir. Las casillas no lo usan.",
+    )
+    order = models.PositiveSmallIntegerField("orden", default=0, editable=False)
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "campo del formulario"
+        verbose_name_plural = "campos del formulario"
+
+    def __str__(self):
+        return self.get_key_display()

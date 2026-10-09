@@ -15,6 +15,11 @@ def published_projects():
     return Project.objects.filter(is_published=True).select_related("category")
 
 
+def visible_categories():
+    """Las categorías que el cliente dejó marcadas como "mostrar en el sitio"."""
+    return ProjectCategory.objects.filter(is_visible=True)
+
+
 class ProjectListView(generics.ListAPIView):
     """
     GET /api/projects/                    -> todos los proyectos publicados
@@ -35,8 +40,8 @@ class ProjectListView(generics.ListAPIView):
             ]
 
         category_slug = params.get("category")
-        # Una categoría que no existe no es un error: se devuelven todos
-        if category_slug and ProjectCategory.objects.filter(slug=category_slug).exists():
+        # Una categoría que no existe (o que está oculta) no es un error: se devuelven todos
+        if category_slug and visible_categories().filter(slug=category_slug).exists():
             return projects.filter(category__slug=category_slug)
         return projects
 
@@ -52,7 +57,7 @@ class ProjectDetailView(generics.RetrieveAPIView):
 
 class ProjectCategoryListView(APIView):
     """
-    GET /api/project-categories/ -> categorías que tienen proyectos publicados.
+    GET /api/project-categories/ -> categorías visibles que tienen proyectos publicados.
 
     Una categoría vacía no se envía: el sitio no debe mostrar una tarjeta
     que lleve a una página sin proyectos.
@@ -62,7 +67,7 @@ class ProjectCategoryListView(APIView):
 
     def get(self, request):
         categories = []
-        for category in ProjectCategory.objects.all():
+        for category in visible_categories():
             projects = list(published_projects().filter(category=category))
             if not projects:
                 continue

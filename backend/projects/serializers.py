@@ -26,6 +26,8 @@ class ProjectCardSerializer(serializers.ModelSerializer):
             "slug",
             "title",
             "summary",
+            # La descripción se muestra sobre la portada al pasar el mouse (specs-003)
+            "description",
             "category",
             "cover_image",
             "cover_thumbnail",

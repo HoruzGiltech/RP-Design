@@ -26,6 +26,14 @@ class ProjectCategory(OrderedModel):
 
     name = models.CharField("nombre", max_length=60, unique=True)
     slug = models.SlugField("dirección web", max_length=70, unique=True, editable=False)
+    is_visible = models.BooleanField(
+        "mostrar en el sitio",
+        default=True,
+        help_text=(
+            "Si se desmarca, la categoría sale del inicio, del filtro de proyectos y del "
+            "formulario. Sus proyectos siguen viéndose en \"Todos\"."
+        ),
+    )
 
     class Meta(OrderedModel.Meta):
         verbose_name = "categoría"

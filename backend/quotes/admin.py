@@ -2,7 +2,7 @@ from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
 
-from quotes.models import Quote, RemodelArea
+from quotes.models import Quote, QuoteItem, RemodelArea
 from quotes.services import build_whatsapp_link, format_usd
 
 
@@ -16,6 +16,26 @@ class RemodelAreaAdmin(SortableAdminMixin, admin.ModelAdmin):
     fields = ("name", "category", "price_per_m2", "is_other", "is_active")
 
 
+class QuoteItemInline(admin.TabularInline):
+    """Las áreas de la cotización. Solo se leen: son lo que envió la persona."""
+
+    model = QuoteItem
+    extra = 0
+    fields = ("area", "area_other", "square_meters", "price_per_m2_snapshot", "subtotal_display")
+    readonly_fields = fields
+    can_delete = False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description="Subtotal")
+    def subtotal_display(self, item):
+        return format_usd(item.subtotal)
+
+
 @admin.register(Quote)
 class QuoteAdmin(admin.ModelAdmin):
     list_display = (
@@ -23,14 +43,14 @@ class QuoteAdmin(admin.ModelAdmin):
         "name",
         "phone",
         "category_name",
-        "area",
-        "square_meters",
+        "areas_display",
         "estimate_display",
         "status",
     )
     list_display_links = ("created_at", "name")
     list_editable = ("status",)
-    list_filter = ("status", "category", "area", "created_at")
+    list_filter = ("status", "category", "needs_visit", "has_photos", "created_at")
+    inlines = [QuoteItemInline]
     search_fields = ("name", "email", "phone")
     date_hierarchy = "created_at"
 
@@ -42,12 +62,11 @@ class QuoteAdmin(admin.ModelAdmin):
         "email",
         "phone",
         "whatsapp_link",
+        "location",
         "category_name",
-        "area",
-        "area_other",
-        "square_meters",
-        "price_per_m2_snapshot",
         "estimate_display",
+        "needs_visit",
+        "has_photos",
         "message",
         "whatsapp_message",
         "privacy_accepted_at",
@@ -58,7 +77,15 @@ class QuoteAdmin(admin.ModelAdmin):
         # Las cotizaciones solo llegan desde el formulario del sitio
         return False
 
-    @admin.display(description="Estimado", ordering="estimated_price")
+    def get_queryset(self, request):
+        # Trae las áreas de todas las cotizaciones en una sola consulta
+        return super().get_queryset(request).prefetch_related("items__area")
+
+    @admin.display(description="Áreas")
+    def areas_display(self, quote):
+        return ", ".join(item.area.name for item in quote.items.all())
+
+    @admin.display(description="Estimado total", ordering="estimated_price")
     def estimate_display(self, quote):
         return format_usd(quote.estimated_price)
 

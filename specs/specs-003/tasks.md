@@ -14,38 +14,38 @@ Las tareas llevan el prefijo `S3-` para no confundirlas con las de `specs/tasks.
 - [x] **S3-A1** Plan de los 17 cambios, con las preguntas al desarrollador (8 decisiones confirmadas, P-15 a P-22).
 - [x] **S3-A2** Crear `specs/specs-003/requirements.md`, `design.md` y `tasks.md`.
 - [x] **S3-A3** Actualizar `AGENTS.md`: specs-003 es el trabajo en curso y el despliegue sigue siendo la última fase.
-- [ ] **S3-A4** ✋ **Aprobación** de specs-003 y de las decisiones a confirmar (P-23 a P-30 de `requirements.md` §5). *No se programa nada antes de esto.*
+- [x] **S3-A4** ✋ **Aprobación** de specs-003 y de las decisiones P-23 a P-30 (`requirements.md` §5). (Aprobado el 2026-10-09.)
 
 ---
 
 ## Fase B — Backend
 
 ### B1. Categorías y proyectos
-- [ ] **S3-B1** `ProjectCategory.is_visible`, en el panel y en las dos listas de categorías (`/api/project-categories/` y `/api/quote-categories/`). Una categoría oculta en `?category=` devuelve todos. *(RF-20)*
+- [x] **S3-B1** `ProjectCategory.is_visible`, en el panel y en las dos listas de categorías (`/api/project-categories/` y `/api/quote-categories/`). Una categoría oculta en `?category=` devuelve todos. *(RF-20)*
   - Verificación: tests de CA-20.1 a CA-20.3.
-- [ ] **S3-B2** `description` en la tarjeta de proyecto de la API. *(RF-22)*
+- [x] **S3-B2** `description` en la tarjeta de proyecto de la API. *(RF-22)*
 
 ### B2. Contenido del sitio
-- [ ] **S3-B3** `validate_font_file` y `MAX_FONT_MB`. *(RF-19.3, CA-19.1)*
+- [x] **S3-B3** `validate_font_file` y `MAX_FONT_MB`. *(RF-19.3, CA-19.1)*
   - Verificación: tests con cada formato válido, un archivo falso y uno demasiado grande.
-- [ ] **S3-B4** `SiteSettings`: `heading_font`, `body_font` y `show_estimate`, en el panel y en `/api/site/`. *(RF-19.1, RF-30.1)*
-- [ ] **S3-B5** `ServicesSection.cta_text`. `Service` y `ProcessStep` con relación a su sección, y sus tablas dentro del formulario de la sección; se quitan sus entradas del menú. *(RF-24.3, RF-25)*
+- [x] **S3-B4** `SiteSettings`: `heading_font`, `body_font` y `show_estimate`, en el panel y en `/api/site/`. *(RF-19.1, RF-30.1)*
+- [x] **S3-B5** `ServicesSection.cta_text`. `Service` y `ProcessStep` con relación a su sección, y sus tablas dentro del formulario de la sección; se quitan sus entradas del menú. *(RF-24.3, RF-25)*
   - Verificación: tests del panel; ningún paso ni servicio se pierde en la migración.
-- [ ] **S3-B6** Modelo `QuoteFormField`, migración con las 11 filas, tabla dentro de "Contacto" y `form_fields` en `/api/site/`. *(RF-31)*
+- [x] **S3-B6** Modelo `QuoteFormField`, migración con las 11 filas, tabla dentro de "Contacto" y `form_fields` en `/api/site/`. *(RF-31)*
   - Verificación: tests: no se agregan ni borran filas; la API devuelve las 11 claves.
 
 ### B3. Cotización con varias áreas
-- [ ] **S3-B7** Modelo `QuoteItem` y campos `location`, `has_photos` y `needs_visit` en `Quote`. Migración `quotes.0006`. *(RF-27.7, RF-32)*
-- [ ] **S3-B8** Migración de datos `quotes.0007`: cada cotización existente pasa a tener un renglón. *(RF-27.8)*
+- [x] **S3-B7** Modelo `QuoteItem` y campos `location`, `has_photos` y `needs_visit` en `Quote`. Migración `quotes.0006`. *(RF-27.7, RF-32)*
+- [x] **S3-B8** Migración de datos `quotes.0007`: cada cotización existente pasa a tener un renglón. *(RF-27.8)*
   - Verificación: test que compara una cotización antes y después.
-- [ ] **S3-B9** Migración `quotes.0008`: se eliminan de `Quote` los campos que pasaron al renglón.
+- [x] **S3-B9** Migración `quotes.0008`: se eliminan de `Quote` los campos que pasaron al renglón.
   - Verificación: `makemigrations --check` sin cambios pendientes.
-- [ ] **S3-B10** `services.py`: `calculate_total` y el mensaje nuevo, sin emojis y con renglones. *(RF-27.3, RF-27.4, RF-28)*
+- [x] **S3-B10** `services.py`: `calculate_total` y el mensaje nuevo, sin emojis y con renglones. *(RF-27.3, RF-27.4, RF-28)*
   - Verificación: tests de CA-27.1 y CA-28.1, y de cada línea opcional del mensaje.
-- [ ] **S3-B11** `POST /api/quotes/` con `items` y los campos nuevos; validación de cada renglón. *(RF-27, RF-32, CA-27.3, CA-27.4, CA-32.1, CA-32.2)*
-- [ ] **S3-B12** `show_estimate` apagado: respuesta sin monto y mensaje sin estimado, guardando el estimado igual. *(RF-30, CA-30.1, CA-30.2)*
-- [ ] **S3-B13** Panel de cotizaciones: tabla de renglones, ubicación, fotos y visita. *(RF-27.7, RF-32.4)*
-- [ ] **S3-B14** Migración `core.0004`: permisos de `QuoteItem` y `QuoteFormField` para Admin y Viewer.
+- [x] **S3-B11** `POST /api/quotes/` con `items` y los campos nuevos; validación de cada renglón. *(RF-27, RF-32, CA-27.3, CA-27.4, CA-32.1, CA-32.2)*
+- [x] **S3-B12** `show_estimate` apagado: respuesta sin monto y mensaje sin estimado, guardando el estimado igual. *(RF-30, CA-30.1, CA-30.2)*
+- [x] **S3-B13** Panel de cotizaciones: tabla de renglones, ubicación, fotos y visita. *(RF-27.7, RF-32.4)*
+- [x] **S3-B14** Migración `core.0004`: permisos de `QuoteItem` y `QuoteFormField` para Admin y Viewer.
   - Verificación: pasa el test de roles que avisa de permisos olvidados.
 
 - [ ] **S3-B15** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel.

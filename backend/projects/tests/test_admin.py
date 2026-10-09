@@ -137,9 +137,19 @@ class ProjectCategoryAdminTests(TempMediaMixin, TestCase):
         self.assertContains(response, "Áreas del formulario")
 
     def test_category_is_created_with_only_its_name(self):
-        self.client.post(reverse("admin:projects_projectcategory_add"), {"name": "Hotelería"})
+        self.client.post(
+            reverse("admin:projects_projectcategory_add"),
+            {"name": "Hotelería", "is_visible": "on"},
+        )
 
         self.assertEqual(ProjectCategory.objects.get(name="Hotelería").slug, "hoteleria")
+
+    def test_category_can_be_hidden_from_the_list(self):
+        # specs-003: la casilla se cambia directo en la lista
+        response = self.client.get(reverse("admin:projects_projectcategory_changelist"))
+
+        self.assertContains(response, "form-0-is_visible")
+        self.assertTrue(all(category.is_visible for category in ProjectCategory.objects.all()))
 
     def test_category_with_projects_is_not_deleted_from_the_panel(self):
         category = create_project().category

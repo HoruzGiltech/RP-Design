@@ -1,15 +1,17 @@
+from django.db import transaction
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from projects.models import ProjectCategory
-from quotes.models import Quote, RemodelArea
+from quotes.models import Quote, QuoteItem, RemodelArea
 from quotes.serializers import QuoteCategorySerializer, QuoteCreateSerializer
 from quotes.services import (
     build_whatsapp_link,
     build_whatsapp_message,
     calculate_estimate,
+    calculate_total,
     format_usd,
 )
 from site_content.models import SiteSettings
@@ -34,7 +36,7 @@ class QuoteCategoryListView(APIView):
         common_areas = [area for area in active_areas if area.category_id is None]
 
         categories = []
-        for category in ProjectCategory.objects.all():
+        for category in ProjectCategory.objects.filter(is_visible=True):
             own_areas = [area for area in active_areas if area.category_id == category.pk]
             category.form_areas = own_areas + common_areas
             if category.form_areas:
@@ -55,33 +57,62 @@ class QuoteCreateView(APIView):
         serializer = QuoteCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        quote = self._build_quote(serializer.validated_data)
-        quote.save()
+        site_settings = SiteSettings.load()
+        quote = self._save_quote(serializer.validated_data, site_settings.show_estimate)
 
-        whatsapp_number = SiteSettings.load().whatsapp_number
         return Response(
             {
                 "id": quote.pk,
-                # Como texto ("1250.00") para no perder decimales al pasar por JSON
-                "estimated_price": self._as_text(quote.estimated_price),
-                "estimated_price_display": format_usd(quote.estimated_price),
-                "whatsapp_url": build_whatsapp_link(whatsapp_number, quote.whatsapp_message),
+                **self._estimate_for_visitor(quote, site_settings.show_estimate),
+                "whatsapp_url": build_whatsapp_link(
+                    site_settings.whatsapp_number, quote.whatsapp_message
+                ),
             },
             status=status.HTTP_201_CREATED,
         )
 
-    def _build_quote(self, data):
-        """Calcula el precio aquí, en el servidor, y arma el mensaje con ese precio."""
+    def _save_quote(self, data, show_estimate):
+        """Calcula los precios aquí, en el servidor, arma el mensaje y guarda todo."""
         # privacy_accepted no es un campo de Quote: se cambia por la fecha de aceptación
         data.pop("privacy_accepted")
+        items = [self._build_item(item_data) for item_data in data.pop("items")]
+
         quote = Quote(**data)
         # Copia del nombre del tipo: la cotización lo conserva aunque la categoría cambie
         quote.category_name = quote.category.name
         quote.privacy_accepted_at = timezone.now()
-        quote.price_per_m2_snapshot = quote.area.price_per_m2
-        quote.estimated_price = calculate_estimate(quote.area, quote.square_meters)
-        quote.whatsapp_message = build_whatsapp_message(quote)
+        # El estimado se guarda siempre, aunque el visitante no lo vea
+        quote.estimated_price = calculate_total([item.subtotal for item in items])
+        quote.whatsapp_message = build_whatsapp_message(quote, items, show_estimate)
+
+        # O se guarda la cotización con todos sus renglones, o no se guarda nada
+        with transaction.atomic():
+            quote.save()
+            for item in items:
+                item.quote = quote
+            QuoteItem.objects.bulk_create(items)
         return quote
+
+    def _build_item(self, item_data):
+        area = item_data["area"]
+        square_meters = item_data["square_meters"]
+        return QuoteItem(
+            area=area,
+            area_other=item_data["area_other"],
+            square_meters=square_meters,
+            price_per_m2_snapshot=area.price_per_m2,
+            subtotal=calculate_estimate(area, square_meters),
+        )
+
+    def _estimate_for_visitor(self, quote, show_estimate):
+        """Con el estimado apagado en el panel, el sitio no recibe ningún precio."""
+        if not show_estimate:
+            return {"estimated_price": None, "estimated_price_display": None}
+        return {
+            # Como texto ("1250.00") para no perder decimales al pasar por JSON
+            "estimated_price": self._as_text(quote.estimated_price),
+            "estimated_price_display": format_usd(quote.estimated_price),
+        }
 
     def _as_text(self, amount):
         return None if amount is None else f"{amount:.2f}"

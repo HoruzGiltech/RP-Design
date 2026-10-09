@@ -13,11 +13,22 @@ from PIL import Image
 
 IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp"]
 VIDEO_EXTENSIONS = ["mp4", "webm"]
+FONT_EXTENSIONS = ["woff2", "woff", "ttf", "otf"]
 
 # Formatos que Pillow debe reconocer al abrir una imagen permitida
 IMAGE_FORMATS = ["JPEG", "PNG", "WEBP"]
 # Tipos que la librería filetype debe reconocer en un video permitido
 VIDEO_MIME_TYPES = ["video/mp4", "video/webm"]
+
+# Primeros 4 bytes de cada formato de fuente. Es su "firma": con ella se sabe
+# qué es el archivo de verdad, diga lo que diga su extensión.
+FONT_SIGNATURES = [
+    b"wOF2",  # woff2
+    b"wOFF",  # woff
+    b"OTTO",  # otf
+    b"\x00\x01\x00\x00",  # ttf
+    b"true",  # ttf de Apple
+]
 
 BYTES_PER_MB = 1024 * 1024
 # filetype solo necesita el comienzo del archivo para reconocerlo
@@ -77,6 +88,20 @@ def validate_video_file(file):
     _check_extension(file, VIDEO_EXTENSIONS)
     _check_size(file, settings.MAX_VIDEO_MB)
     _check_video_content(file)
+
+
+def _check_font_content(file):
+    signature = file.read(4)
+    file.seek(0)
+    if signature not in FONT_SIGNATURES:
+        raise ValidationError("El archivo no es una fuente válida.")
+
+
+def validate_font_file(file):
+    """Valida una fuente: woff2, woff, ttf u otf, hasta MAX_FONT_MB."""
+    _check_extension(file, FONT_EXTENSIONS)
+    _check_size(file, settings.MAX_FONT_MB)
+    _check_font_content(file)
 
 
 def validate_media_file(file):

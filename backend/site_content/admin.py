@@ -12,6 +12,7 @@ from site_content.models import (
     ProcessSection,
     ProcessStep,
     ProjectsSection,
+    QuoteFormField,
     SeoSettings,
     Service,
     ServicesSection,
@@ -20,10 +21,13 @@ from site_content.models import (
 )
 
 
-class SingletonAdmin(admin.ModelAdmin):
+class SingletonAdmin(SortableAdminBase, admin.ModelAdmin):
     """
     Panel para modelos de un solo registro: no se puede agregar ni eliminar,
     y al entrar desde el menú se va directo al formulario de edición.
+
+    Hereda de SortableAdminBase porque algunas secciones llevan dentro una
+    tabla que se ordena arrastrando (servicios, pasos del proceso).
     """
 
     def has_add_permission(self, request):
@@ -73,21 +77,71 @@ class SiteSettingsAdmin(SingletonAdmin):
             "Botón flotante de WhatsApp",
             {"fields": ("show_whatsapp_button", "whatsapp_greeting")},
         ),
-        ("Calculadora", {"fields": ("price_note", "max_square_meters")}),
+        (
+            "Tipografía",
+            {"fields": ("heading_font", "body_font")},
+        ),
+        ("Calculadora", {"fields": ("show_estimate", "price_note", "max_square_meters")}),
     )
 
 
-@admin.register(
-    HeroSection,
-    ServicesSection,
-    ProjectsSection,
-    ProcessSection,
-    ContactSection,
-    FooterSection,
-    SeoSettings,
-)
+@admin.register(HeroSection, ProjectsSection, FooterSection, SeoSettings)
 class SectionAdmin(SingletonAdmin):
     """Las secciones únicas no necesitan nada más que el formulario por defecto."""
+
+
+class SectionItemInline(SortableInlineAdminMixin, admin.StackedInline):
+    """Lista que se edita y se ordena arrastrando dentro del formulario de su sección."""
+
+    extra = 0
+    fields = ("title", "description", "is_visible")
+
+
+class ServiceInline(SectionItemInline):
+    model = Service
+
+
+class ProcessStepInline(SectionItemInline):
+    model = ProcessStep
+
+
+@admin.register(ServicesSection)
+class ServicesSectionAdmin(SingletonAdmin):
+    """El encabezado de Servicios y, debajo, sus tarjetas."""
+
+    inlines = [ServiceInline]
+
+
+@admin.register(ProcessSection)
+class ProcessSectionAdmin(SingletonAdmin):
+    """El encabezado de Proceso y, debajo, sus pasos."""
+
+    inlines = [ProcessStepInline]
+
+
+class QuoteFormFieldInline(admin.TabularInline):
+    """
+    Títulos y textos de ejemplo de los campos del formulario.
+    Las filas son fijas: se editan, pero no se agregan ni se borran.
+    """
+
+    model = QuoteFormField
+    extra = 0
+    # El nombre del campo no hace falta como columna: el panel ya lo escribe sobre cada fila
+    fields = ("label", "placeholder")
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(ContactSection)
+class ContactSectionAdmin(SingletonAdmin):
+    """El encabezado de Contacto y los textos del formulario."""
+
+    inlines = [QuoteFormFieldInline]
 
 
 class OrderedListAdmin(SortableAdminMixin, admin.ModelAdmin):
@@ -99,11 +153,6 @@ class OrderedListAdmin(SortableAdminMixin, admin.ModelAdmin):
 @admin.register(Specialty)
 class SpecialtyAdmin(OrderedListAdmin):
     list_display = ("text", "is_visible")
-
-
-@admin.register(Service, ProcessStep)
-class TitledListAdmin(OrderedListAdmin):
-    list_display = ("title", "is_visible")
 
 
 class LegalSectionInline(SortableInlineAdminMixin, admin.StackedInline):
