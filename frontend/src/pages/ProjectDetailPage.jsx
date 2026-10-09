@@ -9,6 +9,7 @@ import Spinner from '../components/ui/Spinner'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useFetch } from '../hooks/useFetch'
 import NotFoundPage from './NotFoundPage'
+import '../styles/overlay.css'
 import './ProjectDetailPage.css'
 
 const NOT_FOUND = 404
@@ -62,13 +63,27 @@ function ProjectDetail({ project }) {
         )}
       </header>
 
-      <div className="project-detail__cover">
+      <div className="project-detail__cover has-cover-overlay">
         <img
           className="project-detail__cover-image zoom-on-scroll"
           src={project.cover_image}
           alt={project.cover_alt}
           fetchPriority="high"
         />
+        {/*
+          La descripción también aparece sobre la portada al pasar el cursor
+          (specs-004, RF-39). Va oculta para lectores de pantalla porque el
+          mismo texto está justo debajo, que es donde se lee en un celular.
+        */}
+        {project.description && (
+          <div className="cover-overlay" aria-hidden="true">
+            <div className="cover-overlay__content">
+              <p className="cover-overlay__text project-detail__cover-text">
+                {project.description}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       <Reveal as="p" className="project-detail__description">

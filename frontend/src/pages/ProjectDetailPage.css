@@ -45,10 +45,26 @@
 
 /* "clip" y no "hidden": ver la explicación en components/home/Hero.css */
 .project-detail__cover {
+  /* Punto de referencia de la capa con la descripción */
+  position: relative;
   aspect-ratio: 16 / 9;
   max-height: 80vh;
   overflow: clip;
   background: var(--color-dark-surface);
+}
+
+/* La portada es grande: la capa lleva más margen y un ancho de línea cómodo para leer */
+.project-detail__cover .cover-overlay__content {
+  padding: var(--space-48);
+}
+
+.project-detail__cover-text {
+  font-size: var(--text-lead-small);
+  /*
+    Limita el largo de la línea a unos 68 caracteres sin estrechar el bloque:
+    así la barra de desplazamiento queda en el borde de la foto y no en medio.
+  */
+  padding-right: max(0px, calc(100% - 68ch));
 }
 
 .project-detail__cover-image {

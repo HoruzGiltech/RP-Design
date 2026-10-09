@@ -3,7 +3,7 @@
 > **Cómo** se construyen los requisitos de `specs/specs-004/requirements.md`.
 > Solo describe lo que cambia; lo demás sigue como en `specs/design.md` y los paquetes anteriores.
 
-**Estado:** Borrador v1 (2026-10-09) — pendiente de aprobación
+**Estado:** Aprobado (v1, 2026-10-09)
 
 ---
 

@@ -99,6 +99,12 @@ class ProjectAdminTests(TempMediaMixin, TestCase):
         self.assertContains(response, "Ya hay 6 proyectos en el hero")
         self.assertEqual(Project.objects.count(), 6)
 
+    def test_form_no_longer_offers_the_category_cover_checkbox(self):
+        # specs-004: el inicio ya no muestra las tarjetas de categorías
+        response = self.client.get(reverse("admin:projects_project_add"))
+
+        self.assertNotContains(response, 'name="is_category_cover"')
+
     def test_form_has_no_field_to_write_the_slug(self):
         response = self.client.get(reverse("admin:projects_project_add"))
 

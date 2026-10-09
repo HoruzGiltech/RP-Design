@@ -14,7 +14,7 @@ Las tareas llevan el prefijo `S4-`. **Este paquete se entrega por bloques** (P-4
 - [x] **S4-A1** Plan de los 10 cambios, con las preguntas al desarrollador (P-31 a P-34).
 - [x] **S4-A2** Crear `specs/specs-004/requirements.md`, `design.md` y `tasks.md`.
 - [x] **S4-A3** Actualizar `AGENTS.md`: specs-004 es el trabajo en curso y el despliegue sigue siendo la última fase.
-- [ ] **S4-A4** ✋ **Aprobación** de specs-004 y de las decisiones P-35 a P-40.
+- [x] **S4-A4** ✋ **Aprobación** de specs-004 y de las decisiones P-35 a P-40. (Dada por aprobada el 2026-10-09: el desarrollador pidió seguir bloque a bloque. Cambió una decisión: el enlace a Instagram de Proyectos se conserva.)
 
 ---
 
@@ -22,7 +22,7 @@ Las tareas llevan el prefijo `S4-`. **Este paquete se entrega por bloques** (P-4
 
 - [x] **S4-B1** "Ubicación del espacio" con el mismo ancho que "Tipo de remodelación". *(RF-40.1, CA-40.1)*
 - [x] **S4-B2** "Tengo fotos del espacio" arriba del mensaje, en el sitio y en la tabla del panel (migración de datos `site_content.0013`). *(RF-40.2, RF-40.3, CA-40.2)*
-- [ ] **S4-B3** ✋ **Prueba del bloque 1:** el desarrollador revisa el formulario.
+- [x] **S4-B3** ✋ **Prueba del bloque 1:** el desarrollador revisa el formulario. (Aprobada el 2026-10-09, tras igualar también el alto de Tipo y Ubicación.)
 
 ---
 
@@ -34,18 +34,18 @@ Las tareas llevan el prefijo `S4-`. **Este paquete se entrega por bloques** (P-4
 - [x] **S4-C4** `ServiceCard` y sección Servicios con fondo oscuro y cuadrícula de portadas. *(RF-35, CA-35.1, CA-35.2)*
 - [x] **S4-C5** Capa con la descripción y "Cotizar": con cursor, con teclado y con "reducir movimiento". *(RF-37, CA-37.1 a CA-37.3)*
 - [x] **S4-C6** En táctil, la descripción y "Cotizar" entran al aparecer la tarjeta. *(RF-41.2, CA-41.2)*
-- [ ] **S4-C7** ✋ **Prueba del bloque 2:** el desarrollador carga una imagen en un servicio y revisa la sección en computadora y celular.
+- [x] **S4-C7** ✋ **Prueba del bloque 2:** el desarrollador carga una imagen en un servicio y revisa la sección en computadora y celular. (Aprobada el 2026-10-09.)
 
 ---
 
 ## Bloque 3 — Proyectos
 
-- [ ] **S4-D1** Sección Proyectos del inicio con título y botón grande; `Button` tamaño "large"; se borran `ProjectCategories` y `CategoryCard`. *(RF-34, CA-34.1 a CA-34.3)*
-- [ ] **S4-D2** Texto del botón "Ver proyectos" (migración de datos `site_content.0015`, con su test) y panel sin "usar como portada de su categoría". *(RF-34.3, P-37, P-38)*
-- [ ] **S4-D3** Tarjetas de proyecto con la capa compartida (barra fina y degradado). *(RF-38, CA-38.1, CA-38.2)*
-- [ ] **S4-D4** Capa con la descripción sobre la portada del detalle. *(RF-39, CA-39.1, CA-39.2)*
-- [ ] **S4-D5** En táctil, el texto de las tarjetas de proyecto entra suave. *(RF-41.3)*
-- [ ] **S4-D6** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo el paquete. *(RNF-16, RNF-17)*
+- [x] **S4-D1** Sección Proyectos del inicio con título y botón grande; `Button` tamaño "large"; se borran `ProjectCategories` y `CategoryCard`. *(RF-34, CA-34.1 a CA-34.3)*
+- [x] **S4-D2** Texto del botón "Ver proyectos" (migración de datos `site_content.0015`, con su test) y panel sin "usar como portada de su categoría". *(RF-34.3, P-37, P-38)*
+- [x] **S4-D3** Tarjetas de proyecto con la capa compartida (barra fina y degradado). *(RF-38, CA-38.1, CA-38.2)*
+- [x] **S4-D4** Capa con la descripción sobre la portada del detalle. *(RF-39, CA-39.1, CA-39.2)*
+- [x] **S4-D5** En táctil, el texto de las tarjetas de proyecto entra suave. *(RF-41.3)*
+- [x] **S4-D6** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo el paquete. *(RNF-16, RNF-17)*
 - [ ] **S4-D7** ✋ **Prueba del bloque 3:** `manage.py test`, `npm test`, `npm run lint` y `npm run build` pasan; el desarrollador revisa el sitio en computadora y celular.
 
 ---

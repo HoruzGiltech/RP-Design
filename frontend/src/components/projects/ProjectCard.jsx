@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 
 import MediaPlaceholder from '../media/MediaPlaceholder'
 import Reveal from '../ui/Reveal'
+import '../../styles/overlay.css'
 import './ProjectCard.css'
 
 /**
@@ -17,7 +18,7 @@ export default function ProjectCard({ project, index = 0, titleAs: Title = 'h3' 
   return (
     <Reveal as="article" index={index} className="project-card">
       <Link to={`/proyectos/${project.slug}`} className="project-card__link">
-        <div className="project-card__media">
+        <div className="project-card__media has-cover-overlay">
           {project.cover_thumbnail ? (
             <img
               className="project-card__image"
@@ -31,21 +32,27 @@ export default function ProjectCard({ project, index = 0, titleAs: Title = 'h3' 
           )}
           {/*
             Capa que aparece al pasar el cursor, con la descripción completa del
-            proyecto (specs-003, RF-22). Va oculta para lectores de pantalla: el
-            enlace ya tiene su texto y la descripción se lee en la página del proyecto.
+            proyecto (specs-003, RF-22; estilos en styles/overlay.css). Va oculta
+            para lectores de pantalla: el enlace ya tiene su texto y la
+            descripción se lee en la página del proyecto.
           */}
           {project.description && (
-            <span className="project-card__overlay" aria-hidden="true">
-              {project.description}
+            <span className="cover-overlay" aria-hidden="true">
+              <span className="cover-overlay__content">
+                <span className="cover-overlay__text">{project.description}</span>
+              </span>
             </span>
           )}
         </div>
 
-        {project.category && (
-          <p className="project-card__category">{project.category.name}</p>
-        )}
-        <Title className="project-card__title">{project.title}</Title>
-        <p className="project-card__summary">{project.summary}</p>
+        {/* En pantallas táctiles este bloque entra un momento después de la foto */}
+        <div className="project-card__text">
+          {project.category && (
+            <p className="project-card__category">{project.category.name}</p>
+          )}
+          <Title className="project-card__title">{project.title}</Title>
+          <p className="project-card__summary">{project.summary}</p>
+        </div>
       </Link>
     </Reveal>
   )

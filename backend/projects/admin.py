@@ -64,7 +64,6 @@ class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
         "is_published",
         "show_in_hero",
         "hero_order",
-        "is_category_cover",
     )
     list_display_links = ("cover_preview", "title")
     list_filter = ("is_published", "category", "show_in_hero")
@@ -79,7 +78,9 @@ class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
         ("Portada", {"fields": ("cover_preview_large", "cover_image", "cover_alt")}),
         (
             "Publicación",
-            {"fields": ("is_published", "show_in_hero", "hero_order", "is_category_cover")},
+            # "Usar como portada de su categoría" ya no se ofrece: el inicio dejó de
+            # mostrar las tarjetas de categorías (specs-004). El dato se conserva.
+            {"fields": ("is_published", "show_in_hero", "hero_order")},
         ),
     )
 

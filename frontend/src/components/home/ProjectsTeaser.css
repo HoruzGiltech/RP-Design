@@ -1,0 +1,18 @@
+.projects-teaser {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-48);
+}
+
+.projects-teaser__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-24);
+}
+
+.projects-teaser__instagram {
+  color: var(--color-on-dark);
+  font-size: var(--text-nav);
+}

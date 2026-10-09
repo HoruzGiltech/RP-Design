@@ -9,7 +9,7 @@ import './Button.css'
  *   - <button> en cualquier otro caso
  *
  * variant: "primary" (fondo de acento) o "secondary" (solo borde)
- * size:    "medium" o "small" (el del encabezado)
+ * size:    "medium", "small" (el del encabezado) o "large" (el que invita a ver los proyectos)
  * onDark:  true cuando va sobre fondo oscuro
  */
 export default function Button({

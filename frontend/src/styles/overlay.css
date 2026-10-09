@@ -43,6 +43,8 @@
 }
 
 .cover-overlay__text {
+  /* En las tarjetas de proyecto es un <span> (va dentro de un enlace): se comporta como bloque */
+  display: block;
   /* Puede encogerse: si el texto no cabe, se desplaza aquí dentro en vez de recortarse */
   min-height: 0;
   width: 100%;

@@ -3,11 +3,12 @@ from importlib import import_module
 from django.apps import apps
 from django.test import TestCase
 
-from site_content.models import HeroSection, ProcessStep, Specialty
+from site_content.models import HeroSection, ProcessStep, ProjectsSection, Specialty
 
 # El nombre del archivo empieza por un número, así que no se puede importar con "import"
 hero_texts_migration = import_module("site_content.migrations.0007_hero_texts")
 specialty_migration = import_module("site_content.migrations.0009_specialty_corporativo")
+button_migration = import_module("site_content.migrations.0015_projects_button_text")
 
 
 class HeroTextsMigrationTests(TestCase):
@@ -66,3 +67,24 @@ class SpecialtyMigrationTests(TestCase):
         self.run_migration()
 
         self.assertTrue(ProcessStep.objects.filter(title="Renders 3D").exists())
+
+
+class ProjectsButtonMigrationTests(TestCase):
+    """La migración 0015 cambia el texto del botón de Proyectos solo si es el original."""
+
+    def run_migration(self):
+        button_migration.update_button_text(apps, None)
+
+    def test_original_text_is_replaced(self):
+        ProjectsSection.objects.update(view_all_text="Ver todos los proyectos")
+
+        self.run_migration()
+
+        self.assertEqual(ProjectsSection.objects.get().view_all_text, "Ver proyectos")
+
+    def test_text_changed_by_the_client_is_kept(self):
+        ProjectsSection.objects.update(view_all_text="Conoce nuestro trabajo")
+
+        self.run_migration()
+
+        self.assertEqual(ProjectsSection.objects.get().view_all_text, "Conoce nuestro trabajo")

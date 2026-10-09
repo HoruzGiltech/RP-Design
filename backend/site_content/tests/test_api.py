@@ -61,7 +61,7 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
             [item["title"] for item in site["services"]["items"]],
             ["Levantamiento de espacio", "Proyecto de diseño", "Ejecución de obra"],
         )
-        self.assertEqual(site["projects_section"]["view_all_text"], "Ver todos los proyectos")
+        self.assertEqual(site["projects_section"]["view_all_text"], "Ver proyectos")
         self.assertEqual(
             [step["title"] for step in site["process"]["steps"]],
             ["Renders 3D", "Video recorridos", "Planimetría", "Ejecución de obra"],

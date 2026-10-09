@@ -1,7 +1,7 @@
 import Contact from '../components/home/Contact'
 import Hero from '../components/home/Hero'
 import Process from '../components/home/Process'
-import ProjectCategories from '../components/home/ProjectCategories'
+import ProjectsTeaser from '../components/home/ProjectsTeaser'
 import Services from '../components/home/Services'
 import QuoteCalculator from '../components/quote/QuoteCalculator'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -19,7 +19,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <ProjectCategories />
+      <ProjectsTeaser />
       <Process />
       <Services />
       <Contact>

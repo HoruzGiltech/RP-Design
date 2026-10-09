@@ -36,6 +36,31 @@
   padding: 12px 20px;
 }
 
+/*
+  Grande: el botón protagonista de una sección (specs-004, RF-34). Más alto,
+  más ancho y con una flecha que se desplaza al pasar el cursor.
+*/
+.button--large {
+  gap: var(--space-16);
+  min-height: 72px;
+  /* Ancho generoso, sin pasarse del ancho de la pantalla en un celular */
+  min-width: min(360px, 100%);
+  padding: 24px 48px;
+  font-size: var(--text-lead-small);
+  letter-spacing: 0.5px;
+}
+
+.button__arrow {
+  transition: transform var(--motion-hover) var(--ease-out);
+}
+
+/* En celular ocupa todo el ancho: es más fácil de tocar */
+@media (max-width: 599px) {
+  .button--large {
+    width: 100%;
+  }
+}
+
 /* --- Principal: fondo de acento --- */
 .button--primary {
   background: var(--color-accent);
@@ -74,5 +99,19 @@
   .button--secondary.button--on-dark:hover:not(:disabled) {
     background: var(--color-on-dark);
     color: var(--color-dark);
+  }
+
+  .button:hover .button__arrow {
+    transform: translateX(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button__arrow {
+    transition: none;
+  }
+
+  .button:hover .button__arrow {
+    transform: none;
   }
 }
