@@ -3,7 +3,7 @@
 > **Cómo** se construye lo que pide `specs/specs-002/requirements.md`.
 > Solo describe lo que cambia. Lo que no aparece aquí sigue como en `specs/design.md` y `specs/specs-001/design.md`.
 
-**Estado:** Aprobado (v1, 2026-10-07)
+**Estado:** Implementado y cerrado (2026-10-08)
 
 ---
 

@@ -67,7 +67,7 @@ Las tareas llevan el prefijo `S2-` para no confundirlas con las de `specs/tasks.
 
 - [x] **S2-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
 - [x] **S2-D2** Anotar en `specs/requirements.md`, `specs/design.md` y `specs/specs-001/` qué apartados quedaron sustituidos por specs-002.
-- [ ] **S2-D3** ✋ Aprobación final.
+- [x] **S2-D3** ✋ Aprobación final. (Aprobada el 2026-10-08. specs-002 queda cerrada.)
 
 ---
 

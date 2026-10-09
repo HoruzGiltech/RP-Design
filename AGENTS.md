@@ -49,8 +49,8 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Trabajo en curso: `specs/specs-002/`.** Empieza cada sesión leyendo este archivo, `specs/`, `specs/specs-001/` y `specs/specs-002/`.
-- **El despliegue sigue pendiente** (`specs/tasks.md`, Fase 5). Ningún paquete de cambios lo reemplaza: se hace al cerrar el paquete en curso.
+- **Paquetes cerrados:** `specs/specs-001/` y `specs/specs-002/`, los dos implementados. Empieza cada sesión leyendo este archivo, `specs/` y los dos paquetes.
+- **Trabajo pendiente: el despliegue** (`specs/tasks.md`, Fase 5), que todavía no se ha empezado. Ningún paquete de cambios lo reemplaza. No se empieza sin que el desarrollador lo pida.
 
 1. **Requisitos:** a partir de la sección 4 de este archivo, crea/actualiza `specs/requirements.md`.
 2. **Diseño:** documenta modelos de datos, endpoints y componentes en `specs/design.md`.
@@ -220,7 +220,7 @@ El detalle está en `specs/specs-002/requirements.md`. En resumen:
 ├── docs/maqueta-legible.html   # + maqueta-original.html
 ├── specs/          # especificación base (requirements, design, tasks)
 │   ├── specs-001/  # primer paquete de cambios del cliente (implementado)
-│   └── specs-002/  # segundo paquete de cambios (trabajo en curso)
+│   └── specs-002/  # segundo paquete de cambios (implementado)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -324,8 +324,8 @@ Al terminar cada tarea o fase, responde con:
 3. **Frontend:** maqueta convertida a React y conectada a la API.
 4. **Calculadora y WhatsApp**, más las páginas legales.
 5. **specs-001:** primer paquete de cambios del cliente (hero, categorías, dirección automática y WhatsApp). Implementado.
-6. **specs-002:** segundo paquete (menú desplegable, hero, formulario por tipo de remodelación y sección Contacto). **Es la fase en curso.**
-7. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente, sin empezar.** No empieza hasta cerrar specs-002.
+6. **specs-002:** segundo paquete (menú desplegable, hero, formulario por tipo de remodelación y sección Contacto). Implementado y cerrado el 2026-10-08.
+7. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Es la fase siguiente; pendiente, sin empezar.**
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 
