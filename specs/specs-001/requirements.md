@@ -6,6 +6,8 @@
 **Estado:** Aprobado (v1, 2026-10-06)
 **Base:** `specs/requirements.md` v3 (RF-01 a RF-07), ya implementada salvo el despliegue.
 > ⚠️ **RF-08.5 (los tres botones con recuadro del hero) quedó sustituido por RF-15 de `specs/specs-002/requirements.md`**: controles discretos en una línea. El resto de este paquete sigue vigente.
+>
+> ⚠️ **Dos puntos más quedaron sustituidos por `specs/specs-003/requirements.md`:** el video de la Portada ya no es solo un respaldo (RF-08.9), es una portada más de la rotación (RF-26); y en el inicio Proceso va antes que Servicios (RF-23), no como decía P-8.
 
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 

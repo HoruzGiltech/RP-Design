@@ -5,6 +5,8 @@
 
 **Estado:** Implementado y cerrado (2026-10-08)
 
+> ⚠️ **Sustituido en parte por `specs/specs-003/design.md`:** `Quote` ya no guarda un área (los renglones están en `QuoteItem`), `POST /api/quotes/` recibe `items`, el mensaje de WhatsApp no lleva emojis y `ContactInfo` se borró.
+
 ---
 
 ## 1. Qué se toca

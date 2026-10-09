@@ -20,6 +20,16 @@
 > - **S3 Franja de especialidades** y **RF-06.4** → eliminadas del sitio (RF-16). La lista sigue en el panel.
 > - **RF-03.2** (lista única de áreas) → áreas según el tipo de remodelación (RF-17).
 > - **S7 Contacto** y **RF-03.11** → una sola columna, con el formulario a todo el ancho (RF-18).
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-003/requirements.md`** (tercer paquete, ya implementado):
+> - **RF-03** (una sola área por cotización) → varias áreas, cada una con sus m²; el estimado es la suma (RF-27). Los m² también se escriben a mano (RF-29) y el estimado se puede ocultar (RF-30).
+> - **Textos fijos del formulario** → títulos y textos de ejemplo editables en el panel (RF-31). Campos nuevos: ubicación, fotos y visita (RF-32).
+> - **Mensaje de WhatsApp con emojis** → sin emojis, con un renglón por área (RF-28).
+> - **RF-06.7** (la capa de la tarjeta dice "Ver proyecto") → muestra la descripción completa (RF-22).
+> - **Orden del inicio** → Proceso va antes que Servicios (RF-23); las tarjetas de Servicios tienen el botón "Cotizar" (RF-24).
+> - **Listas "Servicios" y "Pasos del proceso" del panel** → se editan dentro de su sección (RF-25).
+> - **Tipografía fija** → dos fuentes cargables desde el panel (RF-19).
+> - **S8 Pie de página** → gana los iconos de WhatsApp, correo e Instagram (RF-33).
 
 ---
 

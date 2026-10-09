@@ -4,6 +4,8 @@
 > Es un paquete de cambios sobre `specs/` y `specs/specs-001/`. Donde este documento los contradice, **manda este**.
 
 **Estado:** Implementado y cerrado (2026-10-08)
+
+> ⚠️ **Dos puntos quedaron sustituidos por `specs/specs-003/requirements.md`:** RF-17.2 (un solo área por cotización) → varias áreas, cada una con sus m² (RF-27); y RF-18.3 (datos de contacto bajo el formulario) → iconos en el pie (RF-33). El resto de este paquete sigue vigente.
 **Base:** `specs/` (RF-01 a RF-07) y `specs/specs-001/` (RF-08 a RF-12), ya implementadas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 

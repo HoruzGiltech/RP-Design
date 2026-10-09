@@ -19,6 +19,14 @@
 > - **§2.7 API:** `/api/quote-areas/` se reemplaza por `/api/quote-categories/`; `POST /api/quotes/` exige `category`; `/api/site/` ya no envía `specialties`.
 > - **§3.2 y §3.3 Frontend:** se borran `SpecialtiesStrip` y `Marquee`; se agrega `useHideOnScroll`; `Header`, `HeroControls`, `Contact`, `ContactInfo` y `QuoteCalculator` cambiaron.
 > - **§3.0 Tokens:** se quitan `--marquee-duration` y `--col-strip`.
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-003/design.md`** (tercer paquete, ya implementado):
+> - **§2.3 `Quote`:** ya no tiene `area`, `area_other`, `square_meters` ni `price_per_m2_snapshot`; pasaron al modelo nuevo `QuoteItem` (un renglón por área). Se agregan `location`, `has_photos` y `needs_visit`; `estimated_price` es el total.
+> - **§2.3 Otros modelos:** `ProjectCategory.is_visible`; `SiteSettings.heading_font`, `body_font` y `show_estimate`; `ServicesSection.cta_text`; `Service` y `ProcessStep` con relación a su sección; modelo nuevo `QuoteFormField`.
+> - **§2.4 Mensaje de WhatsApp:** sin emojis, con un renglón por área; `build_whatsapp_message(quote, items, show_estimate)` y `calculate_total`.
+> - **§2.7 API:** `POST /api/quotes/` recibe `items`; las listas de categorías solo envían las visibles; la tarjeta de proyecto trae `description`; `/api/site/` agrega las fuentes, `show_estimate`, `services.cta_text` y `contact.form_fields`.
+> - **§2.8 Panel:** "Servicios" y "Pasos del proceso" ya no tienen entrada propia; se editan dentro de su sección.
+> - **§3.2 y §3.3 Frontend:** se borra `ContactInfo`; se agregan `useCustomFonts`, `SocialIcons`, `Icons`, `AreaItem` y `CheckboxField`; `Hero`, `HeroSlides`, `useSlideshow`, `QuoteCalculator`, `SquareMetersSlider`, `EstimateDisplay`, `Services`, `ProjectCard` y `Footer` cambiaron.
 
 ---
 

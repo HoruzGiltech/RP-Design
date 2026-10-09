@@ -23,7 +23,7 @@ Actúa como **desarrollador fullstack senior** que escribe código **simple, cla
 
 **Referencia visual:** la maqueta `docs/maqueta-legible.html` (el HTML extraído, que es el que se lee y se compara). El original del diseñador está en `docs/maqueta-original.html`, empaquetado y difícil de leer.
 - Es la fuente de verdad estética: colores, tipografías, espaciados y estilo de componentes.
-- **Excepción:** el hero, la sección Proyectos del inicio, el encabezado y la sección Contacto ya no siguen la distribución de la maqueta, por cambios que pidió el cliente (`specs/specs-001/` y `specs/specs-002/`). Conservan sus tokens: colores, tipografías y sin bordes redondeados.
+- **Excepción:** el hero, la sección Proyectos del inicio, el encabezado y la sección Contacto ya no siguen la distribución de la maqueta, por cambios que pidió el cliente (`specs/specs-001/`, `specs/specs-002/` y `specs/specs-003/`). Conservan sus tokens: colores, tipografías y sin bordes redondeados.
 - Los *design tokens* ya están extraídos en `specs/design.md` §3.0. Van a `frontend/src/styles/tokens.css` y se reutilizan siempre. No copies el HTML tal cual a React: conviértelo en componentes.
 
 **Referencia de animaciones:** https://sparquitectosve.com/. De ahí se toma **solo el movimiento** (cómo aparecen y reaccionan los elementos), adaptado al estilo de la maqueta. Los colores, tipografías, espaciados y la distribución siguen saliendo de la maqueta. El detalle está en `specs/requirements.md` RF-06 y `specs/design.md` §3.6.
@@ -49,9 +49,9 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` y `specs/specs-002/`, los dos implementados.
-- **Trabajo en curso: `specs/specs-003/`.** Empieza cada sesión leyendo este archivo, `specs/` y los tres paquetes.
-- **El despliegue sigue pendiente** (`specs/tasks.md`, Fase 5) y todavía no se ha empezado. Ningún paquete de cambios lo reemplaza: viene después del paquete en curso. No se empieza sin que el desarrollador lo pida.
+- **Paquetes cerrados:** `specs/specs-001/`, `specs/specs-002/` y `specs/specs-003/`, los tres implementados.
+- **Siguiente paquete: `specs/specs-004/`**, todavía sin especificar (el desarrollador entregará los cambios). Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **El despliegue sigue pendiente** (`specs/tasks.md`, Fase 5) y todavía no se ha empezado. Ningún paquete de cambios lo reemplaza: viene después de los paquetes de cambios. No se empieza sin que el desarrollador lo pida.
 
 1. **Requisitos:** a partir de la sección 4 de este archivo, crea/actualiza `specs/requirements.md`.
 2. **Diseño:** documenta modelos de datos, endpoints y componentes en `specs/design.md`.
@@ -233,7 +233,7 @@ El detalle está en `specs/specs-003/requirements.md`. En resumen:
 ├── specs/          # especificación base (requirements, design, tasks)
 │   ├── specs-001/  # primer paquete de cambios del cliente (implementado)
 │   ├── specs-002/  # segundo paquete de cambios (implementado)
-│   └── specs-003/  # tercer paquete de cambios (trabajo en curso)
+│   └── specs-003/  # tercer paquete de cambios (implementado)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -341,8 +341,9 @@ Al terminar cada tarea o fase, responde con:
 4. **Calculadora y WhatsApp**, más las páginas legales.
 5. **specs-001:** primer paquete de cambios del cliente (hero, categorías, dirección automática y WhatsApp). Implementado.
 6. **specs-002:** segundo paquete (menú desplegable, hero, formulario por tipo de remodelación y sección Contacto). Implementado y cerrado el 2026-10-08.
-7. **specs-003:** tercer paquete (tipografía, categorías ocultables, video en el hero, formulario con varias áreas y pie con iconos). **Es la fase en curso.**
-8. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente, sin empezar.** Viene después de specs-003.
+7. **specs-003:** tercer paquete (tipografía, categorías ocultables, video en el hero, formulario con varias áreas y pie con iconos). Implementado y cerrado el 2026-10-09.
+8. **specs-004:** cuarto paquete de cambios del cliente. **Es la fase siguiente; falta su especificación.**
+9. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente, sin empezar.** Viene después de los paquetes de cambios.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 

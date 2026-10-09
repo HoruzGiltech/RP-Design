@@ -3,7 +3,7 @@
 > **Cómo** se construye lo que pide `specs/specs-003/requirements.md`.
 > Solo describe lo que cambia. Lo que no aparece aquí sigue como en `specs/design.md` y en los paquetes anteriores.
 
-**Estado:** Aprobado (v1, 2026-10-09)
+**Estado:** Implementado y cerrado (2026-10-09)
 
 ---
 

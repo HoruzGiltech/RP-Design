@@ -48,7 +48,7 @@ Las tareas llevan el prefijo `S3-` para no confundirlas con las de `specs/tasks.
 - [x] **S3-B14** Migración `core.0004`: permisos de `QuoteItem` y `QuoteFormField` para Admin y Viewer.
   - Verificación: pasa el test de roles que avisa de permisos olvidados.
 
-- [ ] **S3-B15** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel.
+- [x] **S3-B15** ✋ **Revisión de fin de fase:** `manage.py test` completo y demo del panel. (Dada por cerrada el 2026-10-09: el desarrollador pidió cerrar el paquete y subirlo para pasar a specs-004.)
 
 ---
 
@@ -82,15 +82,15 @@ Las tareas llevan el prefijo `S3-` para no confundirlas con las de `specs/tasks.
 ### C4. Revisión
 - [x] **S3-C15** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo lo nuevo: teclado en las casillas y los m², contraste, nombres accesibles. *(RNF-12, RNF-13)*
 
-- [ ] **S3-C16** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio y prueba en un celular real (sobre todo, que el mensaje llegue bien a WhatsApp).
+- [x] **S3-C16** ✋ **Revisión de fin de fase:** `npm test`, `npm run lint` y `npm run build` pasan; demo del sitio y prueba en un celular real (sobre todo, que el mensaje llegue bien a WhatsApp). (Dada por cerrada el 2026-10-09: el desarrollador pidió cerrar el paquete y subirlo para pasar a specs-004. La prueba en un celular real no quedó registrada.)
 
 ---
 
 ## Fase D — Cierre
 
 - [x] **S3-D1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
-- [ ] **S3-D2** Anotar en `specs/requirements.md`, `specs/design.md` y los paquetes anteriores qué apartados quedaron sustituidos por specs-003.
-- [ ] **S3-D3** ✋ Aprobación final.
+- [x] **S3-D2** Anotar en `specs/requirements.md`, `specs/design.md` y los paquetes anteriores qué apartados quedaron sustituidos por specs-003.
+- [x] **S3-D3** ✋ Aprobación final. (Aprobada el 2026-10-09. specs-003 queda cerrada.)
 
 ---
 
