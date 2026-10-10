@@ -30,6 +30,13 @@
 > - **Listas "Servicios" y "Pasos del proceso" del panel** → se editan dentro de su sección (RF-25).
 > - **Tipografía fija** → dos fuentes cargables desde el panel (RF-19).
 > - **S8 Pie de página** → gana los iconos de WhatsApp, correo e Instagram (RF-33).
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-004/requirements.md`** (cuarto paquete, ya implementado):
+> - **S4 Servicios** (tarjetas de texto sobre fondo claro) → tarjetas con portada sobre fondo oscuro; cada servicio tiene su imagen en el panel (RF-35, RF-36). La descripción y "Cotizar" salen en una capa sobre la foto (RF-37).
+> - **S5 Proyectos** del inicio → solo el título, el enlace a Instagram y un botón grande (RF-34).
+> - **Capa de las tarjetas de proyecto** → barra de scroll fina y degradado (RF-38); la misma capa aparece en la portada del detalle (RF-39).
+> - **Pantallas táctiles** → lo que depende del cursor entra solo al aparecer en pantalla (RF-41).
+> - **Formulario** → Tipo y Ubicación del mismo tamaño; "Tengo fotos" arriba del mensaje (RF-40).
 
 ---
 

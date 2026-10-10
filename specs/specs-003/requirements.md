@@ -4,6 +4,8 @@
 > Es un paquete de cambios sobre `specs/`, `specs/specs-001/` y `specs/specs-002/`. Donde este documento los contradice, **manda este**.
 
 **Estado:** Implementado y cerrado (2026-10-09)
+
+> ⚠️ **Tres puntos quedaron sustituidos por `specs/specs-004/requirements.md`:** RF-24 (botón "Cotizar" bajo el texto de la tarjeta) → dentro de la capa sobre la portada (RF-37); P-25 ("Cotizar" siempre visible en celular) → entra al aparecer la tarjeta (RF-41); y el orden de los campos del formulario → "Tengo fotos" va arriba del mensaje (RF-40). El resto de este paquete sigue vigente.
 **Base:** `specs/` (RF-01 a RF-07), `specs/specs-001/` (RF-08 a RF-12) y `specs/specs-002/` (RF-13 a RF-18), ya implementadas y cerradas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 

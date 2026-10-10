@@ -27,6 +27,12 @@
 > - **§2.7 API:** `POST /api/quotes/` recibe `items`; las listas de categorías solo envían las visibles; la tarjeta de proyecto trae `description`; `/api/site/` agrega las fuentes, `show_estimate`, `services.cta_text` y `contact.form_fields`.
 > - **§2.8 Panel:** "Servicios" y "Pasos del proceso" ya no tienen entrada propia; se editan dentro de su sección.
 > - **§3.2 y §3.3 Frontend:** se borra `ContactInfo`; se agregan `useCustomFonts`, `SocialIcons`, `Icons`, `AreaItem` y `CheckboxField`; `Hero`, `HeroSlides`, `useSlideshow`, `QuoteCalculator`, `SquareMetersSlider`, `EstimateDisplay`, `Services`, `ProjectCard` y `Footer` cambiaron.
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-004/design.md`** (cuarto paquete, ya implementado):
+> - **§2.3 `Service`:** se agregan `image` e `image_alt`. `ServicesSection` se llama "Servicios" en el panel. `Project.is_category_cover` sigue en el modelo, pero ya no se ofrece en el panel.
+> - **§2.7 API:** cada elemento de `services.items` trae `image` e `image_alt`.
+> - **§3.0 Tokens:** se agregan `--motion-overlay` y `--ease-soft`.
+> - **§3.2 y §3.3 Frontend:** se borran `ProjectCategories` y `CategoryCard`; se agregan `ProjectsTeaser`, `ServiceCard` y `styles/overlay.css` (la capa compartida); `Services`, `ProjectCard`, `ProjectDetailPage`, `Button` (tamaño "large") y `QuoteCalculator` cambiaron.
 
 ---
 

@@ -46,15 +46,15 @@ Las tareas llevan el prefijo `S4-`. **Este paquete se entrega por bloques** (P-4
 - [x] **S4-D4** Capa con la descripción sobre la portada del detalle. *(RF-39, CA-39.1, CA-39.2)*
 - [x] **S4-D5** En táctil, el texto de las tarjetas de proyecto entra suave. *(RF-41.3)*
 - [x] **S4-D6** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo el paquete. *(RNF-16, RNF-17)*
-- [ ] **S4-D7** ✋ **Prueba del bloque 3:** `manage.py test`, `npm test`, `npm run lint` y `npm run build` pasan; el desarrollador revisa el sitio en computadora y celular.
+- [x] **S4-D7** ✋ **Prueba del bloque 3:** `manage.py test`, `npm test`, `npm run lint` y `npm run build` pasan; el desarrollador revisa el sitio en computadora y celular. (Aprobada el 2026-10-09.)
 
 ---
 
 ## Fase E — Cierre
 
-- [ ] **S4-E1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
-- [ ] **S4-E2** Anotar en `specs/` y en los paquetes anteriores qué apartados quedaron sustituidos por specs-004.
-- [ ] **S4-E3** ✋ Aprobación final.
+- [x] **S4-E1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
+- [x] **S4-E2** Anotar en `specs/` y en los paquetes anteriores qué apartados quedaron sustituidos por specs-004.
+- [x] **S4-E3** ✋ Aprobación final. (Aprobada el 2026-10-09. specs-004 queda cerrada.)
 
 ---
 

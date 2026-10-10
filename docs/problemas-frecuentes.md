@@ -184,6 +184,16 @@ cd frontend && npm test
 
 O reconstruir el contenedor para que instale lo que falta: `docker compose up --build -d frontend`.
 
+## 13. `Python was not found; run without arguments to install from the Microsoft Store`
+
+**Cuándo aparece:** al ejecutar `python` en una terminal de Windows (Git Bash o PowerShell), aunque Python esté instalado.
+
+**Causa:** Windows trae un "alias" llamado `python` que abre la Microsoft Store. Si en esa terminal queda antes que el Python real en la lista de rutas, responde el alias.
+
+**Solución:** llamar a Python por su ruta completa (se ve con `where python`; el real es el que no está en `WindowsApps`), o desactivar el alias en *Configuración > Aplicaciones > Configuración avanzada de aplicaciones > Alias de ejecución de aplicaciones*.
+
+Los comandos del proyecto no dependen de esto: Django se ejecuta dentro del contenedor (`docker compose exec backend python ...`).
+
 ---
 
 ## Cómo agregar un problema nuevo

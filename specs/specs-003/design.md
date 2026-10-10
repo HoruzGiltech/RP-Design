@@ -5,6 +5,8 @@
 
 **Estado:** Implementado y cerrado (2026-10-09)
 
+> ⚠️ **Sustituido en parte por `specs/specs-004/design.md`:** la capa de las tarjetas pasó a `styles/overlay.css`, `Services` se reescribió con `ServiceCard`, y la sección Proyectos del inicio es `ProjectsTeaser`.
+
 ---
 
 ## 1. Qué se toca
