@@ -73,13 +73,11 @@
   object-fit: cover;
 }
 
-.project-detail__description {
-  /* Un ancho de línea cómodo para leer */
-  max-width: 68ch;
-  font-size: var(--text-lead);
-  color: var(--color-on-dark-secondary);
-  /* Respeta los saltos de línea que el cliente escribió en el panel */
-  white-space: pre-line;
+/* En un celular la portada es pequeña: la capa lleva el margen normal */
+@media (max-width: 767px) {
+  .project-detail__cover .cover-overlay__content {
+    padding: var(--space-24);
+  }
 }
 
 @media (hover: hover) {

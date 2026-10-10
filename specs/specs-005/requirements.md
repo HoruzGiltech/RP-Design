@@ -71,14 +71,14 @@
 
 ### RF-46 — Celular: la capa aparece al centrarse la tarjeta
 
-1. En pantallas táctiles, mientras se hace scroll, la tarjeta que queda **en la franja central de la pantalla** muestra su capa con el mismo fundido que en web; al salir de esa franja, la oculta.
+1. En pantallas táctiles, mientras se hace scroll, la tarjeta que **cruza el centro de la pantalla** muestra su capa con el mismo fundido que en web; al dejar de cruzarlo, la oculta.
 2. Aplica a las tarjetas de servicio, a las tarjetas de proyecto y a la portada del detalle.
 3. Sustituye a los comportamientos de specs-004 en táctil: la capa fija de los servicios y la entrada retrasada del texto de las tarjetas de proyecto.
 4. Con "reducir movimiento", en táctil la capa de servicios y la del detalle se muestran fijas desde el principio (el texto no puede quedar inaccesible), y las tarjetas de proyecto quedan sin capa.
 
 **Criterios de aceptación**
 - [ ] CA-46.1 En un celular real, al bajar por Servicios cada tarjeta muestra su texto al llegar al centro y lo oculta al pasar.
-- [ ] CA-46.2 Nunca hay más de dos capas visibles a la vez.
+- [ ] CA-46.2 Nunca hay dos capas activas a la vez.
 - [ ] CA-46.3 En escritorio nada cambia: la capa sigue dependiendo del cursor y del teclado.
 
 ### RF-47 — Animaciones de entrada activas y suaves en móvil

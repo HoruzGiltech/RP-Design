@@ -5,7 +5,8 @@
   el sitio.
 
   Cómo se usa:
-    <div class="has-cover-overlay">        el contenedor de la foto (position: relative)
+    <div class="has-cover-overlay">        el contenedor de la foto (position: relative).
+                                           En táctil lleva además .is-centered cuando toca.
       <img ... />
       <div class="cover-overlay">          la capa oscura
         <div class="cover-overlay__content">
@@ -86,31 +87,17 @@
 
 /*
   --- Sin cursor (pantallas táctiles) ---
-  No existe "pasar por encima". Las capas marcadas con --auto entran solas
-  cuando su tarjeta aparece en pantalla (clase .is-visible que pone Reveal),
-  un momento después de la foto (specs-004, RF-41).
+  No existe "pasar por encima". La capa aparece cuando su tarjeta cruza el
+  centro de la pantalla y se oculta al salir (specs-005, RF-46). La clase
+  .is-centered la pone el hook useInCenter.
 */
 @media (hover: none) {
-  .cover-overlay--auto {
-    /* Más clara arriba: la foto se sigue viendo detrás del texto */
-    background: linear-gradient(
-      to top,
-      color-mix(in srgb, var(--color-dark) 92%, transparent) 35%,
-      color-mix(in srgb, var(--color-dark) 25%, transparent)
-    );
-    transition-delay: var(--motion-reveal);
-  }
-
-  .cover-overlay--auto .cover-overlay__content {
-    transition-delay: var(--motion-reveal);
-  }
-
-  .reveal.is-visible .cover-overlay--auto {
+  .has-cover-overlay.is-centered .cover-overlay {
     opacity: 1;
     pointer-events: auto;
   }
 
-  .reveal.is-visible .cover-overlay--auto .cover-overlay__content {
+  .has-cover-overlay.is-centered .cover-overlay__content {
     transform: none;
   }
 }

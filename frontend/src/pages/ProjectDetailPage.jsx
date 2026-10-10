@@ -8,6 +8,7 @@ import Section from '../components/ui/Section'
 import Spinner from '../components/ui/Spinner'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useFetch } from '../hooks/useFetch'
+import { useInCenter } from '../hooks/useInCenter'
 import NotFoundPage from './NotFoundPage'
 import '../styles/overlay.css'
 import './ProjectDetailPage.css'
@@ -38,6 +39,12 @@ export default function ProjectDetailPage() {
 
 function ProjectDetail({ project }) {
   useDocumentTitle(project.title, project.summary)
+  // En un celular la capa aparece al centrarse la portada. La descripción solo
+  // se lee ahí, así que con "reducir movimiento" queda fija.
+  const { ref: coverRef, isInCenter } = useInCenter({ alwaysWhenReduced: true })
+  const coverClasses = ['project-detail__cover', 'has-cover-overlay', isInCenter ? 'is-centered' : '']
+    .filter(Boolean)
+    .join(' ')
 
   // Ubicación y año en una sola línea, solo con los datos que existan
   const details = [project.location, project.year].filter(Boolean).join(' · ')
@@ -63,7 +70,7 @@ function ProjectDetail({ project }) {
         )}
       </header>
 
-      <div className="project-detail__cover has-cover-overlay">
+      <div ref={coverRef} className={coverClasses}>
         <img
           className="project-detail__cover-image zoom-on-scroll"
           src={project.cover_image}
@@ -71,24 +78,24 @@ function ProjectDetail({ project }) {
           fetchPriority="high"
         />
         {/*
-          La descripción también aparece sobre la portada al pasar el cursor
-          (specs-004, RF-39). Va oculta para lectores de pantalla porque el
-          mismo texto está justo debajo, que es donde se lee en un celular.
+          La descripción se lee solo aquí, sobre la portada (specs-005, RF-45).
+          Aparece al pasar el cursor, al llegar con el teclado o, en un celular,
+          cuando la portada cruza el centro de la pantalla.
         */}
         {project.description && (
-          <div className="cover-overlay" aria-hidden="true">
+          <div className="cover-overlay">
             <div className="cover-overlay__content">
-              <p className="cover-overlay__text project-detail__cover-text">
+              <p
+                className="cover-overlay__text project-detail__cover-text"
+                // Se puede enfocar: así el teclado muestra la capa y desplaza el texto
+                tabIndex={0}
+              >
                 {project.description}
               </p>
             </div>
           </div>
         )}
       </div>
-
-      <Reveal as="p" className="project-detail__description">
-        {project.description}
-      </Reveal>
 
       <MediaGallery media={project.media} />
     </Section>

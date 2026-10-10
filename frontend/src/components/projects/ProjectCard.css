@@ -70,22 +70,13 @@
 }
 
 /*
-  Sin cursor (pantallas táctiles) la foto queda limpia, sin capa. El texto de
-  debajo entra con un fundido un momento después de la tarjeta (specs-004, RF-41).
+  En un celular la capa no atrapa el dedo: toda la tarjeta es un enlace y debe
+  poder tocarse y arrastrarse para seguir bajando. Si la descripción no cabe,
+  se lee completa al abrir el proyecto.
 */
 @media (hover: none) {
-  .project-card__text {
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity var(--motion-overlay) var(--ease-soft),
-      transform var(--motion-overlay) var(--ease-soft);
-    transition-delay: calc(var(--reveal-index, 0) * var(--motion-stagger) + var(--motion-reveal) / 2);
-  }
-
-  .project-card.is-visible .project-card__text {
-    opacity: 1;
-    transform: none;
+  .project-card .has-cover-overlay.is-centered .cover-overlay {
+    pointer-events: none;
   }
 }
 
@@ -98,13 +89,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .project-card__image {
-    transition: none;
-  }
-
-  /* Todo el texto se ve desde el principio */
-  .project-card__text {
-    opacity: 1;
-    transform: none;
     transition: none;
   }
 

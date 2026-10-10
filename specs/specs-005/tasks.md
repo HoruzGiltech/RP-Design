@@ -29,9 +29,9 @@ Las tareas llevan el prefijo `S5-`. El paquete se entrega **por bloques**: cada 
 
 ## Bloque 2 — Capas en celular y detalle del proyecto
 
-- [ ] **S5-C1** Hook `useInCenter` y regla `is-centered` en `overlay.css`; se quita la capa fija de specs-004. *(RF-46)*
-- [ ] **S5-C2** Tarjetas de servicio y de proyecto con la capa al centrarse; el texto de las tarjetas de proyecto queda fijo. *(RF-46, CA-46.1 a CA-46.3)*
-- [ ] **S5-C3** Detalle: se quita la descripción de debajo; la capa es accesible con teclado y lector de pantalla, y en celular aparece al centrarse. *(RF-45, CA-45.1, CA-45.2)*
+- [x] **S5-C1** Hook `useInCenter` y regla `is-centered` en `overlay.css`; se quita la capa fija de specs-004. *(RF-46)*
+- [x] **S5-C2** Tarjetas de servicio y de proyecto con la capa al centrarse; el texto de las tarjetas de proyecto queda fijo. *(RF-46, CA-46.1 a CA-46.3)*
+- [x] **S5-C3** Detalle: se quita la descripción de debajo; la capa es accesible con teclado y lector de pantalla, y en celular aparece al centrarse. *(RF-45, CA-45.1, CA-45.2)*
 - [ ] **S5-C4** ✋ **Prueba del bloque 2**, en computadora y en celular.
 
 ---

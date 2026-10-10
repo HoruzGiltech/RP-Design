@@ -1,3 +1,4 @@
+import { useInCenter } from '../../hooks/useInCenter'
 import MediaPlaceholder from '../media/MediaPlaceholder'
 import Button from '../ui/Button'
 import Reveal from '../ui/Reveal'
@@ -11,17 +12,23 @@ function formatNumber(position) {
 /**
  * Tarjeta de un servicio: su portada, su número y su título (specs-004, RF-35).
  * Sobre la portada hay una capa con la descripción y el botón "Cotizar": con
- * mouse aparece al pasar el cursor, y en pantallas táctiles entra sola cuando
- * la tarjeta aparece en pantalla (ver styles/overlay.css).
+ * mouse aparece al pasar el cursor, y en pantallas táctiles cuando la tarjeta
+ * cruza el centro de la pantalla (ver styles/overlay.css y useInCenter).
  *
  * service: el servicio (objeto de la API)
  * index:   posición en la cuadrícula; da el número y el orden de entrada
  * ctaText: texto del botón "Cotizar", o '' si no se debe mostrar
  */
 export default function ServiceCard({ service, index, ctaText }) {
+  // La descripción solo se lee en la capa: con "reducir movimiento" queda fija
+  const { ref, isInCenter } = useInCenter({ alwaysWhenReduced: true })
+  const mediaClasses = ['service-card__media', 'has-cover-overlay', isInCenter ? 'is-centered' : '']
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <Reveal as="article" index={index} className="service-card">
-      <div className="service-card__media has-cover-overlay">
+      <div ref={ref} className={mediaClasses}>
         {service.image ? (
           <img
             className="service-card__image"
@@ -35,7 +42,7 @@ export default function ServiceCard({ service, index, ctaText }) {
           <MediaPlaceholder variant="dark" />
         )}
 
-        <div className="cover-overlay cover-overlay--auto">
+        <div className="cover-overlay">
           <div className="cover-overlay__content">
             <p className="cover-overlay__text">{service.description}</p>
             {ctaText && (

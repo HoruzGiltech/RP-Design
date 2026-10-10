@@ -56,7 +56,7 @@ Sin modelos nuevos ni dependencias nuevas.
 
 ### 3.2 Bloque 2 — capa al centrarse (RF-46)
 
-- Hook nuevo `useInCenter()`: un `IntersectionObserver` con `rootMargin: '-35% 0px -35% 0px'` (la franja central, el 30 % del alto de la pantalla). Devuelve `{ ref, isInCenter }` y, a diferencia de `useReveal`, **no deja de observar**: el valor cambia cada vez que la tarjeta entra o sale de la franja.
+- Hook nuevo `useInCenter()`: un `IntersectionObserver` con `rootMargin: '-50% 0px -50% 0px'`, que deja como zona de observación solo la **línea central** de la pantalla (ajustado al implementar: con una franja del 30 % podían coincidir dos tarjetas). Devuelve `{ ref, isInCenter }` y, a diferencia de `useReveal`, **no deja de observar**: el valor cambia cada vez que la tarjeta entra o sale de la franja.
 - Solo se activa en táctil (`matchMedia('(hover: none)')`); con cursor devuelve siempre `false` y no crea el observador.
 - La portada recibe la clase `is-centered`. En `overlay.css`, dentro de `@media (hover: none)`:
   ```css
@@ -64,6 +64,7 @@ Sin modelos nuevos ni dependencias nuevas.
   .has-cover-overlay.is-centered .cover-overlay__content { transform: none; }
   ```
 - Se quita la variante `cover-overlay--auto` (capa fija al aparecer) y la entrada retrasada de `.project-card__text`.
+- En las tarjetas de proyecto, la capa en táctil no atrapa el dedo (`pointer-events: none`): la tarjeta entera es un enlace y debe poder arrastrarse para seguir bajando.
 - "Reducir movimiento" en táctil: `useInCenter` devuelve `true` fijo en servicios y detalle (parámetro `alwaysWhenReduced`).
 
 ### 3.3 Bloque 2 — detalle (RF-45)
@@ -92,7 +93,7 @@ Se reproduce primero con Playwright (`/proyectos?categoria=…` → logo → ini
 |---|---|
 | `Quote.location` sigue opcional en el modelo | Las cotizaciones anteriores no la tienen; la obligación va en el serializer, que es lo que usa el sitio |
 | `useInCenter` separado de `useReveal` | Uno se dispara una vez; el otro cambia en cada pasada. Mezclarlos complicaría los dos |
-| Franja central del 30 % | Lo bastante angosta para que casi nunca coincidan dos tarjetas, lo bastante ancha para que no parpadee |
+| Línea central en lugar de una franja | Nunca hay dos tarjetas activas a la vez |
 | Medir antes de ajustar las animaciones | El síntoma viene del teléfono del desarrollador; hay que confirmar la causa |
 
 ---
