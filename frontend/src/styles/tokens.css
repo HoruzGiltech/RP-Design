@@ -97,9 +97,9 @@
   --motion-hover: 200ms;
   /* Capa con texto sobre una foto: más lenta que un hover, para que entre suave */
   --motion-overlay: 450ms;
-  --motion-reveal: 500ms;
+  --motion-reveal: 700ms;
   --motion-stagger: 80ms;
-  --reveal-distance: 24px;
+  --reveal-distance: 32px;
   /* Hero: fundido entre portadas y tiempo que se ve cada una.
      --slide-duration debe coincidir con SLIDE_INTERVAL_MS de components/home/Hero.jsx */
   --motion-slide: 900ms;

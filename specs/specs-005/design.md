@@ -74,16 +74,20 @@ Sin modelos nuevos ni dependencias nuevas.
 
 ### 3.4 Bloque 3 — entradas (RF-47)
 
-Primero se mide en emulación de Android (Playwright, `isMobile` + `hasTouch`, con el procesador ralentizado) cuándo empieza y termina cada entrada respecto a la posición del elemento. Ajustes previstos, a confirmar con esa medición:
+**Medición (Android emulado, 390 × 800):** cada entrada empezaba con el borde superior del elemento entre el **87 % y el 99 %** del alto de la pantalla, es decir, cuando apenas asomaba por abajo. Con la curva `--ease-out`, que hace casi todo el cambio en los primeros 150 ms, la animación terminaba antes de que el elemento estuviera a la vista. Esa es la causa de que "no se vean" o se sientan toscas.
 
-- `motion.css`: `.reveal` pasa de `--ease-out` a `--ease-soft`; `--motion-reveal` de 500 a 700 ms; `--reveal-distance` de 24 a 32 px.
-- `useReveal`: `rootMargin: '0px 0px -10% 0px'` para que la entrada empiece con el elemento ya dentro de la pantalla, y `threshold` más bajo para los bloques altos.
+**Corrección:**
+- `useReveal`: `rootMargin: '0px 0px -12% 0px'` y `threshold: 0.1`. La entrada empieza cuando el elemento ya subió por la pantalla.
+- Red de seguridad: al llegar al final de la página se muestra todo lo que falte. Sin ella, un elemento que quede en el 12 % inferior cuando la página ya no baja más nunca cruzaría la línea (RF-06: nada queda oculto).
+- `motion.css` y `tokens.css`: `.reveal` usa `--ease-soft`; `--motion-reveal` pasa de 500 a 700 ms y `--reveal-distance` de 24 a 32 px.
 
-Si la medición muestra otra causa, **se actualiza este apartado antes de programar**.
+Los cambios aplican también en escritorio: es el mismo componente.
 
 ### 3.5 Bloque 3 — encabezado (RF-48)
 
-Se reproduce primero con Playwright (`/proyectos?categoria=…` → logo → inicio → bajar y subir). La corrección depende de lo que muestre; se anota aquí al encontrarla.
+**Causa (reproducida con Playwright):** `Header.css` tenía `.header:focus-within { transform: none }`, pensado para que el encabezado no se esconda a quien navega con teclado. Pero al pulsar el logo con el mouse o el dedo, el foco se queda en el logo; el encabezado recibía la clase `is-hidden` al bajar y esa regla la anulaba, así que quedaba fijo hasta pulsar en otro lugar.
+
+**Corrección:** `.header:has(:focus-visible)`. `:focus-visible` solo aplica al foco de teclado, que es para quien estaba pensada la regla.
 
 ---
 

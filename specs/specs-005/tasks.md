@@ -38,10 +38,10 @@ Las tareas llevan el prefijo `S5-`. El paquete se entrega **por bloques**: cada 
 
 ## Bloque 3 — Animaciones en móvil y encabezado
 
-- [ ] **S5-D1** Medir las entradas en emulación de Android y anotar la causa en `design.md` §3.4. *(RF-47)*
-- [ ] **S5-D2** Ajustar las entradas según la medición. *(RF-47, CA-47.1)*
-- [ ] **S5-D3** Reproducir y corregir el encabezado que se queda fijo; anotar la causa en `design.md` §3.5. *(RF-48, CA-48.1)*
-- [ ] **S5-D4** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo el paquete. *(RNF-20)*
+- [x] **S5-D1** Medir las entradas en emulación de Android y anotar la causa en `design.md` §3.4. *(RF-47)*
+- [x] **S5-D2** Ajustar las entradas según la medición. *(RF-47, CA-47.1)*
+- [x] **S5-D3** Reproducir y corregir el encabezado que se queda fijo; anotar la causa en `design.md` §3.5. *(RF-48, CA-48.1)*
+- [x] **S5-D4** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo el paquete. *(RNF-20)*
 - [ ] **S5-D5** ✋ **Prueba del bloque 3:** `manage.py test`, `npm test`, `npm run lint` y `npm run build` pasan; el desarrollador lo revisa en su Android. *(CA-47.2)*
 
 ---

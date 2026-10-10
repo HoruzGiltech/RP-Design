@@ -11,8 +11,8 @@
 .reveal {
   opacity: 0;
   transition:
-    opacity var(--motion-reveal) var(--ease-out),
-    transform var(--motion-reveal) var(--ease-out);
+    opacity var(--motion-reveal) var(--ease-soft),
+    transform var(--motion-reveal) var(--ease-soft);
   /* En un grupo, cada elemento espera un poco más que el anterior */
   transition-delay: calc(var(--reveal-index, 0) * var(--motion-stagger));
 }

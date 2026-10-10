@@ -13,8 +13,13 @@
   transform: translateY(-100%);
 }
 
-/* Si alguien llega con el teclado a un elemento del encabezado, este se muestra */
-.header:focus-within {
+/*
+  Si alguien llega con el teclado a un elemento del encabezado, este se muestra.
+  Se usa :focus-visible (foco de teclado) y no :focus-within: al pulsar el logo
+  con el mouse o el dedo, el foco se quedaba en el logo y el encabezado ya no
+  volvía a ocultarse al bajar (specs-005, RF-48).
+*/
+.header:has(:focus-visible) {
   transform: none;
 }
 
