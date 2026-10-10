@@ -28,7 +28,7 @@ function validValues(changes = {}) {
     phone: '+58 412-1234567',
     email: 'ana@mail.com',
     category: '1',
-    location: '',
+    location: 'Chacao, Caracas',
     // Por defecto, solo la cocina marcada
     items: { [KITCHEN.id]: item() },
     needs_visit: false,
@@ -49,9 +49,9 @@ describe('validateQuote', () => {
   })
 
   it('pide los campos obligatorios', () => {
-    const errors = validate({ name: ' ', phone: '', email: '', items: {} })
+    const errors = validate({ name: ' ', phone: '', email: '', location: ' ', items: {} })
 
-    expect(Object.keys(errors).sort()).toEqual(['email', 'items', 'name', 'phone'])
+    expect(Object.keys(errors).sort()).toEqual(['email', 'items', 'location', 'name', 'phone'])
   })
 
   it('pide el tipo de remodelación', () => {
@@ -62,10 +62,12 @@ describe('validateQuote', () => {
     expect(errors.items).toBeUndefined()
   })
 
-  it('los campos nuevos son opcionales', () => {
-    expect(validate({ location: '', has_photos: false, needs_visit: false, message: '' })).toEqual(
-      {},
-    )
+  it('pide la ubicación del espacio', () => {
+    expect(validate({ location: '' }).location).toContain('ubicación')
+  })
+
+  it('las casillas y el mensaje son opcionales', () => {
+    expect(validate({ has_photos: false, needs_visit: false, message: '' })).toEqual({})
   })
 
   it('rechaza un correo mal escrito', () => {

@@ -2,12 +2,14 @@ import { useSite } from '../../context/SiteContext'
 import Reveal from '../ui/Reveal'
 import Section from '../ui/Section'
 import ServiceCard from './ServiceCard'
-import '../projects/ProjectGrid.css'
 import './Services.css'
+
+// Cuántas tarjetas caben, como máximo, en una fila en escritorio
+const MAX_COLUMNS = 4
 
 /**
  * Sección Servicios: una cuadrícula de tarjetas con portada sobre fondo
- * oscuro, con el aspecto que tenía la sección Proyectos (specs-004, RF-35).
+ * oscuro (specs-004, RF-35).
  */
 export default function Services() {
   const { data: site } = useSite()
@@ -30,8 +32,14 @@ export default function Services() {
         )}
       </div>
 
-      {/* La misma cuadrícula de las tarjetas de proyecto */}
-      <div className="project-grid">
+      {/*
+        Hasta 4 tarjetas por fila (specs-005, RF-44). Con menos de 4 servicios,
+        las columnas son las justas para que no quede un hueco al final.
+      */}
+      <div
+        className="services__grid"
+        style={{ '--service-columns': Math.min(services.items.length, MAX_COLUMNS) }}
+      >
         {services.items.map((service, position) => (
           <ServiceCard key={service.id} service={service} index={position} ctaText={ctaText} />
         ))}

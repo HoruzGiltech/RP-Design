@@ -76,6 +76,11 @@ export function validateQuote(values, selectedCategory, maxSquareMeters) {
     errors.category = 'Elige el tipo de remodelación.'
   }
 
+  // Obligatoria desde specs-005 (RF-43)
+  if (!values.location.trim()) {
+    errors.location = 'Escribe la ubicación del espacio.'
+  }
+
   // Solo cuentan las áreas del tipo elegido que estén marcadas
   const areas = selectedCategory ? selectedCategory.areas : []
   const selectedAreas = areas.filter((area) => values.items[area.id])

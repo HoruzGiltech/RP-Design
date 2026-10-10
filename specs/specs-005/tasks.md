@@ -20,9 +20,9 @@ Las tareas llevan el prefijo `S5-`. El paquete se entrega **por bloques**: cada 
 
 ## Bloque 1 — Formulario y cuadrícula de Servicios
 
-- [ ] **S5-B1** El formulario ofrece y acepta todas las categorías, también las ocultas; nueva ayuda de la casilla (migración `projects.0006`). Con tests. *(RF-42, CA-42.1, CA-42.2)*
-- [ ] **S5-B2** "Ubicación del espacio" obligatoria en el backend y en el navegador, con tests. *(RF-43, CA-43.1)*
-- [ ] **S5-B3** Servicios con hasta 4 tarjetas por fila. *(RF-44, CA-44.1, CA-44.2)*
+- [x] **S5-B1** El formulario ofrece y acepta todas las categorías, también las ocultas; nueva ayuda de la casilla (migración `projects.0006`). Con tests. *(RF-42, CA-42.1, CA-42.2)*
+- [x] **S5-B2** "Ubicación del espacio" obligatoria en el backend y en el navegador, con tests. *(RF-43, CA-43.1)*
+- [x] **S5-B3** Servicios con hasta 4 tarjetas por fila. *(RF-44, CA-44.1, CA-44.2)*
 - [ ] **S5-B4** ✋ **Prueba del bloque 1.**
 
 ---

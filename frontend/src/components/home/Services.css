@@ -16,6 +16,26 @@
   color: var(--color-on-dark-secondary);
 }
 
+/* Una tarjeta por fila en celular, dos en tableta y hasta cuatro en escritorio */
+.services__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-24);
+}
+
+@media (min-width: 600px) {
+  .services__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --service-columns lo pone el componente: los servicios que hay, con un tope de 4 */
+@media (min-width: 1100px) {
+  .services__grid {
+    grid-template-columns: repeat(var(--service-columns, 4), 1fr);
+  }
+}
+
 /* --- Tarjeta de servicio: portada arriba y título debajo --- */
 
 .service-card {

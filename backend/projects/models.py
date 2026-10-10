@@ -30,8 +30,8 @@ class ProjectCategory(OrderedModel):
         "mostrar en el sitio",
         default=True,
         help_text=(
-            "Si se desmarca, la categoría sale del inicio, del filtro de proyectos y del "
-            "formulario. Sus proyectos siguen viéndose en \"Todos\"."
+            "Si se desmarca, la categoría sale del filtro de proyectos. Sus proyectos "
+            "siguen viéndose en \"Todos\" y el formulario de cotización la sigue ofreciendo."
         ),
     )
 

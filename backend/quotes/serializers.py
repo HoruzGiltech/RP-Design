@@ -71,14 +71,26 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
     Los precios los calcula siempre el backend (ver quotes/views.py).
     """
 
-    # El tipo de remodelación: una de las categorías visibles del panel
+    # El tipo de remodelación: cualquier categoría del panel, también las que
+    # están ocultas en el filtro de proyectos (specs-005, RF-42)
     category = serializers.PrimaryKeyRelatedField(
-        queryset=ProjectCategory.objects.filter(is_visible=True),
+        queryset=ProjectCategory.objects.all(),
         error_messages={
             "does_not_exist": "Elige el tipo de remodelación.",
             "incorrect_type": "Elige el tipo de remodelación.",
             "required": "Elige el tipo de remodelación.",
             "null": "Elige el tipo de remodelación.",
+        },
+    )
+
+    # Obligatoria desde specs-005. En el modelo sigue siendo opcional porque las
+    # cotizaciones anteriores no la tienen.
+    location = serializers.CharField(
+        max_length=160,
+        error_messages={
+            "required": "Escribe la ubicación del espacio.",
+            "blank": "Escribe la ubicación del espacio.",
+            "null": "Escribe la ubicación del espacio.",
         },
     )
 

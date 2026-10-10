@@ -36,7 +36,9 @@ class QuoteCategoryListView(APIView):
         common_areas = [area for area in active_areas if area.category_id is None]
 
         categories = []
-        for category in ProjectCategory.objects.filter(is_visible=True):
+        # Todas, también las que el cliente ocultó del filtro de proyectos: "mostrar
+        # en el sitio" no afecta al formulario (specs-005, RF-42)
+        for category in ProjectCategory.objects.all():
             own_areas = [area for area in active_areas if area.category_id == category.pk]
             category.form_areas = own_areas + common_areas
             if category.form_areas:

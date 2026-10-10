@@ -76,13 +76,13 @@ class QuoteCategoriesApiTests(TestCase):
 
         self.assertEqual(self.area_names("hoteleria"), ["Otro"])
 
-    def test_hidden_category_is_not_offered_as_a_type(self):
-        # specs-003: la casilla "mostrar en el sitio" de la categoría
-        ProjectCategory.objects.filter(slug="comercial").update(is_visible=False)
+    def test_hidden_category_is_still_offered_as_a_type(self):
+        # specs-005: "mostrar en el sitio" solo afecta al filtro de proyectos
+        ProjectCategory.objects.update(is_visible=False)
 
         slugs = [category["slug"] for category in self.get_categories()]
 
-        self.assertEqual(slugs, ["residencial", "corporativo"])
+        self.assertEqual(slugs, ["comercial", "residencial", "corporativo"])
 
     def test_api_is_read_only(self):
         url = reverse("quote-category-list")
@@ -123,6 +123,7 @@ class QuoteCreateApiTests(TestCase):
             "name": "Ana Pérez",
             "email": "ana@mail.com",
             "phone": "+58 412-1234567",
+            "location": "Chacao, Caracas",
             "items": [self.item()],
             "message": "Quiero cambiar los gabinetes.",
             "website": "",
@@ -287,11 +288,16 @@ class QuoteCreateApiTests(TestCase):
 
     # --- Campos nuevos (specs-003, RF-32) ---
 
-    def test_new_fields_are_optional(self):
+    def test_location_is_required(self):
+        # specs-005, RF-43
+        for value in ["", "   ", None]:
+            with self.subTest(location=value):
+                self.assert_field_error(self.post(location=value), "location", "ubicación")
+
+    def test_photos_and_visit_are_optional(self):
         self.post()
 
         quote = Quote.objects.get()
-        self.assertEqual(quote.location, "")
         self.assertFalse(quote.has_photos)
         self.assertFalse(quote.needs_visit)
 
@@ -353,7 +359,7 @@ class QuoteCreateApiTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             set(response.json()),
-            {"name", "email", "phone", "category", "items", "privacy_accepted"},
+            {"name", "email", "phone", "category", "location", "items", "privacy_accepted"},
         )
         self.assertIn("requerido", response.json()["name"][0])
         self.assertIn("al menos un área", response.json()["items"][0])
@@ -425,11 +431,14 @@ class QuoteCreateApiTests(TestCase):
         self.assert_field_error(self.post(category=None), "category", "tipo de remodelación")
         self.assert_field_error(self.post(category=99999), "category", "tipo de remodelación")
 
-    def test_hidden_category_is_rejected_as_a_type(self):
-        # specs-003: una categoría oculta no se ofrece en el formulario
+    def test_hidden_category_is_accepted_as_a_type(self):
+        # specs-005: una categoría oculta en el filtro se sigue pudiendo cotizar
         ProjectCategory.objects.filter(pk=self.residential.pk).update(is_visible=False)
 
-        self.assert_field_error(self.post(), "category", "tipo de remodelación")
+        response = self.post()
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Quote.objects.get().category_name, "Residencial")
 
     def test_area_of_another_type_is_rejected(self):
         # Cocina es de Residencial, no de Corporativo
@@ -520,6 +529,7 @@ class ThrottleTests(TestCase):
             "email": "ana@mail.com",
             "phone": "+584121234567",
             "category": area.category_id,
+            "location": "Caracas",
             "items": [{"area": area.pk, "square_meters": "10"}],
             "privacy_accepted": True,
         }
