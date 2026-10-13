@@ -39,6 +39,10 @@
 > - **§3.0 Tokens:** `--motion-reveal` pasa a 700 ms y `--reveal-distance` a 32 px.
 > - **§3.2 y §3.3 Frontend:** se agrega `useInCenter`; `useReveal` arranca más arriba y tiene una red de seguridad al final de la página; `Services` usa su propia cuadrícula; `ProjectDetailPage` ya no repite la descripción.
 > - **§3.6 Animaciones:** `.reveal` usa `--ease-soft`.
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-007/design.md`** (ya implementado):
+> - **§2.3 `Project` y `ProjectMedia`:** `cover_alt` y `alt_text` son opcionales y se completan en `save()`.
+> - **§2.8 Panel:** `FileCheckMixin` (`core/admin_mixins.py`) y `core/static/core/admin-file-check.js` revisan los archivos en el navegador; las reglas salen de `get_upload_rules` (`core/validators.py`).
 
 ---
 

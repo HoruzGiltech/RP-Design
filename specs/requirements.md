@@ -45,6 +45,10 @@
 > - **Detalle del proyecto** → la descripción queda solo en la capa de la portada (RF-45).
 > - **Pantallas táctiles** → la capa aparece cuando la tarjeta cruza el centro de la pantalla (RF-46).
 > - **RF-06 Animaciones** → las entradas empiezan con el elemento ya dentro de la pantalla y con una curva más suave (RF-47); el encabezado vuelve a ocultarse tras pulsar el logo (RF-48).
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-007/requirements.md`** (ya implementado):
+> - **Texto alternativo obligatorio** en la portada y la galería de los proyectos → es opcional; vacío, se completa solo con el nombre del proyecto y un correlativo (RF-57).
+> - **Subida de archivos en el panel** → cada archivo se revisa en el navegador al elegirlo, además de en el servidor (RF-56).
 
 ---
 

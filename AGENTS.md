@@ -49,8 +49,8 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-005/`, los cinco implementados.
-- **Trabajo en curso:** `specs/specs-006/` (la demo en Vercel y Railway ya está publicada; faltan los usuarios del panel y las comprobaciones finales) y `specs/specs-007/` (el panel revisa los archivos al elegirlos y pone solo el texto alternativo). Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-005/` y `specs/specs-007/`, implementados.
+- **Trabajo en curso:** `specs/specs-006/` (la demo en Vercel y Railway ya está publicada; faltan los usuarios del panel y las comprobaciones finales). El siguiente paquete de cambios es `specs/specs-008/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: dominio, Cloudflare Pages y R2). La demo de specs-006 adelanta una parte, pero no lo reemplaza. No se empieza sin que el desarrollador lo pida.
 
@@ -260,7 +260,7 @@ El detalle está en `specs/specs-007/requirements.md`. En resumen:
 │   ├── specs-004/  # cuarto paquete de cambios (implementado)
 │   ├── specs-005/  # quinto paquete de cambios (implementado)
 │   ├── specs-006/  # publicación temporal en Vercel y Railway (trabajo en curso)
-│   └── specs-007/  # subida de archivos en el panel y texto alternativo automático (trabajo en curso)
+│   └── specs-007/  # subida de archivos en el panel y texto alternativo automático (implementado)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -375,7 +375,7 @@ Al terminar cada tarea o fase, responde con:
 8. **specs-004:** cuarto paquete (servicios con portada, sección Proyectos con solo el botón, descripción en el detalle y ajustes del formulario). Implementado y cerrado el 2026-10-09.
 9. **specs-005:** quinto paquete (categorías en el formulario, ubicación obligatoria, servicios a 4 columnas, capas en celular, animaciones en móvil y encabezado). Implementado y cerrado el 2026-10-13.
 10. **specs-006:** publicación temporal (demo) en Vercel y Railway, con los archivos en un volumen de Railway. **Es la fase en curso.**
-11. **specs-007:** el panel revisa los archivos al elegirlos, para no perder los ya elegidos, y completa solo el texto alternativo. **En curso.**
+11. **specs-007:** el panel revisa los archivos al elegirlos, para no perder los ya elegidos, y completa solo el texto alternativo. Implementado y cerrado el 2026-10-13.
 12. **Despliegue definitivo:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):

@@ -3,7 +3,7 @@
 > **Qué** cambia en el panel y **cómo sabemos que está bien hecho**.
 > Es un paquete de cambios sobre `specs/` y los paquetes anteriores. Donde este documento los contradice, **manda este**.
 
-**Estado:** Aprobado (v1, 2026-10-13) — el desarrollador aprobó la propuesta y pidió aplicarla
+**Estado:** Implementado y cerrado (2026-10-13)
 **Reglas:** las mismas de `AGENTS.md`. Sin dependencias nuevas.
 
 > ⚠️ El **despliegue definitivo** sigue pendiente (`specs/tasks.md`, Fase 5). La demo de `specs/specs-006/` está publicada; este paquete se sube también a la demo.
