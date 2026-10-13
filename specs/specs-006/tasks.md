@@ -29,8 +29,8 @@ Las tareas llevan el prefijo `S6-`. Se entrega **por bloques**, con una pausa �
 
 ## Bloque 2 — Frontend y guía
 
-- [ ] **S6-C1** `frontend/vercel.json` y la etiqueta `robots` por variable. *(RF-52, RF-53)*
-- [ ] **S6-C2** `docs/despliegue-demo.md`: Railway, Vercel, variables, copia del contenido, usuarios y comprobaciones. *(RF-55)*
+- [x] **S6-C1** `frontend/vercel.json` y la etiqueta `robots` por variable. *(RF-52, RF-53)*
+- [x] **S6-C2** `docs/despliegue-demo.md`: Railway, Vercel, variables, copia del contenido, usuarios y comprobaciones. *(RF-55)*
 - [ ] **S6-C3** ✋ **Prueba del bloque 2:** el desarrollador lee la guía antes de publicar.
 
 ---

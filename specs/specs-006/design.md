@@ -46,6 +46,8 @@
 
 > Hoy `NUM_PROXIES` no está definido, y en ese caso DRF usa `X-Forwarded-For` tal como llega: cualquiera podría saltarse el límite de cotizaciones inventando esa cabecera. Con el valor 0 por defecto eso queda cerrado también en local.
 
+`FRONTEND_URL` aparece en `.env.example` pero el backend no la usa: no hace falta definirla en Railway.
+
 ### 2.4 Variables nuevas (`.env.example`)
 
 ```
@@ -71,6 +73,7 @@ NUM_PROXIES=0         # 1 en Railway
 - `frontend/index.html`: `<meta name="robots" content="%VITE_ROBOTS%" />`. Vite sustituye el valor al construir.
 - `frontend/.env.example`: `VITE_ROBOTS=index, follow`. En Vercel se pone `noindex, nofollow`.
 - En Vercel: carpeta raíz `frontend`, comando `npm run build`, salida `dist`.
+- Si `VITE_ROBOTS` no está definida, Vite deja el texto `%VITE_ROBOTS%` sin sustituir; los buscadores lo ignoran y el sitio se indexa normalmente. Por eso la variable va en `frontend/.env.example` y en la guía.
 
 ---
 
