@@ -3,8 +3,12 @@
 .env.*
 !.env.example
 
-# Archivos subidos por el cliente y datos locales
-media/
+# Archivos subidos por el cliente y datos locales.
+# Con la ruta completa: "media/" a secas ignoraba también cualquier otra carpeta
+# con ese nombre, como frontend/src/components/media/, y el sitio no construía
+# fuera de esta computadora.
+/media/
+/backend/media/
 staticfiles/
 *.sqlite3
 *.dump
