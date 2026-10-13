@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { parseDecimal } from './numbers'
+import { keepNumberCharacters, parseDecimal } from './numbers'
 
 describe('parseDecimal', () => {
   it('acepta coma o punto como decimal', () => {
@@ -18,5 +18,20 @@ describe('parseDecimal', () => {
 
   it('rechaza más de dos decimales', () => {
     expect(parseDecimal('12,555')).toBeNull()
+  })
+})
+
+describe('keepNumberCharacters', () => {
+  it('conserva las cifras, la coma y el punto', () => {
+    expect(keepNumberCharacters('12,5')).toBe('12,5')
+    expect(keepNumberCharacters('12.5')).toBe('12.5')
+    expect(keepNumberCharacters('120')).toBe('120')
+  })
+
+  it('quita las letras, los espacios y los signos', () => {
+    expect(keepNumberCharacters('abc')).toBe('')
+    expect(keepNumberCharacters('45 metros')).toBe('45')
+    expect(keepNumberCharacters('-10')).toBe('10')
+    expect(keepNumberCharacters('1e5')).toBe('15')
   })
 })

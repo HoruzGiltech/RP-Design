@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { createQuote } from '../../api/endpoints'
 import { useSite } from '../../context/SiteContext'
-import { parseDecimal } from '../../utils/numbers'
+import { keepNumberCharacters, parseDecimal } from '../../utils/numbers'
 import { MAX_MESSAGE_LENGTH, validateQuote } from '../../utils/quoteValidation'
 import Button from '../ui/Button'
 import CheckboxField from './CheckboxField'
@@ -83,7 +83,9 @@ export default function QuoteCalculator() {
   function handleChange(event) {
     const { name, type, checked, value } = event.target
     // Una casilla no tiene texto: su valor es si está marcada o no
-    const newValue = type === 'checkbox' ? checked : value
+    let newValue = type === 'checkbox' ? checked : value
+    // Los metros son un campo numérico: lo que no sea cifra, coma o punto no se escribe
+    if (name === 'square_meters') newValue = keepNumberCharacters(value)
     setValues((current) => ({ ...current, [name]: newValue }))
     // Al corregir un campo, su mensaje de error desaparece
     if (errors[name]) {
@@ -213,8 +215,9 @@ export default function QuoteCalculator() {
         name="square_meters"
         label={texts.square_meters.label}
         placeholder={texts.square_meters.placeholder}
-        // type="text" y no "number": así se puede escribir la coma decimal (12,5).
-        // inputMode abre el teclado numérico en el celular.
+        // Campo numérico: solo acepta cifras, coma y punto (ver handleChange).
+        // Es type="text" y no "number" para poder escribir la coma decimal (12,5)
+        // en cualquier navegador; inputMode abre el teclado numérico en el celular.
         type="text"
         inputMode="decimal"
         autoComplete="off"

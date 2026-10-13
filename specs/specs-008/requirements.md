@@ -68,7 +68,7 @@
 ### RF-62 — Metros cuadrados en un solo campo
 
 1. Desaparecen las casillas de áreas y sus campos.
-2. Junto a "Ubicación del espacio" hay un campo **"Metros cuadrados"**, **opcional**: acepta un número mayor que 0, con coma o punto decimal.
+2. Junto a "Ubicación del espacio" hay un campo **"Metros cuadrados"**, **opcional** y **numérico**: solo deja escribir cifras, coma y punto, y acepta un número mayor que 0. Su texto de ejemplo es **"10 m²"** (editable en el panel).
 3. La casilla "No sé cuántos m² son, agendar una visita" se mantiene. Marcada, el campo de m² se desactiva y lo escrito no se envía.
 
 **Criterios de aceptación**

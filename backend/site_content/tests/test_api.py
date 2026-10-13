@@ -228,6 +228,7 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
             QuoteFormField.objects.get(key="remodel_type").placeholder,
             "cocina, patio, baño, casa, quinta, etc.",
         )
+        self.assertEqual(QuoteFormField.objects.get(key="square_meters").placeholder, "10 m²")
 
     def test_form_field_text_changed_in_the_panel_is_seen_right_away(self):
         QuoteFormField.objects.filter(key="phone").update(label="WhatsApp")
