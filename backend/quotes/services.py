@@ -5,33 +5,9 @@ Son funciones simples, sin efectos secundarios: reciben datos y devuelven
 un resultado. Por eso son fáciles de probar una por una.
 """
 import re
-from decimal import Decimal
 from urllib.parse import quote as url_encode
 
 TO_BE_QUOTED = "A cotizar"
-TWO_DECIMALS = Decimal("0.01")
-
-
-def calculate_estimate(area, square_meters):
-    """
-    Devuelve m² × precio del área. Devuelve None ("A cotizar") si el área no
-    tiene precio o si no se dieron los metros (la persona pidió una visita).
-    """
-    if area.price_per_m2 is None or square_meters is None:
-        return None
-    return (area.price_per_m2 * square_meters).quantize(TWO_DECIMALS)
-
-
-def calculate_total(subtotals):
-    """
-    Suma los subtotales de todas las áreas.
-
-    Si alguna área está "A cotizar" (None), el total también lo está: mostrar
-    una suma parcial haría creer que ese es el precio de todo.
-    """
-    if not subtotals or None in subtotals:
-        return None
-    return sum(subtotals, Decimal("0")).quantize(TWO_DECIMALS)
 
 
 def _to_venezuelan_format(number_text):
@@ -40,7 +16,12 @@ def _to_venezuelan_format(number_text):
 
 
 def format_usd(amount):
-    """Decimal('1250.5') -> 'USD 1.250,50'. None -> 'A cotizar'."""
+    """
+    Decimal('1250.5') -> 'USD 1.250,50'. None -> 'A cotizar'.
+
+    Desde specs-008 el sitio ya no calcula precios. Esta función sigue aquí
+    porque el panel muestra el estimado de las cotizaciones anteriores.
+    """
     if amount is None:
         return TO_BE_QUOTED
     return f"USD {_to_venezuelan_format(f'{amount:,.2f}')}"
@@ -58,38 +39,13 @@ def clean_phone(phone):
     return f"+{digits}" if phone.strip().startswith("+") else digits
 
 
-def area_belongs_to_category(area, category):
-    """
-    Dice si un área se puede elegir dentro de un tipo de remodelación:
-    lo es si pertenece a esa categoría o si es común a todas (sin categoría).
-    """
-    return area.category_id is None or area.category_id == category.pk
-
-
-def describe_item(item, show_estimate=True):
-    """
-    Texto de un renglón para el mensaje: 'Cocina: 10 m² (USD 1.000,00)'.
-    Sin metros (visita pedida) queda solo el nombre del área.
-    """
-    name = item.area.name
-    if item.area.is_other and item.area_other:
-        name = f"{name} ({item.area_other})"
-    if item.square_meters is None:
-        return name
-
-    text = f"{name}: {format_square_meters(item.square_meters)} m²"
-    if show_estimate:
-        text += f" ({format_usd(item.subtotal)})"
-    return text
-
-
-def build_whatsapp_message(quote, items, show_estimate=True):
+def build_whatsapp_message(quote):
     """
     Arma el texto que la persona enviará por WhatsApp.
 
     No lleva emojis: algunas versiones de WhatsApp los muestran como "?"
     cuando llegan dentro de un enlace. Cada línea empieza con un guion.
-    Con show_estimate apagado no se menciona ningún precio.
+    Las líneas de lo que la persona no llenó se omiten.
     """
     lines = [
         "Hola RP Design, quiero una cotización:",
@@ -97,22 +53,15 @@ def build_whatsapp_message(quote, items, show_estimate=True):
         f"- Nombre: {quote.name}",
         f"- Correo: {quote.email}",
         f"- Teléfono: {quote.phone}",
+        f"- Tipo de remodelación: {quote.remodel_type}",
+        f"- Ubicación: {quote.location}",
     ]
-    if quote.location:
-        lines.append(f"- Ubicación: {quote.location}")
-    # Las cotizaciones anteriores a specs-002 no tienen tipo: la línea se omite
-    if quote.category_name:
-        lines.append(f"- Tipo: {quote.category_name}")
-
-    lines.append("- Áreas:")
-    lines += [f"  - {describe_item(item, show_estimate)}" for item in items]
-
-    if show_estimate:
-        lines.append(f"- Estimado total: {format_usd(quote.estimated_price)}")
-    if quote.has_photos:
-        lines.append("- Tengo fotos del espacio")
+    if quote.square_meters is not None:
+        lines.append(f"- Metros cuadrados: {format_square_meters(quote.square_meters)} m²")
     if quote.needs_visit:
         lines.append("- No sé los m²: quiero agendar una visita")
+    if quote.has_photos:
+        lines.append("- Tengo fotos del espacio")
     if quote.message:
         lines += ["", f"- Mensaje: {quote.message}"]
     return "\n".join(lines)

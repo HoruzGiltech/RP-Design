@@ -82,7 +82,8 @@ class SiteSettingsAdmin(SingletonAdmin):
             "Tipografía",
             {"fields": ("heading_font", "body_font")},
         ),
-        ("Calculadora", {"fields": ("show_estimate", "price_note", "max_square_meters")}),
+        # El bloque "Calculadora" (estimado, nota de precio y máximo de m²) se quitó
+        # del panel: desde specs-008 el formulario no calcula precios.
     )
 
 

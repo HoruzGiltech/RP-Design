@@ -9,7 +9,6 @@ from rest_framework.throttling import ScopedRateThrottle
 
 from core.network import get_client_ip
 from core.tests.helpers import TempMediaMixin
-from quotes.models import RemodelArea
 
 PROXY = "10.0.0.1"
 VISITOR = "200.1.2.3"
@@ -71,14 +70,12 @@ class QuoteLimitBehindProxyTests(TestCase):
 
     def setUp(self):
         cache.clear()
-        area = RemodelArea.objects.get(slug="cocina")
         self.quote_data = {
             "name": "Ana",
             "email": "ana@mail.com",
             "phone": "+584121234567",
-            "category": area.category_id,
+            "remodel_type": "cocina",
             "location": "Caracas",
-            "items": [{"area": area.pk, "square_meters": "10"}],
             "privacy_accepted": True,
         }
 

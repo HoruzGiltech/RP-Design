@@ -50,7 +50,7 @@ specs/
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
 - **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-005/` y `specs/specs-007/`, implementados.
-- **Trabajo en curso:** `specs/specs-006/` (la demo en Vercel y Railway ya está publicada; faltan los usuarios del panel y las comprobaciones finales). El siguiente paquete de cambios es `specs/specs-008/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Trabajo en curso:** `specs/specs-006/` (la demo en Vercel y Railway ya está publicada; faltan los usuarios del panel y las comprobaciones finales). También está en curso `specs/specs-008/` (formulario con tipo en texto libre y sin precios; proceso en tarjetas numeradas y servicios en negro). Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: dominio, Cloudflare Pages y R2). La demo de specs-006 adelanta una parte, pero no lo reemplaza. No se empieza sin que el desarrollador lo pida.
 
@@ -213,6 +213,12 @@ El detalle está en `specs/specs-007/requirements.md`. En resumen:
 - **RF-56 — Subida de archivos en el panel:** cada archivo se revisa en el navegador al elegirlo (formato y tamaño); si no sirve, solo se descarta ese y no se pierden los demás.
 - **RF-57 — Texto alternativo automático:** opcional en portada y galería; vacío, se completa con el nombre del proyecto y un correlativo ("Apto La Guaira 001").
 
+### Cambios de specs-008 (RF-58 a RF-63)
+El detalle está en `specs/specs-008/requirements.md`. En resumen:
+- **RF-58 y RF-59 — Proceso:** tarjetas numeradas bajo el título "Un solo equipo para todo tu proyecto"; el video se muestra según una casilla del panel.
+- **RF-60 — Servicios:** sección negra propia, con portada y "Cotizar", sin números.
+- **RF-61 a RF-63 — Formulario:** el tipo de remodelación es un texto libre, hay un solo campo de m² (opcional) y ya no se calcula ni se muestra ningún precio. Las cotizaciones anteriores conservan sus áreas y montos.
+
 ---
 
 ## 5. Stack técnico
@@ -260,7 +266,8 @@ El detalle está en `specs/specs-007/requirements.md`. En resumen:
 │   ├── specs-004/  # cuarto paquete de cambios (implementado)
 │   ├── specs-005/  # quinto paquete de cambios (implementado)
 │   ├── specs-006/  # publicación temporal en Vercel y Railway (trabajo en curso)
-│   └── specs-007/  # subida de archivos en el panel y texto alternativo automático (implementado)
+│   ├── specs-007/  # subida de archivos en el panel y texto alternativo automático (implementado)
+│   └── specs-008/  # formulario sin precios y nuevas secciones de proceso y servicios (trabajo en curso)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -356,7 +363,7 @@ Al terminar cada tarea o fase, responde con:
 | Menú | Siempre desplegable; el encabezado se oculta al bajar y vuelve al subir (specs-002) |
 | Formulario | El área a remodelar depende del tipo de remodelación, que son las categorías (specs-002) |
 | Especialidades | El cintillo se quitó del sitio; la lista se conserva en el panel (specs-002) |
-| Cotización | Varias áreas por cotización, cada una con sus m²; el total es la suma (specs-003) |
+| Cotización | Desde specs-008: tipo de remodelación en texto libre, m² opcionales y **sin estimado de precio**. Las áreas y precios de specs-003 quedan solo en el historial |
 | Mensaje de WhatsApp | Sin emojis: en algunas versiones llegaban como "?" (specs-003) |
 | Tipografía | Dos fuentes cargables desde el panel, con las originales de respaldo (specs-003) |
 | Servicios | Tarjetas con portada; la descripción y "Cotizar" salen en una capa sobre la foto (specs-004) |
@@ -376,7 +383,8 @@ Al terminar cada tarea o fase, responde con:
 9. **specs-005:** quinto paquete (categorías en el formulario, ubicación obligatoria, servicios a 4 columnas, capas en celular, animaciones en móvil y encabezado). Implementado y cerrado el 2026-10-13.
 10. **specs-006:** publicación temporal (demo) en Vercel y Railway, con los archivos en un volumen de Railway. **Es la fase en curso.**
 11. **specs-007:** el panel revisa los archivos al elegirlos, para no perder los ya elegidos, y completa solo el texto alternativo. Implementado y cerrado el 2026-10-13.
-12. **Despliegue definitivo:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
+12. **specs-008:** sexto paquete de cambios del cliente (formulario con tipo en texto libre, un solo campo de m² y sin estimado; proceso en tarjetas numeradas; servicios en sección negra). **En curso.**
+13. **Despliegue definitivo:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 

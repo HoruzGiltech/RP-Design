@@ -201,14 +201,12 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
                 "name",
                 "phone",
                 "email",
-                "category",
+                "remodel_type",
                 "location",
-                "areas",
-                "area_other",
                 "square_meters",
                 "needs_visit",
-                "message",
                 "has_photos",
+                "message",
             },
         )
         self.assertEqual(form_fields["name"], {"label": "Nombre", "placeholder": "Tu nombre"})
@@ -219,7 +217,17 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         keys = list(QuoteFormField.objects.values_list("key", flat=True))
 
         self.assertEqual(keys[-2:], ["has_photos", "message"])
-        self.assertEqual(len(keys), 11)
+        self.assertEqual(len(keys), 9)
+
+    def test_form_fields_follow_the_order_of_the_form(self):
+        # specs-008: tipo en texto libre y m² junto a la ubicación
+        keys = list(QuoteFormField.objects.values_list("key", flat=True))
+
+        self.assertEqual(keys[3:6], ["remodel_type", "location", "square_meters"])
+        self.assertEqual(
+            QuoteFormField.objects.get(key="remodel_type").placeholder,
+            "cocina, patio, baño, casa, quinta, etc.",
+        )
 
     def test_form_field_text_changed_in_the_panel_is_seen_right_away(self):
         QuoteFormField.objects.filter(key="phone").update(label="WhatsApp")

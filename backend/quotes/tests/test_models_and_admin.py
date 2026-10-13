@@ -10,16 +10,33 @@ from quotes.models import Quote, QuoteItem, RemodelArea
 
 
 def create_quote(**fields):
-    """Cotización de un solo renglón: 12,5 m² de cocina a USD 100 el m²."""
+    """Cotización como las que llegan desde specs-008: tipo escrito y m² en un campo."""
     values = {
         "name": "Ana Pérez",
         "email": "ana@mail.com",
         "phone": "+584121234567",
-        "estimated_price": Decimal("1250"),
+        "remodel_type": "cocina y baño",
+        "location": "Chacao, Caracas",
+        "square_meters": Decimal("45.5"),
         "whatsapp_message": "Hola RP Design, quiero una cotización",
     }
     values.update(fields)
-    quote = Quote.objects.create(**values)
+    return Quote.objects.create(**values)
+
+
+def create_old_quote(**fields):
+    """
+    Cotización anterior a specs-008: con categoría, un área con su precio y un
+    estimado. 12,5 m² de cocina a USD 100 el m².
+    """
+    values = {
+        "remodel_type": "",
+        "square_meters": None,
+        "category_name": "Residencial",
+        "estimated_price": Decimal("1250"),
+    }
+    values.update(fields)
+    quote = create_quote(**values)
     QuoteItem.objects.create(
         quote=quote,
         area=RemodelArea.objects.get(slug="cocina"),
@@ -101,14 +118,14 @@ class QuoteModelTests(TestCase):
 
         self.assertEqual(Quote.objects.first().name, "Segunda")
 
-    def test_area_with_quotes_cannot_be_deleted(self):
-        quote = create_quote()
+    def test_area_with_old_quotes_cannot_be_deleted(self):
+        quote = create_old_quote()
 
         with self.assertRaises(ProtectedError):
             quote.items.get().area.delete()
 
     def test_deleting_a_quote_deletes_its_items(self):
-        create_quote().delete()
+        create_old_quote().delete()
 
         self.assertEqual(QuoteItem.objects.count(), 0)
 
@@ -118,16 +135,23 @@ class QuotesAdminTests(TestCase):
         user = get_user_model().objects.create_superuser("dev", password="clave-de-prueba")
         self.client.force_login(user)
 
-    def test_area_list_and_quote_list_load(self):
+    def get_detail(self, quote):
+        return self.client.get(reverse("admin:quotes_quote_change", args=[quote.pk]))
+
+    def test_quote_list_shows_the_type_and_the_location(self):
         create_quote()
 
-        areas = self.client.get(reverse("admin:quotes_remodelarea_changelist"))
-        quotes = self.client.get(reverse("admin:quotes_quote_changelist"))
+        response = self.client.get(reverse("admin:quotes_quote_changelist"))
 
-        self.assertContains(areas, "Piscina")
-        self.assertContains(quotes, "USD 1.250,00")
-        # specs-003: la lista resume las áreas de cada cotización
-        self.assertContains(quotes, "Cocina")
+        self.assertContains(response, "cocina y baño")
+        self.assertContains(response, "Chacao, Caracas")
+
+    def test_quote_list_shows_the_category_of_an_old_quote_as_its_type(self):
+        create_old_quote()
+
+        response = self.client.get(reverse("admin:quotes_quote_changelist"))
+
+        self.assertContains(response, "Residencial")
 
     def test_quotes_cannot_be_added_from_the_panel(self):
         response = self.client.get(reverse("admin:quotes_quote_add"))
@@ -135,75 +159,63 @@ class QuotesAdminTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_quote_detail_shows_the_message_and_the_whatsapp_link(self):
-        quote = create_quote()
-
-        response = self.client.get(reverse("admin:quotes_quote_change", args=[quote.pk]))
+        response = self.get_detail(create_quote())
 
         self.assertContains(response, "Hola RP Design, quiero una cotización")
         self.assertContains(response, "https://wa.me/584121234567")
 
-    def test_quote_detail_shows_its_areas_and_the_new_fields(self):
-        quote = create_quote(location="Chacao, Caracas", has_photos=True)
+    def test_new_quote_detail_shows_its_fields_and_no_price(self):
+        response = self.get_detail(create_quote(has_photos=True))
 
-        response = self.client.get(reverse("admin:quotes_quote_change", args=[quote.pk]))
+        self.assertContains(response, "cocina y baño")
+        self.assertContains(response, "Chacao, Caracas")
+        self.assertContains(response, "45,50")
+        self.assertContains(response, "Tiene fotos del espacio")
+        # Una cotización nueva no tiene áreas ni estimado
+        self.assertNotContains(response, "Áreas cotizadas")
+        self.assertNotContains(response, "Estimado total")
+
+    def test_old_quote_detail_still_shows_its_areas_and_estimate(self):
+        # specs-008, RF-63.4: el historial se conserva
+        response = self.get_detail(create_old_quote())
 
         self.assertContains(response, "Áreas cotizadas")
         self.assertContains(response, "Cocina")
         self.assertContains(response, "12,50")
-        self.assertContains(response, "Chacao, Caracas")
-        self.assertContains(response, "Tiene fotos del espacio")
-        # Las áreas solo se leen: no hay campos para cambiarlas ni fila para agregar
+        self.assertContains(response, "Estimado total")
+        self.assertContains(response, "USD 1.250,00")
+        # Las áreas solo se leen: no hay campos para cambiarlas
         self.assertNotContains(response, 'name="items-0-square_meters"')
 
     def test_only_the_status_can_be_changed(self):
         quote = create_quote()
         url = reverse("admin:quotes_quote_change", args=[quote.pk])
 
-        # Se intenta cambiar también el nombre y el estimado
+        # Se intenta cambiar también el nombre y el tipo
         self.client.post(
-            url,
-            {
-                "status": Quote.CONTACTED,
-                "name": "Otro nombre",
-                "estimated_price": "1",
-                "items-TOTAL_FORMS": 0,
-                "items-INITIAL_FORMS": 0,
-            },
+            url, {"status": Quote.CONTACTED, "name": "Otro nombre", "remodel_type": "otra cosa"}
         )
 
         quote.refresh_from_db()
         self.assertEqual(quote.status, Quote.CONTACTED)
         self.assertEqual(quote.name, "Ana Pérez")
-        self.assertEqual(quote.estimated_price, Decimal("1250"))
+        self.assertEqual(quote.remodel_type, "cocina y baño")
 
-    def test_area_list_shows_the_category_and_lets_filter_by_it(self):
-        response = self.client.get(reverse("admin:quotes_remodelarea_changelist"))
-
-        self.assertContains(response, "Sala de reuniones")
-        self.assertContains(response, "form-0-category")
-        self.assertContains(response, "Por categoría")
-
-    def test_area_form_has_no_field_to_write_the_identifier(self):
-        response = self.client.get(reverse("admin:quotes_remodelarea_add"))
-
-        self.assertNotContains(response, 'name="slug"')
-        self.assertContains(response, 'name="category"')
-
-    def test_area_can_be_created_for_a_category_from_the_panel(self):
-        commercial = ProjectCategory.objects.get(slug="comercial")
+    def test_status_of_an_old_quote_can_be_changed(self):
+        quote = create_old_quote()
+        url = reverse("admin:quotes_quote_change", args=[quote.pk])
 
         self.client.post(
-            reverse("admin:quotes_remodelarea_add"),
-            {"name": "Vitrina", "category": commercial.pk, "is_active": "on"},
+            url, {"status": Quote.CLOSED, "items-TOTAL_FORMS": 1, "items-INITIAL_FORMS": 1}
         )
 
-        area = RemodelArea.objects.get(name="Vitrina")
-        self.assertEqual(area.category, commercial)
-        self.assertEqual(area.slug, "vitrina")
+        quote.refresh_from_db()
+        self.assertEqual(quote.status, Quote.CLOSED)
+        self.assertEqual(quote.items.count(), 1)
 
-    def test_quote_detail_shows_the_type(self):
-        quote = create_quote(category_name="Residencial")
+    def test_areas_and_prices_are_no_longer_in_the_panel(self):
+        # specs-008: el formulario ya no pide áreas ni calcula precios
+        index = self.client.get(reverse("admin:index"))
 
-        response = self.client.get(reverse("admin:quotes_quote_change", args=[quote.pk]))
-
-        self.assertContains(response, "Residencial")
+        self.assertNotContains(index, "Áreas y precios")
+        self.assertNotContains(index, "/quotes/remodelarea/")

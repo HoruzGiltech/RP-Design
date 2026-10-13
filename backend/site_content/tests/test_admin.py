@@ -236,7 +236,7 @@ class SiteContentAdminTests(TempMediaMixin, TestCase):
     # --- specs-003: textos del formulario (RF-31) ---
 
     def contact_form(self, **changes):
-        """El formulario de Contacto con sus 11 filas; `changes` cambia el título de un campo."""
+        """El formulario de Contacto con sus filas; `changes` cambia el título de un campo."""
         form_fields = list(QuoteFormField.objects.all())
         data = {
             "is_visible": "on",
@@ -265,16 +265,16 @@ class SiteContentAdminTests(TempMediaMixin, TestCase):
         data = self.contact_form()
         # Se intenta borrar la primera fila y agregar una nueva
         data["form_fields-0-DELETE"] = "on"
-        data["form_fields-TOTAL_FORMS"] = 12
-        data["form_fields-11-section"] = 1
-        data["form_fields-11-label"] = "Campo inventado"
+        data["form_fields-TOTAL_FORMS"] = 10
+        data["form_fields-9-section"] = 1
+        data["form_fields-9-label"] = "Campo inventado"
 
         page = self.client.get(url)
         self.client.post(url, data)
 
         self.assertContains(page, "Tipo de remodelación")
         self.assertNotContains(page, "form_fields-0-DELETE")
-        self.assertEqual(QuoteFormField.objects.count(), 11)
+        self.assertEqual(QuoteFormField.objects.count(), 9)
         self.assertFalse(QuoteFormField.objects.filter(label="Campo inventado").exists())
 
     # --- specs-003: tipografía y estimado (RF-19, RF-30) ---
@@ -321,14 +321,12 @@ class SiteContentAdminTests(TempMediaMixin, TestCase):
         self.assertContains(response, "no es una fuente válida")
         self.assertFalse(SiteSettings.load().body_font)
 
-    def test_estimate_can_be_turned_off(self):
-        url = reverse("admin:site_content_sitesettings_change", args=[1])
-        data = self.settings_form()
-        del data["show_estimate"]
+    def test_calculator_settings_are_no_longer_in_the_panel(self):
+        # specs-008: el formulario ya no calcula precios
+        response = self.client.get(reverse("admin:site_content_sitesettings_change", args=[1]))
 
-        self.client.post(url, data)
-
-        self.assertFalse(SiteSettings.load().show_estimate)
+        for field in ["show_estimate", "price_note", "max_square_meters"]:
+            self.assertNotContains(response, f'name="{field}"')
 
     def test_legal_pages_are_listed_but_cannot_be_added_or_deleted(self):
         page = LegalPage.objects.get(slug="privacidad")

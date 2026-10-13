@@ -1,50 +1,15 @@
-from django.db import transaction
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from projects.models import ProjectCategory
-from quotes.models import Quote, QuoteItem, RemodelArea
-from quotes.serializers import QuoteCategorySerializer, QuoteCreateSerializer
-from quotes.services import (
-    build_whatsapp_link,
-    build_whatsapp_message,
-    calculate_estimate,
-    calculate_total,
-    format_usd,
-)
+from quotes.models import Quote
+from quotes.serializers import QuoteCreateSerializer
+from quotes.services import build_whatsapp_link, build_whatsapp_message
 from site_content.models import SiteSettings
 
 # Campo trampa: está oculto en el formulario, así que una persona nunca lo llena
 HONEYPOT_FIELD = "website"
-
-
-class QuoteCategoryListView(APIView):
-    """
-    GET /api/quote-categories/ -> tipos de remodelación con sus áreas.
-
-    Cada tipo es una categoría del panel. Sus áreas son las que pertenecen a
-    esa categoría más las comunes a todas (las que no tienen categoría, como
-    "Otro"), que van al final. Un tipo sin ninguna área no se envía.
-    """
-
-    throttle_scope = "public"
-
-    def get(self, request):
-        active_areas = list(RemodelArea.objects.filter(is_active=True))
-        common_areas = [area for area in active_areas if area.category_id is None]
-
-        categories = []
-        # Todas, también las que el cliente ocultó del filtro de proyectos: "mostrar
-        # en el sitio" no afecta al formulario (specs-005, RF-42)
-        for category in ProjectCategory.objects.all():
-            own_areas = [area for area in active_areas if area.category_id == category.pk]
-            category.form_areas = own_areas + common_areas
-            if category.form_areas:
-                categories.append(category)
-
-        return Response(QuoteCategorySerializer(categories, many=True).data)
 
 
 class QuoteCreateView(APIView):
@@ -59,65 +24,28 @@ class QuoteCreateView(APIView):
         serializer = QuoteCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        site_settings = SiteSettings.load()
-        quote = self._save_quote(serializer.validated_data, site_settings.show_estimate)
+        quote = self._build_quote(serializer.validated_data)
+        quote.save()
 
+        whatsapp_number = SiteSettings.load().whatsapp_number
         return Response(
             {
                 "id": quote.pk,
-                **self._estimate_for_visitor(quote, site_settings.show_estimate),
-                "whatsapp_url": build_whatsapp_link(
-                    site_settings.whatsapp_number, quote.whatsapp_message
-                ),
+                "whatsapp_url": build_whatsapp_link(whatsapp_number, quote.whatsapp_message),
             },
             status=status.HTTP_201_CREATED,
         )
 
-    def _save_quote(self, data, show_estimate):
-        """Calcula los precios aquí, en el servidor, arma el mensaje y guarda todo."""
+    def _build_quote(self, data):
+        """Arma la cotización con el mensaje de WhatsApp ya redactado."""
         # privacy_accepted no es un campo de Quote: se cambia por la fecha de aceptación
         data.pop("privacy_accepted")
-        items = [self._build_item(item_data) for item_data in data.pop("items")]
-
         quote = Quote(**data)
-        # Copia del nombre del tipo: la cotización lo conserva aunque la categoría cambie
-        quote.category_name = quote.category.name
         quote.privacy_accepted_at = timezone.now()
-        # El estimado se guarda siempre, aunque el visitante no lo vea
-        quote.estimated_price = calculate_total([item.subtotal for item in items])
-        quote.whatsapp_message = build_whatsapp_message(quote, items, show_estimate)
-
-        # O se guarda la cotización con todos sus renglones, o no se guarda nada
-        with transaction.atomic():
-            quote.save()
-            for item in items:
-                item.quote = quote
-            QuoteItem.objects.bulk_create(items)
+        # El mensaje se guarda: así el cliente no pierde el contacto aunque la
+        # persona no llegue a enviarlo por WhatsApp.
+        quote.whatsapp_message = build_whatsapp_message(quote)
         return quote
-
-    def _build_item(self, item_data):
-        area = item_data["area"]
-        square_meters = item_data["square_meters"]
-        return QuoteItem(
-            area=area,
-            area_other=item_data["area_other"],
-            square_meters=square_meters,
-            price_per_m2_snapshot=area.price_per_m2,
-            subtotal=calculate_estimate(area, square_meters),
-        )
-
-    def _estimate_for_visitor(self, quote, show_estimate):
-        """Con el estimado apagado en el panel, el sitio no recibe ningún precio."""
-        if not show_estimate:
-            return {"estimated_price": None, "estimated_price_display": None}
-        return {
-            # Como texto ("1250.00") para no perder decimales al pasar por JSON
-            "estimated_price": self._as_text(quote.estimated_price),
-            "estimated_price_display": format_usd(quote.estimated_price),
-        }
-
-    def _as_text(self, amount):
-        return None if amount is None else f"{amount:.2f}"
 
     def _fake_success(self):
         """
@@ -125,11 +53,6 @@ class QuoteCreateView(APIView):
         Así el bot no se entera de que fue detectado y no prueba otra cosa.
         """
         return Response(
-            {
-                "id": 0,
-                "estimated_price": None,
-                "estimated_price_display": format_usd(None),
-                "whatsapp_url": "https://wa.me/",
-            },
+            {"id": 0, "whatsapp_url": "https://wa.me/"},
             status=status.HTTP_201_CREATED,
         )

@@ -483,14 +483,12 @@ class QuoteFormField(models.Model):
         ("name", "Nombre"),
         ("phone", "Teléfono"),
         ("email", "Correo"),
-        ("category", "Tipo de remodelación"),
+        ("remodel_type", "Tipo de remodelación"),
         ("location", "Ubicación del espacio"),
-        ("areas", "Áreas a remodelar"),
-        ("area_other", "Especificar el área (opción Otro)"),
         ("square_meters", "Metros cuadrados"),
         ("needs_visit", "Casilla: no sé cuántos m² son"),
-        ("message", "Mensaje"),
         ("has_photos", "Casilla: tengo fotos del espacio"),
+        ("message", "Mensaje"),
     ]
 
     section = models.ForeignKey(

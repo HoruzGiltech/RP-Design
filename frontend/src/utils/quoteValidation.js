@@ -2,7 +2,7 @@
 // Sirve para avisar rápido de un error; la validación que manda es la del
 // backend (backend/quotes/serializers.py), que repite estas mismas reglas.
 
-import { parseDecimal } from './estimate'
+import { parseDecimal } from './numbers'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MIN_PHONE_DIGITS = 7
@@ -13,46 +13,16 @@ function countDigits(text) {
   return text.replace(/\D/g, '').length
 }
 
-/** 10000 -> "10.000". El máximo se muestra como lo escribe la gente. */
-function formatMaximum(number) {
-  return String(number).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-}
-
 /**
- * Nombre de un campo que pertenece a un área: (4, 'square_meters') -> "item_4_square_meters".
- * Con ese nombre se guarda su error y se arma el id del campo en la página.
- */
-export function getItemFieldName(areaId, field) {
-  return `item_${areaId}_${field}`
-}
-
-/** Mensaje de error de unos metros cuadrados, o null si están bien. */
-function checkSquareMeters(text, maximum) {
-  const squareMeters = parseDecimal(text)
-  if (!text.trim()) return 'Escribe los metros cuadrados.'
-  if (squareMeters === null) {
-    return 'Escribe solo números, con dos decimales como máximo. Ejemplo: 12,5'
-  }
-  if (squareMeters <= 0) return 'Los metros cuadrados deben ser mayores que 0.'
-  if (squareMeters > maximum) return `El máximo es ${formatMaximum(maximum)} m².`
-  return null
-}
-
-/**
- * Revisa los valores del formulario.
+ * Revisa los valores del formulario (specs-008).
  *
- * values:           { name, phone, email, category, location, items, needs_visit,
- *                     has_photos, message, privacy_accepted }
- *                   `items` tiene una entrada por cada área marcada:
- *                   { [id del área]: { square_meters, area_other } }
- * selectedCategory: el tipo de remodelación elegido (objeto de la API, con sus
- *                   áreas) o undefined
- * maxSquareMeters:  máximo de m² configurado en el panel
+ * values: { name, phone, email, remodel_type, location, square_meters,
+ *           needs_visit, has_photos, message, privacy_accepted }
  *
  * Devuelve un objeto con un mensaje por cada campo con error.
  * Si está vacío, el formulario es válido.
  */
-export function validateQuote(values, selectedCategory, maxSquareMeters) {
+export function validateQuote(values) {
   const errors = {}
 
   if (!values.name.trim()) {
@@ -72,38 +42,28 @@ export function validateQuote(values, selectedCategory, maxSquareMeters) {
     errors.email = 'Escribe un correo válido, como nombre@correo.com.'
   }
 
-  if (!selectedCategory) {
-    errors.category = 'Elige el tipo de remodelación.'
+  if (!values.remodel_type.trim()) {
+    errors.remodel_type = 'Escribe qué quieres remodelar.'
   }
 
-  // Obligatoria desde specs-005 (RF-43)
   if (!values.location.trim()) {
     errors.location = 'Escribe la ubicación del espacio.'
   }
 
-  // Solo cuentan las áreas del tipo elegido que estén marcadas
-  const areas = selectedCategory ? selectedCategory.areas : []
-  const selectedAreas = areas.filter((area) => values.items[area.id])
-  if (selectedCategory && selectedAreas.length === 0) {
-    errors.items = 'Elige al menos un área.'
-  }
-
-  const maximum = Number(maxSquareMeters)
-  for (const area of selectedAreas) {
-    const item = values.items[area.id]
-
-    if (area.is_other && !item.area_other.trim()) {
-      errors[getItemFieldName(area.id, 'area_other')] = 'Especifica qué área quieres remodelar.'
-    }
-    // Quien pide una visita no sabe los metros: no se le exigen
-    if (!values.needs_visit) {
-      const metersError = checkSquareMeters(item.square_meters, maximum)
-      if (metersError) errors[getItemFieldName(area.id, 'square_meters')] = metersError
+  // Los metros son opcionales. Solo se revisan si la persona escribió algo y
+  // no marcó que prefiere una visita (en ese caso el campo se ignora).
+  const wroteSquareMeters = values.square_meters.trim() !== ''
+  if (wroteSquareMeters && !values.needs_visit) {
+    const squareMeters = parseDecimal(values.square_meters)
+    if (squareMeters === null) {
+      errors.square_meters = 'Escribe solo números, con dos decimales como máximo. Ejemplo: 12,5'
+    } else if (squareMeters <= 0) {
+      errors.square_meters = 'Los metros cuadrados deben ser mayores que 0.'
     }
   }
 
   if (values.message.length > MAX_MESSAGE_LENGTH) {
-    errors.message = `El mensaje no puede pasar de ${formatMaximum(MAX_MESSAGE_LENGTH)} caracteres.`
+    errors.message = 'El mensaje no puede pasar de 1.000 caracteres.'
   }
 
   if (!values.privacy_accepted) {

@@ -9,7 +9,7 @@ from core.roles import ADMIN_GROUP, VIEWER_GROUP
 from core.tests.helpers import TempMediaMixin, make_image_file
 from projects.models import Project, ProjectCategory
 from projects.tests.test_models import create_project
-from quotes.models import Quote, RemodelArea
+from quotes.models import Quote
 from quotes.tests.test_models_and_admin import create_quote
 from site_content.models import HeroSection, QuoteFormField, Service
 
@@ -43,7 +43,6 @@ CONTENT_MODELS = [
 LIST_PAGES = [
     "projects_project",
     "projects_projectcategory",
-    "quotes_remodelarea",
     "quotes_quote",
     "site_content_specialty",
     "site_content_legalpage",
@@ -134,11 +133,11 @@ class ViewerPermissionsTests(TempMediaMixin, TestCase):
 
     def test_lists_have_no_add_button_or_editable_fields(self):
         projects = self.client.get(reverse("admin:projects_project_changelist"))
-        areas = self.client.get(reverse("admin:quotes_remodelarea_changelist"))
+        categories = self.client.get(reverse("admin:projects_projectcategory_changelist"))
 
         self.assertNotContains(projects, "addlink")
-        self.assertNotContains(areas, 'name="_save"')
-        self.assertNotContains(areas, "form-0-price_per_m2")
+        self.assertNotContains(categories, 'name="_save"')
+        self.assertNotContains(categories, "form-0-is_visible")
 
     def test_cannot_add(self):
         for app, model in [("projects", "project"), ("projects", "projectcategory")]:
@@ -240,22 +239,23 @@ class ViewerPermissionsTests(TempMediaMixin, TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertNotEqual(self.project.order, 99)
 
-    def test_cannot_change_prices_or_quote_status_from_the_lists(self):
-        area = RemodelArea.objects.get(slug="cocina")
+    def test_cannot_change_categories_or_quote_status_from_the_lists(self):
+        category = self.project.category
         list_form = {"form-TOTAL_FORMS": 1, "form-INITIAL_FORMS": 1, "_save": "Guardar"}
 
+        # Se intenta ocultar la categoría (casilla sin marcar) y cerrar la cotización
         self.client.post(
-            reverse("admin:quotes_remodelarea_changelist"),
-            {**list_form, "form-0-id": area.pk, "form-0-price_per_m2": "999"},
+            reverse("admin:projects_projectcategory_changelist"),
+            {**list_form, "form-0-id": category.pk},
         )
         self.client.post(
             reverse("admin:quotes_quote_changelist"),
             {**list_form, "form-0-id": self.quote.pk, "form-0-status": Quote.CLOSED},
         )
 
-        area.refresh_from_db()
+        category.refresh_from_db()
         self.quote.refresh_from_db()
-        self.assertIsNone(area.price_per_m2)
+        self.assertTrue(category.is_visible)
         self.assertEqual(self.quote.status, Quote.NEW)
 
     def test_cannot_see_users(self):
@@ -321,22 +321,14 @@ class AdminRoleTests(TempMediaMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(project.order, 5)
 
-    def test_can_change_prices_and_quote_status(self):
-        area = RemodelArea.objects.get(slug="cocina")
+    def test_can_change_the_quote_status(self):
         quote = create_quote()
 
         self.client.post(
-            reverse("admin:quotes_remodelarea_change", args=[area.pk]),
-            {"name": area.name, "slug": area.slug, "price_per_m2": "100", "is_active": "on"},
-        )
-        self.client.post(
-            reverse("admin:quotes_quote_change", args=[quote.pk]),
-            {"status": Quote.CONTACTED, "items-TOTAL_FORMS": 0, "items-INITIAL_FORMS": 0},
+            reverse("admin:quotes_quote_change", args=[quote.pk]), {"status": Quote.CONTACTED}
         )
 
-        area.refresh_from_db()
         quote.refresh_from_db()
-        self.assertEqual(area.price_per_m2, 100)
         self.assertEqual(quote.status, Quote.CONTACTED)
 
     def test_can_edit_single_sections(self):

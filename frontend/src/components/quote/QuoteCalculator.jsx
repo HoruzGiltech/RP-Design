@@ -1,32 +1,24 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { createQuote, getQuoteCategories } from '../../api/endpoints'
+import { createQuote } from '../../api/endpoints'
 import { useSite } from '../../context/SiteContext'
-import { useFetch } from '../../hooks/useFetch'
-import { parseDecimal } from '../../utils/estimate'
-import { getItemFieldName, MAX_MESSAGE_LENGTH, validateQuote } from '../../utils/quoteValidation'
+import { parseDecimal } from '../../utils/numbers'
+import { MAX_MESSAGE_LENGTH, validateQuote } from '../../utils/quoteValidation'
 import Button from '../ui/Button'
-import ErrorMessage from '../ui/ErrorMessage'
-import Spinner from '../ui/Spinner'
-import AreaItem from './AreaItem'
 import CheckboxField from './CheckboxField'
-import EstimateDisplay from './EstimateDisplay'
 import Field from './Field'
 import QuoteSuccess from './QuoteSuccess'
 import './QuoteCalculator.css'
-
-// Lo que tiene un área recién marcada: 10 m² en la barra y sin texto de "Otro"
-const NEW_ITEM = { square_meters: '10', area_other: '' }
 
 const EMPTY_FORM = {
   name: '',
   phone: '',
   email: '',
-  category: '',
+  // Texto libre: lo que la persona quiere remodelar (specs-008)
+  remodel_type: '',
   location: '',
-  // Una entrada por cada área marcada: { [id del área]: { square_meters, area_other } }
-  items: {},
+  square_meters: '',
   needs_visit: false,
   has_photos: false,
   message: '',
@@ -35,19 +27,20 @@ const EMPTY_FORM = {
   website: '',
 }
 
-// Los campos que el cliente puede retitular desde el panel (specs-003, RF-31)
-const TEXT_KEYS = [
+// Orden de los campos en pantalla: sirve para llevar el foco al primero con error.
+// Son también los campos que el cliente puede retitular desde el panel (RF-31),
+// salvo la casilla de privacidad.
+const FIELD_ORDER = [
   'name',
   'phone',
   'email',
-  'category',
+  'remodel_type',
   'location',
-  'areas',
-  'area_other',
   'square_meters',
   'needs_visit',
   'has_photos',
   'message',
+  'privacy_accepted',
 ]
 
 const BAD_REQUEST = 400
@@ -59,44 +52,19 @@ const TOO_MANY_REQUESTS = 429
  */
 function getFieldTexts(formFields = {}) {
   const texts = {}
-  for (const key of TEXT_KEYS) {
+  for (const key of FIELD_ORDER) {
     texts[key] = { label: '', placeholder: '', ...formFields[key] }
   }
   return texts
 }
 
 /**
- * Orden de los campos en pantalla, para llevar el foco al primero con error.
- * Los campos de cada área van en el orden en que aparecen las áreas.
+ * Formulario de cotización: datos de contacto, qué se quiere remodelar y
+ * envío por WhatsApp. Desde specs-008 no calcula ningún precio.
+ * (El nombre del componente viene de cuando tenía una calculadora.)
  */
-function getFieldOrder(areas) {
-  const itemFields = areas.flatMap((area) => [
-    getItemFieldName(area.id, 'area_other'),
-    getItemFieldName(area.id, 'square_meters'),
-  ])
-  return [
-    'name',
-    'phone',
-    'email',
-    'category',
-    'location',
-    'items',
-    ...itemFields,
-    'message',
-    'privacy_accepted',
-  ]
-}
-
-/** Calculadora de cotización: formulario, estimado en vivo y envío por WhatsApp. */
 export default function QuoteCalculator() {
   const { data: site } = useSite()
-  // Los tipos de remodelación, cada uno con sus áreas (specs-002, RF-17)
-  const {
-    data: categories,
-    loading,
-    error: categoriesError,
-    reload,
-  } = useFetch(getQuoteCategories)
 
   const [values, setValues] = useState(EMPTY_FORM)
   const [errors, setErrors] = useState({})
@@ -108,63 +76,24 @@ export default function QuoteCalculator() {
 
   const { settings, contact } = site
 
-  if (loading) return <Spinner label="Cargando formulario…" />
-  if (categoriesError) return <ErrorMessage message={categoriesError.message} onRetry={reload} />
   if (result) return <QuoteSuccess result={result} onReset={resetForm} />
 
   const texts = getFieldTexts(contact.form_fields)
-  const selectedCategory = categories.find((category) => String(category.id) === values.category)
-  // Solo se ofrecen las áreas del tipo elegido; sin tipo, ninguna
-  const areas = selectedCategory ? selectedCategory.areas : []
-  // Las áreas marcadas, cada una con lo que la persona llenó
-  const selectedItems = areas
-    .filter((area) => values.items[area.id])
-    .map((area) => ({ area, item: values.items[area.id] }))
 
-  function clearError(name) {
+  function handleChange(event) {
+    const { name, type, checked, value } = event.target
+    // Una casilla no tiene texto: su valor es si está marcada o no
+    const newValue = type === 'checkbox' ? checked : value
+    setValues((current) => ({ ...current, [name]: newValue }))
     // Al corregir un campo, su mensaje de error desaparece
     if (errors[name]) {
       setErrors((current) => ({ ...current, [name]: undefined }))
     }
   }
 
-  function handleChange(event) {
-    const { name, type, checked, value } = event.target
-    // Una casilla no tiene texto: su valor es si está marcada o no
-    const newValue = type === 'checkbox' ? checked : value
-    setValues((current) => {
-      const updated = { ...current, [name]: newValue }
-      // Al cambiar el tipo, las áreas marcadas ya no valen: hay que elegirlas de nuevo
-      if (name === 'category') updated.items = {}
-      return updated
-    })
-    clearError(name)
-  }
-
-  function toggleArea(areaId) {
-    setValues((current) => {
-      const items = { ...current.items }
-      if (items[areaId]) {
-        delete items[areaId]
-      } else {
-        items[areaId] = NEW_ITEM
-      }
-      return { ...current, items }
-    })
-    clearError('items')
-  }
-
-  function changeItem(areaId, field, value) {
-    setValues((current) => ({
-      ...current,
-      items: { ...current.items, [areaId]: { ...current.items[areaId], [field]: value } },
-    }))
-    clearError(getItemFieldName(areaId, field))
-  }
-
   function showErrors(newErrors) {
     setErrors(newErrors)
-    const firstInvalid = getFieldOrder(areas).find((name) => newErrors[name])
+    const firstInvalid = FIELD_ORDER.find((name) => newErrors[name])
     // El foco va al primer campo con error, para corregirlo sin buscarlo
     if (firstInvalid) document.getElementById(`quote-${firstInvalid}`)?.focus()
   }
@@ -176,18 +105,15 @@ export default function QuoteCalculator() {
     setResult(null)
   }
 
-  /** Lo que se envía al backend: los datos de la persona y un renglón por área marcada. */
+  /** Lo que se envía al backend. */
   function buildPayload() {
+    const wroteSquareMeters = values.square_meters.trim() !== ''
+    const sendsSquareMeters = wroteSquareMeters && !values.needs_visit
     return {
       ...values,
-      category: Number(values.category),
-      items: selectedItems.map(({ area, item }) => ({
-        area: area.id,
-        area_other: area.is_other ? item.area_other : '',
-        // Con visita pedida no se envían metros. Si los hay, el backend
-        // espera el decimal con punto: "12,5" -> "12.5"
-        square_meters: values.needs_visit ? null : String(parseDecimal(item.square_meters)),
-      })),
+      // Sin metros (o con visita pedida) se envía vacío. Si los hay, el backend
+      // espera el decimal con punto: "12,5" -> "12.5"
+      square_meters: sendsSquareMeters ? String(parseDecimal(values.square_meters)) : null,
     }
   }
 
@@ -195,7 +121,7 @@ export default function QuoteCalculator() {
     event.preventDefault()
     setFormError(null)
 
-    const validationErrors = validateQuote(values, selectedCategory, settings.max_square_meters)
+    const validationErrors = validateQuote(values)
     if (Object.keys(validationErrors).length > 0) {
       showErrors(validationErrors)
       return
@@ -217,8 +143,7 @@ export default function QuoteCalculator() {
 
   function handleSubmitError(submitError) {
     if (submitError.status === BAD_REQUEST && submitError.data) {
-      // El backend responde { campo: ["mensaje"] }: se muestra el primero de cada campo.
-      // Los errores de las áreas llegan todos en "items".
+      // El backend responde { campo: ["mensaje"] }: se muestra el primero de cada campo
       const serverErrors = {}
       for (const [field, messages] of Object.entries(submitError.data)) {
         serverErrors[field] = Array.isArray(messages) ? String(messages[0]) : String(messages)
@@ -265,21 +190,15 @@ export default function QuoteCalculator() {
         error={errors.email}
       />
       <Field
-        as="select"
-        name="category"
-        label={texts.category.label}
-        value={values.category}
+        name="remodel_type"
+        label={texts.remodel_type.label}
+        placeholder={texts.remodel_type.placeholder}
+        autoComplete="off"
+        maxLength={120}
+        value={values.remodel_type}
         onChange={handleChange}
-        error={errors.category}
-      >
-        {/* En un desplegable, el "texto de ejemplo" es la primera opción, que no elige nada */}
-        <option value="">{texts.category.placeholder}</option>
-        {categories.map((category) => (
-          <option key={category.id} value={category.id}>
-            {category.name}
-          </option>
-        ))}
-      </Field>
+        error={errors.remodel_type}
+      />
       <Field
         name="location"
         label={texts.location.label}
@@ -290,44 +209,21 @@ export default function QuoteCalculator() {
         onChange={handleChange}
         error={errors.location}
       />
-
-      {/* fieldset + legend: agrupa las casillas bajo una misma pregunta */}
-      <fieldset
-        className="quote-areas"
-        id="quote-items"
-        // Recibe el foco si el error es "elige al menos un área"
-        tabIndex={-1}
-        aria-describedby={errors.items ? 'quote-items-error' : undefined}
-      >
-        <legend className="quote-field__label">{texts.areas.label}</legend>
-
-        {selectedCategory ? (
-          <ul className="quote-areas__list">
-            {areas.map((area) => (
-              <AreaItem
-                key={area.id}
-                area={area}
-                item={values.items[area.id]}
-                needsVisit={values.needs_visit}
-                texts={texts}
-                max={settings.max_square_meters}
-                errors={errors}
-                onToggle={() => toggleArea(area.id)}
-                onChange={(field, value) => changeItem(area.id, field, value)}
-              />
-            ))}
-          </ul>
-        ) : (
-          // Las áreas dependen del tipo: hasta elegirlo, no hay nada que ofrecer
-          <p className="quote-areas__empty">Elige primero el tipo de remodelación.</p>
-        )}
-
-        {errors.items && (
-          <span className="quote-field__error" id="quote-items-error">
-            {errors.items}
-          </span>
-        )}
-      </fieldset>
+      <Field
+        name="square_meters"
+        label={texts.square_meters.label}
+        placeholder={texts.square_meters.placeholder}
+        // type="text" y no "number": así se puede escribir la coma decimal (12,5).
+        // inputMode abre el teclado numérico en el celular.
+        type="text"
+        inputMode="decimal"
+        autoComplete="off"
+        // Quien pide una visita no sabe los metros: el campo no aplica
+        disabled={values.needs_visit}
+        value={values.needs_visit ? '' : values.square_meters}
+        onChange={handleChange}
+        error={errors.square_meters}
+      />
 
       <CheckboxField
         id="quote-needs_visit"
@@ -338,15 +234,6 @@ export default function QuoteCalculator() {
       >
         {texts.needs_visit.label}
       </CheckboxField>
-
-      {/* El cliente puede apagar el estimado desde el panel (specs-003, RF-30) */}
-      {settings.show_estimate && (
-        <EstimateDisplay
-          selectedItems={selectedItems}
-          needsVisit={values.needs_visit}
-          note={settings.price_note}
-        />
-      )}
 
       <CheckboxField
         id="quote-has_photos"

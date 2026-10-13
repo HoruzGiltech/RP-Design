@@ -7,7 +7,13 @@ from projects.services import make_unique_slug
 
 
 class RemodelArea(OrderedModel):
-    """Área que se puede remodelar (baño, cocina...) y su precio por metro cuadrado."""
+    """
+    Área que se podía remodelar (baño, cocina...) y su precio por metro cuadrado.
+
+    Desde specs-008 el formulario ya no pide áreas ni calcula precios, y este
+    modelo no aparece en el panel. Se conserva porque las cotizaciones
+    anteriores apuntan a sus áreas.
+    """
 
     name = models.CharField("nombre", max_length=60)
     # Se genera solo a partir del nombre. Dos áreas pueden llamarse igual en
@@ -80,12 +86,19 @@ class Quote(TimeStampedModel):
         blank=True,
     )
     category_name = models.CharField("tipo (nombre al cotizar)", max_length=60, blank=True)
+    # Lo que la persona escribió que quiere remodelar (specs-008). Vacío en las
+    # cotizaciones anteriores, que tenían una categoría y una lista de áreas.
+    remodel_type = models.CharField("tipo de remodelación", max_length=120, blank=True)
     location = models.CharField("ubicación del espacio", max_length=160, blank=True)
+    # Opcional: la persona puede no saberlos y pedir una visita
+    square_meters = models.DecimalField(
+        "metros cuadrados", max_digits=8, decimal_places=2, null=True, blank=True
+    )
     has_photos = models.BooleanField("tiene fotos del espacio", default=False)
     needs_visit = models.BooleanField(
         "pide una visita",
         default=False,
-        help_text="La persona no sabe los metros cuadrados: sus áreas no tienen m² ni precio.",
+        help_text="La persona no sabe los metros cuadrados y quiere agendar una visita.",
     )
     # Las áreas elegidas están en QuoteItem (quote.items). Esto es la suma de sus subtotales.
     estimated_price = models.DecimalField(
@@ -115,7 +128,11 @@ class Quote(TimeStampedModel):
 
 
 class QuoteItem(models.Model):
-    """Un renglón de la cotización: un área, con sus metros cuadrados y su precio."""
+    """
+    Un renglón de una cotización ANTERIOR a specs-008: un área, con sus metros
+    cuadrados y su precio. Las cotizaciones nuevas no tienen renglones; el
+    modelo se conserva para que el historial se siga viendo en el panel.
+    """
 
     quote = models.ForeignKey(
         Quote, on_delete=models.CASCADE, related_name="items", verbose_name="cotización"
