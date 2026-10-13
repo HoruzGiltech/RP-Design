@@ -43,6 +43,13 @@
 > ⚠️ **Y otra parte quedó sustituida por `specs/specs-007/design.md`** (ya implementado):
 > - **§2.3 `Project` y `ProjectMedia`:** `cover_alt` y `alt_text` son opcionales y se completan en `save()`.
 > - **§2.8 Panel:** `FileCheckMixin` (`core/admin_mixins.py`) y `core/static/core/admin-file-check.js` revisan los archivos en el navegador; las reglas salen de `get_upload_rules` (`core/validators.py`).
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-008/design.md`** (sexto paquete, ya implementado):
+> - **§2.3 `Quote`:** gana `remodel_type` y `square_meters`. `QuoteItem`, `RemodelArea`, `category` y `estimated_price` se conservan solo para el historial. `ProcessSection` gana `show_video`.
+> - **§2.4 Reglas:** `build_whatsapp_message(quote)`, sin precios. Ya no existen `calculate_estimate`, `calculate_total` ni `describe_item`.
+> - **§2.7 API:** `POST /api/quotes/` recibe `remodel_type`, `location` y `square_meters`, y responde solo `id` y `whatsapp_url`. Se eliminó `/api/quote-categories/`.
+> - **§2.8 Panel:** `RemodelArea` y el bloque "Calculadora" ya no se muestran.
+> - **§3 Frontend:** se borraron `AreaItem`, `SquareMetersSlider`, `EstimateDisplay`, `utils/estimate.js` y `utils/currency.js`; `Process` y `QuoteCalculator` se reescribieron; `useReveal` repite la entrada.
 
 ---
 

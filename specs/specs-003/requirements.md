@@ -5,6 +5,8 @@
 
 **Estado:** Implementado y cerrado (2026-10-09)
 
+> ⚠️ **Sustituido en buena parte por `specs/specs-008/requirements.md`:** el formulario ya no tiene áreas, m² por área ni estimado de precio (RF-27 a RF-30); las entradas se repiten; y Proceso y Servicios cambiaron de aspecto y de orden.
+
 > ⚠️ **Tres puntos quedaron sustituidos por `specs/specs-004/requirements.md`:** RF-24 (botón "Cotizar" bajo el texto de la tarjeta) → dentro de la capa sobre la portada (RF-37); P-25 ("Cotizar" siempre visible en celular) → entra al aparecer la tarjeta (RF-41); y el orden de los campos del formulario → "Tengo fotos" va arriba del mensaje (RF-40). El resto de este paquete sigue vigente.
 >
 > ⚠️ **Y dos más por `specs/specs-005/requirements.md`:** RF-20 (la categoría oculta sale también del formulario) → solo sale del filtro de `/proyectos` (RF-42); y la ubicación opcional de RF-32 → obligatoria (RF-43).

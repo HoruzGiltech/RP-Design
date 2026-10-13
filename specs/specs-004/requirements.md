@@ -6,6 +6,8 @@
 **Estado:** Implementado y cerrado (2026-10-09)
 
 > ⚠️ **Tres puntos quedaron sustituidos por `specs/specs-005/requirements.md`:** la cuadrícula de Servicios igual a la de proyectos (RF-35) → hasta 4 por fila (RF-44); RF-39.2 (la descripción se mantiene debajo de la portada) → solo en la capa (RF-45); y RF-41 (en táctil el contenido entra y se queda) → aparece al cruzar el centro de la pantalla (RF-46). El resto de este paquete sigue vigente.
+>
+> ⚠️ **Y por `specs/specs-008/requirements.md`:** las tarjetas de servicio ya no llevan número (P-36) y la sección Servicios va arriba de Proyectos.
 **Base:** `specs/` (RF-01 a RF-07), `specs-001` (RF-08 a RF-12), `specs-002` (RF-13 a RF-18) y `specs-003` (RF-19 a RF-33), ya implementadas y cerradas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 

@@ -4,6 +4,8 @@
 > Es un paquete de cambios sobre `specs/` y los paquetes `specs-001` a `specs-004`. Donde este documento los contradice, **manda este**.
 
 **Estado:** Implementado y cerrado (2026-10-13)
+
+> ⚠️ **Sustituido en parte por `specs/specs-008/requirements.md`:** RF-42 (el formulario ofrece todas las categorías) ya no aplica, porque el tipo de remodelación es un texto libre; y las entradas de RF-47 ahora se repiten (RF-64). El resto sigue vigente.
 **Base:** `specs/` (RF-01 a RF-07) y `specs-001` a `specs-004` (RF-08 a RF-41), ya implementadas y cerradas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS e `IntersectionObserver`.
 

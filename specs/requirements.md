@@ -49,6 +49,13 @@
 > ⚠️ **Y otra parte quedó sustituida por `specs/specs-007/requirements.md`** (ya implementado):
 > - **Texto alternativo obligatorio** en la portada y la galería de los proyectos → es opcional; vacío, se completa solo con el nombre del proyecto y un correlativo (RF-57).
 > - **Subida de archivos en el panel** → cada archivo se revisa en el navegador al elegirlo, además de en el servidor (RF-56).
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-008/requirements.md`** (sexto paquete, ya implementado):
+> - **RF-03 completo** (áreas, m² por área, estimado de precio y nota) → el tipo de remodelación es un texto libre, hay un solo campo de m² opcional y **no se calcula ningún precio** (RF-61 a RF-63). Las cotizaciones anteriores conservan sus áreas y montos.
+> - **RF-04** ("configurar precios por m²") → "Áreas y precios" ya no está en el panel.
+> - **S4 Servicios y S6 Proceso** → el proceso son tarjetas numeradas bajo "Un solo equipo para todo tu proyecto", con el video según una casilla (RF-58, RF-59); los servicios, tarjetas con portada sin número en una sección negra (RF-60).
+> - **Orden del inicio** → Hero, Servicios, Proyectos, Proceso, Contacto.
+> - **RF-06** ("cada animación de entrada ocurre una sola vez") → las entradas se repiten cada vez que el elemento vuelve a la pantalla (RF-64).
 
 ---
 

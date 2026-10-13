@@ -37,14 +37,14 @@ Prefijo `S8-`. Se entrega por bloques, con una pausa ✋ al final de cada uno.
 - [x] **S8-C4** Revisión responsive y de accesibilidad.
 - [x] **S8-C5** ✋ **Prueba del bloque 2.** (Vista bien el 2026-10-13, con dos ajustes: Servicios arriba de Proyectos y las entradas repetidas.)
 - [x] **S8-C6** Las animaciones de entrada se repiten en cada entrada. *(RF-64, CA-64.1, CA-64.2)*
-- [ ] **S8-C7** ✋ **Prueba de las entradas repetidas.**
+- [x] **S8-C7** ✋ **Prueba de las entradas repetidas.** (Aprobada el 2026-10-13.)
 
 ---
 
 ## Cierre
 
-- [ ] **S8-D1** Anotar en `specs/` y en los paquetes anteriores qué quedó sustituido.
-- [ ] **S8-D2** ✋ Aprobación final y subida a la demo.
+- [x] **S8-D1** Anotar en `specs/` y en los paquetes anteriores qué quedó sustituido.
+- [x] **S8-D2** ✋ Aprobación final y subida a la demo. (Aprobada y subida el 2026-10-13. specs-008 queda cerrada.)
 
 ---
 

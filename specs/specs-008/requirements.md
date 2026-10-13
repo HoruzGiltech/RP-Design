@@ -3,7 +3,7 @@
 > **Qué** cambia respecto a lo ya construido y **cómo sabemos que está bien hecho**.
 > Es un paquete de cambios sobre `specs/` y los paquetes anteriores. Donde este documento los contradice, **manda este**.
 
-**Estado:** Aprobado (v1, 2026-10-13) — el desarrollador aprobó el plan y pidió desarrollarlo
+**Estado:** Implementado y cerrado (2026-10-13)
 **Reglas:** las mismas de `AGENTS.md`. Sin dependencias nuevas.
 
 > ⚠️ El **despliegue definitivo** sigue pendiente (`specs/tasks.md`, Fase 5). La demo de `specs/specs-006/` recibe estos cambios al subirlos a GitHub.
