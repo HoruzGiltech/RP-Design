@@ -33,6 +33,12 @@
 > - **§2.7 API:** cada elemento de `services.items` trae `image` e `image_alt`.
 > - **§3.0 Tokens:** se agregan `--motion-overlay` y `--ease-soft`.
 > - **§3.2 y §3.3 Frontend:** se borran `ProjectCategories` y `CategoryCard`; se agregan `ProjectsTeaser`, `ServiceCard` y `styles/overlay.css` (la capa compartida); `Services`, `ProjectCard`, `ProjectDetailPage`, `Button` (tamaño "large") y `QuoteCalculator` cambiaron.
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-005/design.md`** (quinto paquete, ya implementado):
+> - **§2.7 API:** `/api/quote-categories/` y `POST /api/quotes/` aceptan también las categorías ocultas; `location` es obligatoria al crear una cotización.
+> - **§3.0 Tokens:** `--motion-reveal` pasa a 700 ms y `--reveal-distance` a 32 px.
+> - **§3.2 y §3.3 Frontend:** se agrega `useInCenter`; `useReveal` arranca más arriba y tiene una red de seguridad al final de la página; `Services` usa su propia cuadrícula; `ProjectDetailPage` ya no repite la descripción.
+> - **§3.6 Animaciones:** `.reveal` usa `--ease-soft`.
 
 ---
 

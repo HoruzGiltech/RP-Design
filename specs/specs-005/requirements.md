@@ -3,7 +3,7 @@
 > **Qué** cambia respecto a lo ya construido y **cómo sabemos que está bien hecho**.
 > Es un paquete de cambios sobre `specs/` y los paquetes `specs-001` a `specs-004`. Donde este documento los contradice, **manda este**.
 
-**Estado:** Aprobado (v1, 2026-10-09) — el plan fue aprobado por el desarrollador; se implementa por bloques
+**Estado:** Implementado y cerrado (2026-10-13)
 **Base:** `specs/` (RF-01 a RF-07) y `specs-001` a `specs-004` (RF-08 a RF-41), ya implementadas y cerradas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS e `IntersectionObserver`.
 

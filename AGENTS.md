@@ -49,8 +49,8 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-004/`, los cuatro implementados.
-- **Trabajo en curso: `specs/specs-005/`.** Empieza cada sesión leyendo este archivo, `specs/` y los cinco paquetes.
+- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-005/`, los cinco implementados.
+- **No hay paquete de cambios en curso.** Si el cliente pide más, van en `specs/specs-006/`. Empieza cada sesión leyendo este archivo, `specs/` y los cinco paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue sigue pendiente** (`specs/tasks.md`, Fase 5) y todavía no se ha empezado. Ningún paquete de cambios lo reemplaza: viene después de los paquetes de cambios. No se empieza sin que el desarrollador lo pida.
 
@@ -253,7 +253,7 @@ El detalle está en `specs/specs-005/requirements.md`. En resumen:
 │   ├── specs-002/  # segundo paquete de cambios (implementado)
 │   ├── specs-003/  # tercer paquete de cambios (implementado)
 │   ├── specs-004/  # cuarto paquete de cambios (implementado)
-│   └── specs-005/  # quinto paquete de cambios (trabajo en curso)
+│   └── specs-005/  # quinto paquete de cambios (implementado)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -365,7 +365,7 @@ Al terminar cada tarea o fase, responde con:
 6. **specs-002:** segundo paquete (menú desplegable, hero, formulario por tipo de remodelación y sección Contacto). Implementado y cerrado el 2026-10-08.
 7. **specs-003:** tercer paquete (tipografía, categorías ocultables, video en el hero, formulario con varias áreas y pie con iconos). Implementado y cerrado el 2026-10-09.
 8. **specs-004:** cuarto paquete (servicios con portada, sección Proyectos con solo el botón, descripción en el detalle y ajustes del formulario). Implementado y cerrado el 2026-10-09.
-9. **specs-005:** quinto paquete (categorías en el formulario, ubicación obligatoria, servicios a 4 columnas, capas en celular, animaciones en móvil y encabezado). **Es la fase en curso.**
+9. **specs-005:** quinto paquete (categorías en el formulario, ubicación obligatoria, servicios a 4 columnas, capas en celular, animaciones en móvil y encabezado). Implementado y cerrado el 2026-10-13.
 10. **Despliegue:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente, sin empezar.** Viene después de specs-005; no se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):

@@ -37,6 +37,14 @@
 > - **Capa de las tarjetas de proyecto** → barra de scroll fina y degradado (RF-38); la misma capa aparece en la portada del detalle (RF-39).
 > - **Pantallas táctiles** → lo que depende del cursor entra solo al aparecer en pantalla (RF-41).
 > - **Formulario** → Tipo y Ubicación del mismo tamaño; "Tengo fotos" arriba del mensaje (RF-40).
+>
+> ⚠️ **Y otra parte quedó sustituida por `specs/specs-005/requirements.md`** (quinto paquete, ya implementado):
+> - **Categorías ocultas** → "mostrar en el sitio" solo afecta al filtro de `/proyectos`; el formulario ofrece todas (RF-42).
+> - **Formulario** → "Ubicación del espacio" es obligatoria (RF-43).
+> - **Servicios** → hasta 4 tarjetas por fila (RF-44).
+> - **Detalle del proyecto** → la descripción queda solo en la capa de la portada (RF-45).
+> - **Pantallas táctiles** → la capa aparece cuando la tarjeta cruza el centro de la pantalla (RF-46).
+> - **RF-06 Animaciones** → las entradas empiezan con el elemento ya dentro de la pantalla y con una curva más suave (RF-47); el encabezado vuelve a ocultarse tras pulsar el logo (RF-48).
 
 ---
 

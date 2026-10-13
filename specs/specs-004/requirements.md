@@ -4,6 +4,8 @@
 > Es un paquete de cambios sobre `specs/` y los paquetes `specs-001` a `specs-003`. Donde este documento los contradice, **manda este**.
 
 **Estado:** Implementado y cerrado (2026-10-09)
+
+> ⚠️ **Tres puntos quedaron sustituidos por `specs/specs-005/requirements.md`:** la cuadrícula de Servicios igual a la de proyectos (RF-35) → hasta 4 por fila (RF-44); RF-39.2 (la descripción se mantiene debajo de la portada) → solo en la capa (RF-45); y RF-41 (en táctil el contenido entra y se queda) → aparece al cruzar el centro de la pantalla (RF-46). El resto de este paquete sigue vigente.
 **Base:** `specs/` (RF-01 a RF-07), `specs-001` (RF-08 a RF-12), `specs-002` (RF-13 a RF-18) y `specs-003` (RF-19 a RF-33), ya implementadas y cerradas.
 **Reglas:** las mismas de `AGENTS.md`: mismo stack, mismos tokens de diseño, SDD, tests, accesibilidad y animaciones solo con CSS.
 

@@ -23,7 +23,7 @@ Las tareas llevan el prefijo `S5-`. El paquete se entrega **por bloques**: cada 
 - [x] **S5-B1** El formulario ofrece y acepta todas las categorías, también las ocultas; nueva ayuda de la casilla (migración `projects.0006`). Con tests. *(RF-42, CA-42.1, CA-42.2)*
 - [x] **S5-B2** "Ubicación del espacio" obligatoria en el backend y en el navegador, con tests. *(RF-43, CA-43.1)*
 - [x] **S5-B3** Servicios con hasta 4 tarjetas por fila. *(RF-44, CA-44.1, CA-44.2)*
-- [ ] **S5-B4** ✋ **Prueba del bloque 1.**
+- [x] **S5-B4** ✋ **Prueba del bloque 1.** (Aprobada el 2026-10-13: el desarrollador probó el paquete completo y lo dio por listo.)
 
 ---
 
@@ -32,7 +32,7 @@ Las tareas llevan el prefijo `S5-`. El paquete se entrega **por bloques**: cada 
 - [x] **S5-C1** Hook `useInCenter` y regla `is-centered` en `overlay.css`; se quita la capa fija de specs-004. *(RF-46)*
 - [x] **S5-C2** Tarjetas de servicio y de proyecto con la capa al centrarse; el texto de las tarjetas de proyecto queda fijo. *(RF-46, CA-46.1 a CA-46.3)*
 - [x] **S5-C3** Detalle: se quita la descripción de debajo; la capa es accesible con teclado y lector de pantalla, y en celular aparece al centrarse. *(RF-45, CA-45.1, CA-45.2)*
-- [ ] **S5-C4** ✋ **Prueba del bloque 2**, en computadora y en celular.
+- [x] **S5-C4** ✋ **Prueba del bloque 2**, en computadora y en celular. (Aprobada el 2026-10-13: el desarrollador probó el paquete completo y lo dio por listo.) De esa prueba salió una corrección: el texto de las tarjetas de proyecto no se podía desplazar con el dedo.
 
 ---
 
@@ -42,15 +42,15 @@ Las tareas llevan el prefijo `S5-`. El paquete se entrega **por bloques**: cada 
 - [x] **S5-D2** Ajustar las entradas según la medición. *(RF-47, CA-47.1)*
 - [x] **S5-D3** Reproducir y corregir el encabezado que se queda fijo; anotar la causa en `design.md` §3.5. *(RF-48, CA-48.1)*
 - [x] **S5-D4** Revisión responsive (360, 768, 1280 y 1920 px) y de accesibilidad de todo el paquete. *(RNF-20)*
-- [ ] **S5-D5** ✋ **Prueba del bloque 3:** `manage.py test`, `npm test`, `npm run lint` y `npm run build` pasan; el desarrollador lo revisa en su Android. *(CA-47.2)*
+- [x] **S5-D5** ✋ **Prueba del bloque 3:** `manage.py test`, `npm test`, `npm run lint` y `npm run build` pasan; el desarrollador lo revisa en su Android. *(CA-47.2)* (Aprobada el 2026-10-13: el desarrollador probó el paquete completo y lo dio por listo.)
 
 ---
 
 ## Fase E — Cierre
 
-- [ ] **S5-E1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo.
-- [ ] **S5-E2** Anotar en `specs/` y en los paquetes anteriores qué apartados quedaron sustituidos por specs-005.
-- [ ] **S5-E3** ✋ Aprobación final.
+- [x] **S5-E1** Actualizar `docs/problemas-frecuentes.md` si apareció algún error nuevo. (No apareció ninguno.)
+- [x] **S5-E2** Anotar en `specs/` y en los paquetes anteriores qué apartados quedaron sustituidos por specs-005.
+- [x] **S5-E3** ✋ Aprobación final. (Aprobada el 2026-10-13. specs-005 queda cerrada.)
 
 ---
 
