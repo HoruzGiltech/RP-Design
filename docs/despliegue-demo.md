@@ -111,6 +111,8 @@ Si algo falla, mira la sección "Si algo sale mal" al final.
    | `VITE_ROBOTS` | `noindex, nofollow` |
 
    `VITE_ROBOTS` le pide a Google que no muestre la demo en sus resultados. Estas tres variables son públicas: terminan en el navegador. Aquí nunca va una clave.
+
+   **Tipo de variable: elige `Config`, no `Secret`.** Vercel avisa de que el prefijo `VITE_` expone el valor al navegador; es justo lo que se quiere. Si una queda creada como `Secret`, después no se puede editar ni pasar a `Config`: hay que borrarla y crearla de nuevo como `Config`.
 4. **Deploy.** Copia la dirección que te da, por ejemplo `rp-design.vercel.app`. En esta guía es `<sitio>`.
 
 Si abres el sitio ahora, se queda cargando o muestra un error: el backend todavía no acepta peticiones desde esa dirección. Se arregla en la Parte 3.
@@ -207,6 +209,8 @@ En `https://<backend>/<nombre-del-panel>/`:
 | El panel carga sin estilos | No se ejecutó `collectstatic` | Mira los registros del despliegue: debe decir `static files copied` |
 | Al entrar al panel: **Prohibido (403) CSRF** | `CSRF_TRUSTED_ORIGINS` mal escrito | Debe ser `https://<backend>`, con `https://` |
 | El sitio se queda cargando o dice que no pudo cargar el contenido | `VITE_API_URL` o `CORS_ALLOWED_ORIGINS` | `VITE_API_URL` termina en `/api`; `CORS_ALLOWED_ORIGINS` es `https://<sitio>` exacto. Si cambias una variable en Vercel, hay que volver a desplegar (*Deployments → Redeploy*) |
+| En Vercel, al editar una variable `VITE_…`, **Save** no hace nada y sale "Remove the public framework prefix…" | La variable se creó como `Secret` | Bórrala y créala de nuevo con el tipo `Config`; después, *Redeploy* |
+| El sitio dice "No pudimos conectar con el servidor" | `VITE_API_URL` quedó con el texto de ejemplo (`<backend>`) o falta volver a desplegar | Pon la dirección real de Railway terminada en `/api` y haz *Redeploy* |
 | Recargar `/proyectos/…` da 404 en Vercel | El *Root Directory* no es `frontend` | Corrígelo en *Settings → General* y vuelve a desplegar |
 | Las fotos desaparecen tras un despliegue | El volumen no está montado en `/app/media` | Revisa 1.3 |
 | `loaddata` falla con `connection refused` o `could not translate host name` | Se usó la dirección interna de la base | Usa `DATABASE_PUBLIC_URL`, no `DATABASE_URL` |
