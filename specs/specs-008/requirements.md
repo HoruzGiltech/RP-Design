@@ -20,6 +20,7 @@
 | 4 | "Tipo de remodelación" es un texto libre | RF-61 |
 | 5 | Ya no hay áreas por categoría: un solo campo de m², opcional, junto a la ubicación | RF-62 |
 | 6 | Sin estimado de precio | RF-63 |
+| 7 | Las animaciones de entrada se repiten cada vez que el elemento vuelve a la pantalla | RF-64 |
 
 **Descartado:** cambiar el fondo de la sección Proyectos. Se queda en negro, como está.
 
@@ -89,6 +90,17 @@
 
 **Campos obligatorios:** nombre, teléfono, correo, tipo de remodelación, ubicación y la aceptación de privacidad.
 
+### RF-64 — Las entradas se repiten
+
+1. Las animaciones de entrada (títulos, textos, botones y tarjetas) se ejecutan **cada vez** que el elemento entra en la pantalla, no solo la primera: al salir de la vista vuelve a su estado inicial y, al regresar, se anima de nuevo.
+2. Aplica al bajar y al subir por la página, en todas las secciones.
+3. Con "reducir movimiento" nada cambia: todo se ve desde el principio, sin animación.
+4. Al llegar al final de la página no queda nada oculto.
+
+**Criterios de aceptación**
+- [ ] CA-64.1 Al bajar hasta Proceso, subir y volver a bajar, las tarjetas numeradas entran de nuevo.
+- [ ] CA-64.2 Ningún elemento se queda invisible mientras está a la vista.
+
 ---
 
 ## 3. Qué deja de aplicar de lo anterior
@@ -97,6 +109,7 @@
 |---|---|
 | RF-03 (`specs/`) y RF-27 a RF-30 (specs-003): áreas, m² por área, estimado y su interruptor | Sustituidos por RF-61 a RF-63 |
 | RF-17 (specs-002) y RF-42 (specs-005): tipo de remodelación = categorías | Sustituido por RF-61 |
+| RF-06 (`specs/`): "cada animación de entrada ocurre una sola vez" | Sustituido por RF-64: se repite en cada entrada |
 | RF-23 (specs-003): Proceso con letras; RF-35 y RF-36 (specs-004): números en las tarjetas de servicio | Sustituidos por RF-58 y RF-60 |
 | "Un solo equipo para todo tu proyecto" como título de Servicios | Pasa a Proceso (RF-58.3) |
 

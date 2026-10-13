@@ -100,6 +100,12 @@ Migraciones `site_content.0016` (opciones del campo `key`) y `0017` (datos):
 
 ---
 
+## 3 bis. Entradas que se repiten (RF-64)
+
+`useReveal` ya no deja de observar el elemento al aparecer: `isVisible` sigue al observador en todo momento (`true` cuando al menos el 10 % cruzó la línea de arranque, `false` cuando sale). La clase `is-visible` se pone y se quita, y la transición de `motion.css` hace el resto. La red de seguridad del final de la página se mantiene.
+
+No hay parpadeo en el borde: el estado oculto está desplazado 32 px hacia abajo, así que al mostrarse el elemento queda más dentro de la zona observada, y al ocultarse, más fuera.
+
 ## 4. Registro de decisiones
 
 | Decisión | Motivo |

@@ -35,7 +35,9 @@ Prefijo `S8-`. Se entrega por bloques, con una pausa ✋ al final de cada uno.
 - [x] **S8-C2** Proceso en tarjetas numeradas, con el video según la casilla. *(RF-58, RF-59, CA-58.1, CA-58.2, CA-59.1)*
 - [x] **S8-C3** Servicios sin números. *(RF-60, CA-60.1, CA-60.2)*
 - [x] **S8-C4** Revisión responsive y de accesibilidad.
-- [ ] **S8-C5** ✋ **Prueba del bloque 2.**
+- [x] **S8-C5** ✋ **Prueba del bloque 2.** (Vista bien el 2026-10-13, con dos ajustes: Servicios arriba de Proyectos y las entradas repetidas.)
+- [x] **S8-C6** Las animaciones de entrada se repiten en cada entrada. *(RF-64, CA-64.1, CA-64.2)*
+- [ ] **S8-C7** ✋ **Prueba de las entradas repetidas.**
 
 ---
 

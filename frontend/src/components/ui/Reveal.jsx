@@ -2,8 +2,8 @@ import { useReveal } from '../../hooks/useReveal'
 
 /**
  * Hace que su contenido aparezca con un fundido y un pequeño desplazamiento
- * cuando entra en pantalla (specs/design.md §3.6). La animación está en
- * styles/motion.css.
+ * cada vez que entra en pantalla (specs/design.md §3.6; specs-008, RF-64).
+ * La animación está en styles/motion.css.
  *
  * as:    etiqueta HTML a usar ("div", "h2", "li", "article"...)
  * from:  desde dónde entra: "bottom", "left" o "right"
