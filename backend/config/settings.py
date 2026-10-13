@@ -108,6 +108,8 @@ AXES_COOLOFF_TIME = timedelta(minutes=30)
 AXES_LOCKOUT_PARAMETERS = ["ip_address"]
 AXES_RESET_ON_SUCCESS = True
 AXES_LOCKOUT_TEMPLATE = "core/lockout.html"
+# La IP se obtiene igual que en la API, también detrás de un proxy (ver core/network.py)
+AXES_CLIENT_IP_CALLABLE = "core.network.get_client_ip"
 
 # Idioma y hora
 LANGUAGE_CODE = "es"
@@ -128,9 +130,16 @@ STORAGES = {
 # Archivos que sube el cliente (fotos y videos)
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+# ¿Django entrega estos archivos? Sí en local, y en un servidor que los guarda en
+# su propio disco (un volumen). Con Cloudflare R2 los entrega Cloudflare: False.
+SERVE_MEDIA = env.bool("SERVE_MEDIA", default=DEBUG)
 MAX_IMAGE_MB = env.int("MAX_IMAGE_MB", default=5)
 MAX_VIDEO_MB = env.int("MAX_VIDEO_MB", default=50)
 MAX_FONT_MB = env.int("MAX_FONT_MB", default=2)
+
+# Cuántos proxies de confianza hay delante de Django: 0 en local, 1 en Railway.
+# De esto depende de dónde se lee la IP del visitante (ver core/network.py).
+NUM_PROXIES = env.int("NUM_PROXIES", default=0)
 
 # Solo estos sitios pueden llamar a la API desde el navegador (el frontend)
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
@@ -148,6 +157,8 @@ REST_FRAMEWORK = {
         "public": env("THROTTLE_PUBLIC", default="120/min"),
         "quotes": env("THROTTLE_QUOTES", default="5/hour"),
     },
+    # Los límites cuentan por la IP real del visitante, no por la del proxy
+    "NUM_PROXIES": NUM_PROXIES,
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

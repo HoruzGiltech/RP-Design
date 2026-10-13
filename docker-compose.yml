@@ -20,6 +20,9 @@ services:
   backend:
     build: ./backend
     env_file: .env
+    # Servidor de desarrollo, con recarga automática. La imagen trae por defecto
+    # el arranque de producción (ver backend/Dockerfile).
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       # El código se monta para que los cambios se vean sin reconstruir la imagen
       - ./backend:/app

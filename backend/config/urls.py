@@ -1,7 +1,8 @@
 from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+
+from core.views import serve_media
 
 admin.site.site_header = "Panel RP Design"
 admin.site.site_title = "Panel RP Design"
@@ -14,8 +15,8 @@ urlpatterns = [
     path("api/", include("site_content.urls")),
     path("api/", include("projects.urls")),
     path("api/", include("quotes.urls")),
+    # Fotos, videos y fuentes subidos desde el panel. La vista solo responde si
+    # SERVE_MEDIA está activado (ver core/views.py).
+    # lstrip: Django guarda MEDIA_URL como "/media/", y una ruta no empieza con "/".
+    path(f"{settings.MEDIA_URL.lstrip('/')}<path:path>", serve_media),
 ]
-
-# En local Django sirve las fotos y videos subidos. En producción lo hace R2.
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
