@@ -7,9 +7,9 @@ import QuoteCalculator from '../components/quote/QuoteCalculator'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 /**
- * Página de inicio, en el orden que pidió el cliente: Proyectos (negro),
- * Proceso en tarjetas numeradas (claro), Servicios con portadas (negro) y
- * Contacto (specs-008). El menú del encabezado conserva su propio orden.
+ * Página de inicio, en el orden que pidió el cliente (specs-008): Servicios
+ * con portadas (negro), Proyectos (negro), Proceso en tarjetas numeradas
+ * (claro) y Contacto. El menú del encabezado conserva su propio orden.
  * Cada sección decide por sí misma si se muestra (según el panel).
  */
 export default function HomePage() {
@@ -19,9 +19,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <Services />
       <ProjectsTeaser />
       <Process />
-      <Services />
       <Contact>
         <QuoteCalculator />
       </Contact>

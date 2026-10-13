@@ -16,14 +16,14 @@
 |---|---|---|
 | 1 | La sección "Un solo equipo para todo tu proyecto" muestra el **proceso** en tarjetas numeradas, no los servicios | RF-58 |
 | 2 | El video del proceso se conserva, con una casilla para mostrarlo u ocultarlo | RF-59 |
-| 3 | Después, una sección en negro con los **servicios**: portada con animación y "Cotizar", sin números | RF-60 |
+| 3 | Una sección en negro con los **servicios**, arriba de Proyectos: portada con animación y "Cotizar", sin números | RF-60 |
 | 4 | "Tipo de remodelación" es un texto libre | RF-61 |
 | 5 | Ya no hay áreas por categoría: un solo campo de m², opcional, junto a la ubicación | RF-62 |
 | 6 | Sin estimado de precio | RF-63 |
 
 **Descartado:** cambiar el fondo de la sección Proyectos. Se queda en negro, como está.
 
-**Orden del inicio:** Hero → Proyectos (negro) → Proceso en tarjetas (claro) → Servicios (negro) → Contacto.
+**Orden del inicio:** Hero → Servicios (negro) → Proyectos (negro) → Proceso en tarjetas (claro) → Contacto. (Ajustado por el desarrollador el 2026-10-13: Servicios va arriba de Proyectos.)
 
 ---
 
@@ -51,7 +51,7 @@
 
 ### RF-60 — Servicios en sección negra, sin números
 
-1. Los servicios van en su propia sección, sobre fondo negro, después del proceso.
+1. Los servicios van en su propia sección, sobre fondo negro, **justo después del hero y antes de Proyectos**.
 2. Cada tarjeta muestra la portada del servicio con su animación, la descripción y el botón "Cotizar" (como en specs-004 y specs-005), **sin número**.
 3. El título de la sección es editable en el panel y empieza como **"Servicios"**; la introducción empieza vacía.
 

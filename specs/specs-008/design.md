@@ -96,7 +96,7 @@ Migraciones `site_content.0016` (opciones del campo `key`) y `0017` (datos):
 
 - `Process.jsx`: sección clara con encabezado (título e introducción) y cuadrícula de tarjetas numeradas, con el estilo que tenían las tarjetas de servicio antes de specs-004 (contorno fino, número grande, título y descripción). El video va debajo del encabezado si `show_video` y hay video.
 - `ServiceCard.jsx`: se quita el número.
-- `HomePage.jsx`: el orden ya es Hero → Proyectos → Proceso → Servicios → Contacto; no cambia.
+- `HomePage.jsx`: el orden pasa a Hero → Servicios → Proyectos → Proceso → Contacto. Servicios y Proyectos son dos secciones negras seguidas; se distinguen por sus títulos y por el espacio entre ellas.
 
 ---
 
