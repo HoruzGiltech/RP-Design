@@ -301,3 +301,56 @@ class ProjectMediaTests(TempMediaMixin, TestCase):
             media.full_clean()
 
         self.assertIn("file", error.exception.message_dict)
+
+
+class AutomaticAltTextTests(TempMediaMixin, TestCase):
+    """Texto alternativo automático (specs-007, RF-57)."""
+
+    def add_media(self, project, **fields):
+        values = {"project": project, "file": make_image_file("foto.jpg")}
+        values.update(fields)
+        return ProjectMedia.objects.create(**values)
+
+    def test_empty_cover_alt_uses_the_project_title(self):
+        project = create_project(title="Apto La Guaira", cover_alt="")
+
+        self.assertEqual(project.cover_alt, "Apto La Guaira")
+
+    def test_cover_alt_written_by_the_client_is_kept(self):
+        project = create_project(cover_alt="Sala con vista al mar")
+
+        self.assertEqual(project.cover_alt, "Sala con vista al mar")
+
+    def test_gallery_items_are_numbered_in_the_order_they_are_added(self):
+        project = create_project(title="Apto La Guaira")
+
+        first = self.add_media(project)
+        second = self.add_media(project)
+        video = self.add_media(project, file=make_video_file("recorrido.mp4"))
+
+        self.assertEqual(first.alt_text, "Apto La Guaira 001")
+        self.assertEqual(second.alt_text, "Apto La Guaira 002")
+        self.assertEqual(video.alt_text, "Apto La Guaira 003")
+
+    def test_gallery_alt_written_by_the_client_is_kept(self):
+        project = create_project()
+
+        media = self.add_media(project, alt_text="Cocina terminada")
+
+        self.assertEqual(media.alt_text, "Cocina terminada")
+
+    def test_each_project_has_its_own_numbering(self):
+        self.add_media(create_project(title="Casa Uno"))
+
+        media = self.add_media(create_project(title="Casa Dos"))
+
+        self.assertEqual(media.alt_text, "Casa Dos 001")
+
+    def test_saving_again_does_not_change_the_text(self):
+        project = create_project(title="Apto La Guaira")
+        first = self.add_media(project)
+        self.add_media(project)
+
+        first.save()
+
+        self.assertEqual(first.alt_text, "Apto La Guaira 001")

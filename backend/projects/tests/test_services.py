@@ -1,6 +1,11 @@
 from django.test import SimpleTestCase
 
-from projects.services import build_base_slug, make_unique_slug, match_category_name
+from projects.services import (
+    build_base_slug,
+    build_media_alt,
+    make_unique_slug,
+    match_category_name,
+)
 
 CATEGORY_NAMES = ["Comercial", "Residencial", "Corporativo"]
 
@@ -53,3 +58,12 @@ class MatchCategoryNameTests(SimpleTestCase):
         self.assertIsNone(match_category_name("Diseño · Interior", CATEGORY_NAMES))
         self.assertIsNone(match_category_name("", CATEGORY_NAMES))
         self.assertIsNone(match_category_name(None, CATEGORY_NAMES))
+
+
+class MediaAltTests(SimpleTestCase):
+    """Texto alternativo automático de la galería (specs-007, RF-57)."""
+
+    def test_project_name_and_a_three_digit_number(self):
+        self.assertEqual(build_media_alt("Apto La Guaira", 1), "Apto La Guaira 001")
+        self.assertEqual(build_media_alt("Apto La Guaira", 12), "Apto La Guaira 012")
+        self.assertEqual(build_media_alt("Casa", 120), "Casa 120")

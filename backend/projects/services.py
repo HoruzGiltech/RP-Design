@@ -12,6 +12,16 @@ from django.utils.text import slugify
 SINGLE_WORD_PREFIX = "proyecto"
 
 
+def build_media_alt(project_title, number):
+    """
+    Texto alternativo de una foto o un video de la galería cuando el cliente no
+    escribe uno (specs-007): el nombre del proyecto y un número de tres cifras.
+
+    ('Apto La Guaira', 1) -> 'Apto La Guaira 001'
+    """
+    return f"{project_title} {number:03d}"
+
+
 def build_base_slug(title):
     """
     Crea la dirección web de un proyecto a partir de su título.

@@ -112,3 +112,28 @@ def validate_media_file(file):
         # Cualquier otra extensión cae aquí y falla con el mensaje de formatos
         _check_extension(file, IMAGE_EXTENSIONS + VIDEO_EXTENSIONS)
         validate_image_file(file)
+
+
+def get_upload_rules(validator):
+    """
+    Traduce un validador de archivos a una tabla "extensión -> máximo en MB",
+    para que el navegador pueda revisar el archivo antes de enviarlo (specs-007):
+
+        get_upload_rules(validate_media_file)
+        -> {"jpg": 5, "jpeg": 5, "png": 5, "webp": 5, "mp4": 50, "webm": 50}
+
+    Los límites se leen de la configuración cada vez que se llama: así el
+    navegador y el servidor usan siempre los mismos. Para un validador que no
+    es de archivos devuelve una tabla vacía.
+    """
+    image_rules = dict.fromkeys(IMAGE_EXTENSIONS, settings.MAX_IMAGE_MB)
+    video_rules = dict.fromkeys(VIDEO_EXTENSIONS, settings.MAX_VIDEO_MB)
+    font_rules = dict.fromkeys(FONT_EXTENSIONS, settings.MAX_FONT_MB)
+
+    rules_by_validator = {
+        validate_image_file: image_rules,
+        validate_video_file: video_rules,
+        validate_media_file: {**image_rules, **video_rules},
+        validate_font_file: font_rules,
+    }
+    return rules_by_validator.get(validator, {})

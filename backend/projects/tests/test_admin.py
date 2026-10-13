@@ -105,6 +105,48 @@ class ProjectAdminTests(TempMediaMixin, TestCase):
 
         self.assertNotContains(response, 'name="is_category_cover"')
 
+    # --- specs-007: revisión de archivos en el navegador y texto alternativo ---
+
+    def test_file_fields_carry_their_rules_for_the_browser(self):
+        project = create_project()
+
+        response = self.client.get(reverse("admin:projects_project_change", args=[project.pk]))
+
+        self.assertContains(response, "core/admin-file-check.js")
+        # Portada: solo imágenes
+        self.assertContains(response, 'name="cover_image"')
+        self.assertContains(response, "data-upload-rules")
+        html = response.content.decode()
+        self.assertIn("&quot;jpg&quot;: 5", html)
+        # Galería: imágenes y videos, cada uno con su límite
+        self.assertIn("&quot;mp4&quot;: 50", html)
+
+    def test_project_is_saved_without_writing_any_alt_text(self):
+        self.client.post(
+            reverse("admin:projects_project_add"),
+            {
+                "title": "Apto La Guaira",
+                "category": get_category().pk,
+                "summary": "Resumen",
+                "description": "Descripción",
+                "cover_image": make_image_file("portada.jpg"),
+                "hero_order": 0,
+                "media-TOTAL_FORMS": 2,
+                "media-INITIAL_FORMS": 0,
+                "media-0-file": make_image_file("a.jpg"),
+                "media-0-order": 1,
+                "media-1-file": make_image_file("b.jpg"),
+                "media-1-order": 2,
+            },
+        )
+
+        project = Project.objects.get(title="Apto La Guaira")
+        self.assertEqual(project.cover_alt, "Apto La Guaira")
+        self.assertEqual(
+            list(project.media.values_list("alt_text", flat=True)),
+            ["Apto La Guaira 001", "Apto La Guaira 002"],
+        )
+
     def test_form_has_no_field_to_write_the_slug(self):
         response = self.client.get(reverse("admin:projects_project_add"))
 

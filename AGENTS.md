@@ -50,7 +50,7 @@ specs/
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
 - **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-005/`, los cinco implementados.
-- **Trabajo en curso: `specs/specs-006/`**, la publicación temporal (demo) en Vercel y Railway para que el cliente vea el sitio en internet. No cambia lo que ve el visitante. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Trabajo en curso:** `specs/specs-006/` (la demo en Vercel y Railway ya está publicada; faltan los usuarios del panel y las comprobaciones finales) y `specs/specs-007/` (el panel revisa los archivos al elegirlos y pone solo el texto alternativo). Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: dominio, Cloudflare Pages y R2). La demo de specs-006 adelanta una parte, pero no lo reemplaza. No se empieza sin que el desarrollador lo pida.
 
@@ -208,6 +208,11 @@ El detalle está en `specs/specs-005/requirements.md`. En resumen:
 - **RF-46 — Celular:** la capa de una tarjeta aparece cuando queda en el centro de la pantalla.
 - **RF-47 y RF-48 — Movimiento:** entradas suaves en móvil y encabezado que vuelve a ocultarse tras navegar.
 
+### Cambios de specs-007 (RF-56 y RF-57)
+El detalle está en `specs/specs-007/requirements.md`. En resumen:
+- **RF-56 — Subida de archivos en el panel:** cada archivo se revisa en el navegador al elegirlo (formato y tamaño); si no sirve, solo se descarta ese y no se pierden los demás.
+- **RF-57 — Texto alternativo automático:** opcional en portada y galería; vacío, se completa con el nombre del proyecto y un correlativo ("Apto La Guaira 001").
+
 ---
 
 ## 5. Stack técnico
@@ -254,7 +259,8 @@ El detalle está en `specs/specs-005/requirements.md`. En resumen:
 │   ├── specs-003/  # tercer paquete de cambios (implementado)
 │   ├── specs-004/  # cuarto paquete de cambios (implementado)
 │   ├── specs-005/  # quinto paquete de cambios (implementado)
-│   └── specs-006/  # publicación temporal en Vercel y Railway (trabajo en curso)
+│   ├── specs-006/  # publicación temporal en Vercel y Railway (trabajo en curso)
+│   └── specs-007/  # subida de archivos en el panel y texto alternativo automático (trabajo en curso)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -369,7 +375,8 @@ Al terminar cada tarea o fase, responde con:
 8. **specs-004:** cuarto paquete (servicios con portada, sección Proyectos con solo el botón, descripción en el detalle y ajustes del formulario). Implementado y cerrado el 2026-10-09.
 9. **specs-005:** quinto paquete (categorías en el formulario, ubicación obligatoria, servicios a 4 columnas, capas en celular, animaciones en móvil y encabezado). Implementado y cerrado el 2026-10-13.
 10. **specs-006:** publicación temporal (demo) en Vercel y Railway, con los archivos en un volumen de Railway. **Es la fase en curso.**
-11. **Despliegue definitivo:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
+11. **specs-007:** el panel revisa los archivos al elegirlos, para no perder los ya elegidos, y completa solo el texto alternativo. **En curso.**
+12. **Despliegue definitivo:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 

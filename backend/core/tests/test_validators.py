@@ -3,6 +3,7 @@ from django.test import SimpleTestCase, override_settings
 
 from core.tests.helpers import make_fake_file, make_font_file, make_image_file, make_video_file
 from core.validators import (
+    get_upload_rules,
     validate_font_file,
     validate_image_file,
     validate_media_file,
@@ -115,3 +116,26 @@ class FontValidatorTests(SimpleTestCase):
         validate_font_file(font)
 
         self.assertEqual(font.tell(), 0)
+
+
+class UploadRulesTests(SimpleTestCase):
+    """Las reglas que el navegador usa para revisar un archivo al elegirlo (specs-007)."""
+
+    @override_settings(MAX_IMAGE_MB=5, MAX_VIDEO_MB=50, MAX_FONT_MB=2)
+    def test_each_validator_gives_its_formats_and_limits(self):
+        images = {"jpg": 5, "jpeg": 5, "png": 5, "webp": 5}
+        videos = {"mp4": 50, "webm": 50}
+
+        self.assertEqual(get_upload_rules(validate_image_file), images)
+        self.assertEqual(get_upload_rules(validate_video_file), videos)
+        self.assertEqual(get_upload_rules(validate_media_file), {**images, **videos})
+        self.assertEqual(
+            get_upload_rules(validate_font_file), {"woff2": 2, "woff": 2, "ttf": 2, "otf": 2}
+        )
+
+    @override_settings(MAX_IMAGE_MB=8)
+    def test_limit_changed_in_the_settings_is_used(self):
+        self.assertEqual(get_upload_rules(validate_image_file)["jpg"], 8)
+
+    def test_other_validators_have_no_rules(self):
+        self.assertEqual(get_upload_rules(len), {})

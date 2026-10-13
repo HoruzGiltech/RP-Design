@@ -369,7 +369,10 @@ class Service(OrderedModel, VisibleModel):
         "texto alternativo de la imagen",
         max_length=150,
         blank=True,
-        help_text="Describe la foto para quien no puede verla.",
+        help_text=(
+            "Describe la foto para quien no puede verla. "
+            "Si lo dejas vacío, se usa el título del servicio."
+        ),
     )
 
     class Meta(OrderedModel.Meta):
@@ -381,6 +384,9 @@ class Service(OrderedModel, VisibleModel):
         return self.title
 
     def save(self, *args, **kwargs):
+        # Sin texto alternativo escrito, la imagen se describe con el nombre del servicio
+        if self.image and not self.image_alt:
+            self.image_alt = self.title
         optimize_image_field(self, "image")
         super().save(*args, **kwargs)
 

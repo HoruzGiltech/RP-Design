@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import reverse
 
+from core.admin_mixins import FileCheckMixin
 from site_content.models import (
     ContactSection,
     FooterSection,
@@ -21,7 +22,7 @@ from site_content.models import (
 )
 
 
-class SingletonAdmin(SortableAdminBase, admin.ModelAdmin):
+class SingletonAdmin(FileCheckMixin, SortableAdminBase, admin.ModelAdmin):
     """
     Panel para modelos de un solo registro: no se puede agregar ni eliminar,
     y al entrar desde el menú se va directo al formulario de edición.
@@ -90,7 +91,7 @@ class SectionAdmin(SingletonAdmin):
     """Las secciones únicas no necesitan nada más que el formulario por defecto."""
 
 
-class SectionItemInline(SortableInlineAdminMixin, admin.StackedInline):
+class SectionItemInline(FileCheckMixin, SortableInlineAdminMixin, admin.StackedInline):
     """Lista que se edita y se ordena arrastrando dentro del formulario de su sección."""
 
     extra = 0

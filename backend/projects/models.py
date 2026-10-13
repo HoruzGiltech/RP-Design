@@ -11,7 +11,7 @@ from core.validators import (
     validate_image_file,
     validate_media_file,
 )
-from projects.services import build_base_slug, make_unique_slug
+from projects.services import build_base_slug, build_media_alt, make_unique_slug
 
 MAX_HERO_PROJECTS = 6
 
@@ -82,7 +82,11 @@ class Project(TimeStampedModel, OrderedModel):
     cover_alt = models.CharField(
         "texto alternativo de la portada",
         max_length=150,
-        help_text="Describe la foto para quien no puede verla.",
+        blank=True,
+        help_text=(
+            "Describe la foto para quien no puede verla. "
+            "Si lo dejas vacío, se usa el título del proyecto."
+        ),
     )
 
     is_published = models.BooleanField(
@@ -133,6 +137,8 @@ class Project(TimeStampedModel, OrderedModel):
         if not self.slug:
             existing = set(Project.objects.values_list("slug", flat=True))
             self.slug = make_unique_slug(build_base_slug(self.title), existing)
+        if not self.cover_alt:
+            self.cover_alt = self.title
         if file_has_changed(self, "cover_image"):
             self._process_cover()
         super().save(*args, **kwargs)
@@ -190,7 +196,11 @@ class ProjectMedia(OrderedModel):
     alt_text = models.CharField(
         "texto alternativo",
         max_length=150,
-        help_text="Describe la imagen o el video para quien no puede verlo.",
+        blank=True,
+        help_text=(
+            "Describe la imagen o el video para quien no puede verlo. Si lo dejas "
+            "vacío, se pone solo: el nombre del proyecto y un número."
+        ),
     )
 
     class Meta(OrderedModel.Meta):
@@ -205,12 +215,19 @@ class ProjectMedia(OrderedModel):
         return self.media_type == self.VIDEO
 
     def save(self, *args, **kwargs):
+        if not self.alt_text:
+            self.alt_text = self._build_alt_text()
         if file_has_changed(self, "file"):
             self._process_file()
         if self.poster and file_has_changed(self, "poster"):
             optimized = build_optimized(self.poster.file)
             self.poster.save(optimized.name, optimized, save=False)
         super().save(*args, **kwargs)
+
+    def _build_alt_text(self):
+        """El nombre del proyecto y el número que le toca: los que ya hay, más uno."""
+        others = ProjectMedia.objects.filter(project_id=self.project_id).exclude(pk=self.pk)
+        return build_media_alt(self.project.title, others.count() + 1)
 
     def _process_file(self):
         """Detecta si es imagen o video. Las imágenes se optimizan; los videos no se tocan."""

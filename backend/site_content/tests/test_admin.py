@@ -185,6 +185,27 @@ class SiteContentAdminTests(TempMediaMixin, TestCase):
         self.assertNotIn("servicio", service.image.name)
         self.assertLessEqual(service.image.width, 1920)
 
+    # --- specs-007 ---
+
+    def test_service_image_without_alt_uses_the_service_title(self):
+        url = reverse("admin:site_content_servicessection_change", args=[1])
+        items = self.service_items()
+        items[0]["image"] = make_image_file("servicio.jpg")
+
+        self.client.post(url, self.section_form("items", items))
+
+        service = Service.objects.first()
+        self.assertEqual(service.image_alt, service.title)
+
+    def test_file_fields_carry_their_rules_for_the_browser(self):
+        services = self.client.get(reverse("admin:site_content_servicessection_change", args=[1]))
+        settings_page = self.client.get(reverse("admin:site_content_sitesettings_change", args=[1]))
+
+        self.assertContains(services, "core/admin-file-check.js")
+        self.assertIn("&quot;jpg&quot;: 5", services.content.decode())
+        # Las fuentes tienen sus propios formatos y su propio límite
+        self.assertIn("&quot;woff2&quot;: 2", settings_page.content.decode())
+
     def test_fake_service_image_is_rejected(self):
         url = reverse("admin:site_content_servicessection_change", args=[1])
         items = self.service_items()

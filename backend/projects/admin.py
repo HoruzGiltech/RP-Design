@@ -2,6 +2,8 @@ from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
 
+from core.admin_mixins import FileCheckMixin
+
 from projects.models import Project, ProjectCategory, ProjectMedia
 
 NO_PREVIEW = "—"
@@ -39,7 +41,7 @@ class ProjectCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
         return category.remodel_areas.filter(is_active=True).count()
 
 
-class ProjectMediaInline(SortableInlineAdminMixin, admin.TabularInline):
+class ProjectMediaInline(FileCheckMixin, SortableInlineAdminMixin, admin.TabularInline):
     """Galería del proyecto: se edita y se ordena dentro del mismo proyecto."""
 
     model = ProjectMedia
@@ -56,7 +58,7 @@ class ProjectMediaInline(SortableInlineAdminMixin, admin.TabularInline):
 
 
 @admin.register(Project)
-class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
+class ProjectAdmin(FileCheckMixin, SortableAdminMixin, admin.ModelAdmin):
     list_display = (
         "cover_preview",
         "title",
