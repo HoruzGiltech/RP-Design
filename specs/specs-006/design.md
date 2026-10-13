@@ -80,7 +80,7 @@ NUM_PROXIES=0         # 1 en Railway
 ## 4. Copia del contenido (bloque 3)
 
 1. **Datos:** `manage.py dumpdata` de `projects`, `site_content` y `quotes.RemodelArea` a un archivo fuera del repositorio; `loaddata` contra la base de Railway. Las migraciones de la demo ya crean las filas iniciales; `loaddata` las reemplaza por las locales.
-2. **Archivos (14 MB, 81 archivos):** se empaquetan desde el volumen local y se llevan al volumen de Railway con su CLI. **Punto por confirmar:** si la CLI no permite enviar un archivo al contenedor, se escribe un comando de carga de una sola vez; se anota aquí antes de programarlo.
+2. **Archivos (14 MB, 81 archivos):** comando `manage.py transfer_media` (`core/management/commands/`). Al volumen de Railway no se le pueden copiar archivos desde una computadora, así que se usa la base de datos como transporte: `transfer_media pack`, ejecutado en local contra la base de Railway, empaqueta `media/` en una tabla temporal; `transfer_media unpack`, ejecutado en la consola del servicio en Railway, extrae los archivos al volumen y borra la tabla. Así no hace falta instalar la CLI de Railway. Tiene tests de ida y vuelta.
 3. **Usuarios:** `createsuperuser` en Railway para el desarrollador; el del cliente se crea desde el panel con el grupo Admin.
 
 ---

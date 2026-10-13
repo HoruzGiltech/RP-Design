@@ -163,9 +163,27 @@ El último comando debe terminar con `Installed … object(s) from 1 fixture(s)`
 
 ### 4.2 Copiar las fotos y videos
 
-Los archivos (unos 14 MB) hay que llevarlos al volumen de Railway. **Este paso lo hacemos juntos en la publicación** (bloque 3 de `specs/specs-006/tasks.md`): depende de lo que permita la herramienta de línea de comandos de Railway, y se completará aquí cuando esté confirmado.
+Al volumen de Railway no se le pueden copiar archivos directamente, así que viajan dentro de la base de datos, en dos pasos.
 
-Hasta entonces el sitio muestra los proyectos sin sus imágenes.
+**Paso A — en tu computadora** (empaqueta `media/` y lo envía a la base de Railway):
+
+```bash
+docker compose exec -e DATABASE_URL="<base-publica>" backend python manage.py transfer_media pack
+```
+
+Debe responder algo como `81 archivos empaquetados (13.9 MB) y enviados.`
+
+**Paso B — en Railway** (saca los archivos al volumen):
+
+Abre el servicio del backend → pestaña **Console** y ejecuta:
+
+```bash
+python manage.py transfer_media unpack
+```
+
+Debe responder `81 archivos copiados a /app/media.` El paquete se borra solo de la base de datos al terminar.
+
+Recarga el sitio: los proyectos ya deben verse con sus fotos.
 
 ### 4.3 Crear los usuarios del panel
 
