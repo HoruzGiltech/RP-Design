@@ -64,7 +64,7 @@ Sin modelos nuevos ni dependencias nuevas.
   .has-cover-overlay.is-centered .cover-overlay__content { transform: none; }
   ```
 - Se quita la variante `cover-overlay--auto` (capa fija al aparecer) y la entrada retrasada de `.project-card__text`.
-- En las tarjetas de proyecto, la capa en táctil no atrapa el dedo (`pointer-events: none`): la tarjeta entera es un enlace y debe poder arrastrarse para seguir bajando.
+- En las tarjetas de proyecto, la capa en táctil no atrapa el dedo (`pointer-events: none`), porque la tarjeta entera es un enlace; **el texto sí** (`pointer-events: auto`), para poder desplazar una descripción larga. Corregido tras la prueba del desarrollador: con toda la capa desactivada se veía la barra pero el texto no bajaba.
 - "Reducir movimiento" en táctil: `useInCenter` devuelve `true` fijo en servicios y detalle (parámetro `alwaysWhenReduced`).
 
 ### 3.3 Bloque 2 — detalle (RF-45)

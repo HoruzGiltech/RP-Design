@@ -70,13 +70,18 @@
 }
 
 /*
-  En un celular la capa no atrapa el dedo: toda la tarjeta es un enlace y debe
-  poder tocarse y arrastrarse para seguir bajando. Si la descripción no cabe,
-  se lee completa al abrir el proyecto.
+  En un celular, la capa en sí no atrapa el dedo (la tarjeta entera es un
+  enlace y debe poder arrastrarse para seguir bajando), pero el texto sí: si la
+  descripción no cabe, se desplaza con el dedo. Al llegar al final del texto,
+  el mismo gesto sigue bajando la página. Un toque sin arrastrar abre el proyecto.
 */
 @media (hover: none) {
   .project-card .has-cover-overlay.is-centered .cover-overlay {
     pointer-events: none;
+  }
+
+  .project-card .has-cover-overlay.is-centered .cover-overlay__text {
+    pointer-events: auto;
   }
 }
 
