@@ -194,6 +194,24 @@ O reconstruir el contenedor para que instale lo que falta: `docker compose up --
 
 Los comandos del proyecto no dependen de esto: Django se ejecuta dentro del contenedor (`docker compose exec backend python ...`).
 
+## 14. El sitio construye en local pero falla fuera con `Could not resolve '../media/MediaPlaceholder'`
+
+**Cuándo aparece:** al construir el frontend en Vercel (o en cualquier copia limpia del repositorio).
+
+**Causa:** `.gitignore` tenía la regla `media/`, pensada para los archivos subidos, que ignoraba **cualquier** carpeta con ese nombre. La carpeta `frontend/src/components/media/` nunca se subió a GitHub; en la computadora del desarrollador existía y por eso no se notaba.
+
+**Solución:** ya está corregido: la regla es `/media/` y `/backend/media/`. Si vuelve a pasar algo parecido, este comando dice qué regla ignora un archivo:
+
+```bash
+git check-ignore -v ruta/del/archivo
+```
+
+Antes de publicar conviene construir desde una copia limpia; `git status --ignored` muestra lo que no se está versionando.
+
+## 15. Errores al publicar la demo en Railway y Vercel
+
+Están en la tabla "Si algo sale mal" de `docs/despliegue-demo.md`: variables mal escritas, dirección interna de la base de datos, carpeta raíz sin confirmar y variables de Vercel creadas como `Secret`.
+
 ---
 
 ## Cómo agregar un problema nuevo

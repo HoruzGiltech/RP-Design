@@ -137,7 +137,11 @@ Con `https://`, sin barra al final. Railway vuelve a desplegar; al terminar, `ht
 
 Todos estos comandos se ejecutan **en tu computadora**, en la carpeta del proyecto y con Docker abierto. Usan la dirección **pública** de la base de datos de Railway:
 
-> Railway → servicio **Postgres** → **Variables** → `DATABASE_PUBLIC_URL`. Cópiala; en los comandos es `<base-publica>`.
+> Railway → servicio **Postgres** → botón **Connect** → pestaña **Public Network** → **Connection URL**. Cópiala; en los comandos es `<base-publica>`.
+> (También está en **Variables** como `DATABASE_PUBLIC_URL`: usa el icono del ojo para ver el valor real y cópialo desde la lista, no desde el *Raw Editor*.)
+>
+> Debe verse así: `postgresql://postgres:…@nombre.proxy.rlwy.net:12345/railway`. Si el servidor es `postgres.railway.internal`, es la dirección interna y no sirve desde tu computadora. Si trae `${{…}}`, copiaste la plantilla y no el valor.
+>
 > Es una clave: quien la tenga puede leer y borrar la base. No la pegues en ningún otro lugar.
 
 ### 4.1 Copiar los datos
@@ -231,7 +235,10 @@ En `https://<backend>/<nombre-del-panel>/`:
 | El sitio dice "No pudimos conectar con el servidor" | `VITE_API_URL` quedó con el texto de ejemplo (`<backend>`) o falta volver a desplegar | Pon la dirección real de Railway terminada en `/api` y haz *Redeploy* |
 | Recargar `/proyectos/…` da 404 en Vercel | El *Root Directory* no es `frontend` | Corrígelo en *Settings → General* y vuelve a desplegar |
 | Las fotos desaparecen tras un despliegue | El volumen no está montado en `/app/media` | Revisa 1.3 |
-| `loaddata` falla con `connection refused` o `could not translate host name` | Se usó la dirección interna de la base | Usa `DATABASE_PUBLIC_URL`, no `DATABASE_URL` |
+| Un comando de la Parte 4 falla con `failed to resolve host 'postgres.railway.internal'` | Se usó la dirección interna de la base | Usa la pública (*Connect → Public Network*) |
+| Un comando de la Parte 4 falla con `Port could not be cast to integer value as '${{RAILWAY_TCP_PROXY_PORT}}'` | Se copió la plantilla de la variable, no su valor | Copia el valor ya resuelto (icono del ojo, o *Connect → Public Network*) |
+| Railway falla al construir con `Railpack could not determine how to build the app` y lista `backend/`, `frontend/`… | Está analizando la raíz del repositorio | Pon `backend` en *Root Directory* y **confirma el cambio** (botón *Deploy* / *Apply changes*); los ajustes quedan en espera hasta confirmarlos |
+| Railway falla al arrancar con `corsheaders.E014 … should not have path` | `CORS_ALLOWED_ORIGINS` termina en `/` | Quita la barra final |
 | El panel dice "Demasiados intentos" | 5 contraseñas erradas seguidas | Espera 30 minutos (ver `docs/problemas-frecuentes.md`, número 8) |
 
 ---
