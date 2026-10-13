@@ -59,31 +59,9 @@
   transition: transform var(--motion-reveal) var(--ease-out);
 }
 
-/* El número va sobre la foto, arriba a la izquierda, también con la capa encima */
-.service-card__number {
-  position: absolute;
-  top: var(--space-24);
-  left: var(--space-24);
-  font-family: var(--font-display);
-  font-size: var(--text-service-number);
-  font-weight: 700;
-  line-height: 1;
-  color: var(--color-on-dark);
-  /* No estorba al pasar el cursor ni al desplazar el texto de la capa */
-  pointer-events: none;
-}
-
 .service-card__title {
   font-size: var(--text-h3-large);
   color: var(--color-on-dark);
-}
-
-/*
-  El texto de la capa deja libre la franja del número: así una descripción
-  larga se desplaza por debajo de él sin taparlo.
-*/
-.service-card .cover-overlay__content {
-  padding-top: calc(var(--space-24) * 2 + var(--text-service-number));
 }
 
 @media (hover: hover) {
@@ -94,7 +72,7 @@
 
 /*
   En pantallas angostas la tarjeta es más alta que ancha: sobre la foto deben
-  caber el número, la descripción y el botón sin tener que desplazar el texto.
+  caber la descripción y el botón sin tener que desplazar el texto.
 */
 @media (max-width: 767px) {
   .service-card__media {

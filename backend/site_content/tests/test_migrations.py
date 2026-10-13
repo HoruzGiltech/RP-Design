@@ -3,12 +3,20 @@ from importlib import import_module
 from django.apps import apps
 from django.test import TestCase
 
-from site_content.models import HeroSection, ProcessStep, ProjectsSection, Specialty
+from site_content.models import (
+    HeroSection,
+    ProcessSection,
+    ProcessStep,
+    ProjectsSection,
+    ServicesSection,
+    Specialty,
+)
 
 # El nombre del archivo empieza por un número, así que no se puede importar con "import"
 hero_texts_migration = import_module("site_content.migrations.0007_hero_texts")
 specialty_migration = import_module("site_content.migrations.0009_specialty_corporativo")
 button_migration = import_module("site_content.migrations.0015_projects_button_text")
+title_migration = import_module("site_content.migrations.0020_move_title_to_process")
 
 
 class HeroTextsMigrationTests(TestCase):
@@ -88,3 +96,35 @@ class ProjectsButtonMigrationTests(TestCase):
         self.run_migration()
 
         self.assertEqual(ProjectsSection.objects.get().view_all_text, "Conoce nuestro trabajo")
+
+
+class MoveTitleToProcessMigrationTests(TestCase):
+    """La migración 0020 pasa el título de Servicios a Proceso solo si es el original."""
+
+    def run_migration(self):
+        title_migration.move_title(apps, None)
+
+    def test_original_title_and_intro_move_to_the_process_section(self):
+        ServicesSection.objects.update(
+            title="Un solo equipo para todo tu proyecto", intro="Te acompañamos."
+        )
+        ProcessSection.objects.update(title="Título anterior del proceso", intro="")
+
+        self.run_migration()
+
+        process = ProcessSection.objects.get()
+        services = ServicesSection.objects.get()
+        self.assertEqual(process.title, "Un solo equipo para todo tu proyecto")
+        self.assertEqual(process.intro, "Te acompañamos.")
+        self.assertEqual(services.title, "Servicios")
+        self.assertEqual(services.intro, "")
+
+    def test_title_changed_by_the_client_is_kept(self):
+        ServicesSection.objects.update(title="Lo que hacemos", intro="Texto del cliente")
+        ProcessSection.objects.update(title="Cómo trabajamos")
+
+        self.run_migration()
+
+        self.assertEqual(ServicesSection.objects.get().title, "Lo que hacemos")
+        self.assertEqual(ServicesSection.objects.get().intro, "Texto del cliente")
+        self.assertEqual(ProcessSection.objects.get().title, "Cómo trabajamos")

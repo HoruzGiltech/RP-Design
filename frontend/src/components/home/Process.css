@@ -1,13 +1,15 @@
 .process {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-wide), 100%), 1fr));
-  gap: var(--space-64);
-}
-
-.process__intro-column {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-56);
+}
+
+/* Título a la izquierda e introducción a la derecha; en pantallas angostas, uno bajo otro */
+.process__header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-hero), 100%), 1fr));
+  gap: var(--space-32);
+  align-items: end;
 }
 
 .process__intro {
@@ -15,56 +17,69 @@
   color: var(--color-text-secondary);
 }
 
+/* --- Video recorrido (opcional) --- */
+
 .process__media {
-  height: var(--media-process);
+  aspect-ratio: 16 / 9;
+  /* En pantallas grandes no debe ocupar más que la altura de la ventana */
+  max-height: 70vh;
+  background: var(--color-dark);
 }
 
-.process__media-item {
+.process__video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.process__steps {
+/* --- Tarjetas numeradas --- */
+
+/*
+  Las líneas entre tarjetas son el contorno (outline) de cada una. Entre dos
+  tarjetas hay 1px de separación, y los dos contornos caen en ese mismo píxel:
+  por eso la línea no se ve doble.
+*/
+.process__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-services), 100%), 1fr));
+  gap: 1px;
+  /* Deja sitio al contorno de las tarjetas del borde */
+  padding: 1px;
+  margin: 0;
+  list-style: none;
+}
+
+.process__card {
   display: flex;
   flex-direction: column;
-  /* Sin esto la lista se estira hasta la altura de la otra columna y la última línea queda lejos */
-  align-self: start;
-  /* La última línea de la lista */
-  border-bottom: 1px solid var(--color-text);
+  gap: var(--space-16);
+  padding: 40px var(--space-32);
+  background: var(--color-bg);
+  outline: 1px solid var(--color-border);
 }
 
-.process__step {
-  display: flex;
-  gap: var(--space-24);
-  padding-block: var(--space-28);
-  border-top: 1px solid var(--color-text);
-}
-
-.process__letter {
-  min-width: 40px;
+.process__number {
   font-family: var(--font-display);
-  font-size: var(--text-process-letter);
+  font-size: var(--text-service-number);
   font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent);
 }
 
-.process__step-text {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.process__title {
+  font-size: var(--text-h3-large);
 }
 
-.process__step-description {
+.process__description {
   color: var(--color-text-secondary);
 }
 
 @media (max-width: 767px) {
   .process {
-    gap: var(--space-48);
+    gap: var(--space-32);
   }
 
-  .process__media {
-    height: auto;
-    aspect-ratio: 16 / 9;
+  .process__card {
+    padding: var(--space-32) var(--space-24);
   }
 }

@@ -89,7 +89,7 @@ class ProjectsSectionSerializer(serializers.ModelSerializer):
 class ProcessSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProcessSection
-        fields = ["is_visible", "title", "intro", "video", "video_poster"]
+        fields = ["is_visible", "title", "intro", "video", "video_poster", "show_video"]
 
 
 class ContactSectionSerializer(serializers.ModelSerializer):

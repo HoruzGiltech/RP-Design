@@ -260,13 +260,21 @@ class ProcessSection(SingletonModel, VisibleModel):
     video_poster = site_image_field(
         "vista previa del video", help_text="Imagen que se ve antes de reproducir."
     )
+    show_video = models.BooleanField(
+        "mostrar el video",
+        default=True,
+        help_text=(
+            "Desmárcala para ocultar el video sin borrarlo. "
+            "Sin un video cargado, la sección se ve solo con las tarjetas."
+        ),
+    )
 
     class Meta:
-        verbose_name = "proceso (encabezado)"
-        verbose_name_plural = "proceso (encabezado)"
+        verbose_name = "proceso"
+        verbose_name_plural = "proceso"
 
     def __str__(self):
-        return "Proceso (encabezado)"
+        return "Proceso"
 
     def save(self, *args, **kwargs):
         optimize_image_field(self, "video_poster")
@@ -394,7 +402,7 @@ class Service(OrderedModel, VisibleModel):
 class ProcessStep(OrderedModel, VisibleModel):
     """Entregable de Proceso. Su letra (A, B...) la calcula el sitio según el orden."""
 
-    # Igual que en Service: permite editar los pasos dentro de "Proceso (encabezado)"
+    # Igual que en Service: permite editar los pasos dentro de "Proceso"
     section = models.ForeignKey(
         ProcessSection,
         on_delete=models.CASCADE,

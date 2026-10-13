@@ -4,19 +4,14 @@ import Button from '../ui/Button'
 import Reveal from '../ui/Reveal'
 import '../../styles/overlay.css'
 
-/** 0 -> "01", 1 -> "02"... El número sale de la posición, no se guarda en el panel. */
-function formatNumber(position) {
-  return String(position + 1).padStart(2, '0')
-}
-
 /**
- * Tarjeta de un servicio: su portada, su número y su título (specs-004, RF-35).
+ * Tarjeta de un servicio: su portada y su título, sin número (specs-008, RF-60).
  * Sobre la portada hay una capa con la descripción y el botón "Cotizar": con
  * mouse aparece al pasar el cursor, y en pantallas táctiles cuando la tarjeta
  * cruza el centro de la pantalla (ver styles/overlay.css y useInCenter).
  *
  * service: el servicio (objeto de la API)
- * index:   posición en la cuadrícula; da el número y el orden de entrada
+ * index:   posición en la cuadrícula; da el orden de entrada
  * ctaText: texto del botón "Cotizar", o '' si no se debe mostrar
  */
 export default function ServiceCard({ service, index, ctaText }) {
@@ -58,10 +53,6 @@ export default function ServiceCard({ service, index, ctaText }) {
             )}
           </div>
         </div>
-
-        <span className="service-card__number" aria-hidden="true">
-          {formatNumber(index)}
-        </span>
       </div>
 
       <h3 className="service-card__title">{service.title}</h3>

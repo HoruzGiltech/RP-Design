@@ -7,9 +7,9 @@ import QuoteCalculator from '../components/quote/QuoteCalculator'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 /**
- * Página de inicio: las secciones de la maqueta, en el orden que pidió el
- * cliente: Proyectos primero (specs-001, P-8) y Proceso antes que Servicios
- * (specs-003, RF-23). El menú del encabezado conserva su propio orden.
+ * Página de inicio, en el orden que pidió el cliente: Proyectos (negro),
+ * Proceso en tarjetas numeradas (claro), Servicios con portadas (negro) y
+ * Contacto (specs-008). El menú del encabezado conserva su propio orden.
  * Cada sección decide por sí misma si se muestra (según el panel).
  */
 export default function HomePage() {

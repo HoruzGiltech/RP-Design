@@ -88,7 +88,7 @@ Migraciones `site_content.0016` (opciones del campo `key`) y `0017` (datos):
 
 ### 3.1 Modelo (`site_content`)
 
-- `ProcessSection`: `intro` (texto, opcional) y `show_video` (casilla, por defecto marcada).
+- `ProcessSection`: `show_video` (casilla, por defecto marcada). El campo `intro` ya existía. En el panel la sección pasa a llamarse "Proceso" (antes "Proceso (encabezado)"). Migraciones `site_content.0019` (esquema) y `0020` (títulos).
 - Migración de datos: si `ServicesSection.title` sigue siendo "Un solo equipo para todo tu proyecto", ese título y su introducción pasan a `ProcessSection`, y `ServicesSection` queda con "Servicios" y sin introducción. Si el cliente ya los cambió, no se toca nada.
 - `/api/site/`: `process` agrega `intro` y `show_video`.
 

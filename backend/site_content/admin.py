@@ -117,7 +117,7 @@ class ServicesSectionAdmin(SingletonAdmin):
 
 @admin.register(ProcessSection)
 class ProcessSectionAdmin(SingletonAdmin):
-    """El encabezado de Proceso y, debajo, sus pasos."""
+    """El título de la sección Proceso, su video y, debajo, sus pasos numerados."""
 
     inlines = [ProcessStepInline]
 

@@ -41,12 +41,11 @@ class InitialContentTests(TestCase):
         # specs-001: el título de la Portada queda vacío y el botón cambia de texto
         self.assertEqual(HeroSection.objects.get().title, "")
         self.assertEqual(HeroSection.objects.get().primary_cta_text, "Agenda una reunión")
-        self.assertEqual(
-            ServicesSection.objects.get().title, "Un solo equipo para todo tu proyecto"
-        )
+        # specs-008: el título general pasó de Servicios a Proceso
+        self.assertEqual(ServicesSection.objects.get().title, "Servicios")
         self.assertEqual(ProjectsSection.objects.get().title, "Mis Proyectos")
         self.assertEqual(
-            ProcessSection.objects.get().title, "Ve tu espacio antes de construirlo"
+            ProcessSection.objects.get().title, "Un solo equipo para todo tu proyecto"
         )
         self.assertEqual(ContactSection.objects.get().title, "Cuéntanos sobre tu espacio")
         self.assertEqual(ContactSection.objects.get().submit_text, "Enviar por WhatsApp")

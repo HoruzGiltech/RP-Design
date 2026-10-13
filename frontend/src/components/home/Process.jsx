@@ -1,68 +1,61 @@
 import { useSite } from '../../context/SiteContext'
-import MediaPlaceholder from '../media/MediaPlaceholder'
 import Reveal from '../ui/Reveal'
 import Section from '../ui/Section'
 import './Process.css'
 
-const LETTER_A_CODE = 65
-
-/** 0 -> "A", 1 -> "B"... La letra sale de la posición, no se guarda en el panel. */
-function formatLetter(position) {
-  return String.fromCharCode(LETTER_A_CODE + position)
+/** 0 -> "01", 1 -> "02"... El número sale de la posición, no se guarda en el panel. */
+function formatNumber(position) {
+  return String(position + 1).padStart(2, '0')
 }
 
-/** Video recorrido, su imagen de vista previa o un recuadro liso. */
-function ProcessMedia({ process }) {
-  if (process.video) {
-    return (
-      // Con controles y sin reproducción automática: lo inicia el visitante
-      <video
-        className="process__media-item"
-        src={process.video}
-        poster={process.video_poster || undefined}
-        controls
-        preload="metadata"
-        playsInline
-      />
-    )
-  }
-  if (process.video_poster) {
-    // Solo hay imagen de vista previa: se muestra como adorno
-    return <img className="process__media-item" src={process.video_poster} alt="" loading="lazy" />
-  }
-  return <MediaPlaceholder variant="light" />
-}
-
+/**
+ * Sección Proceso: el título, la introducción y los pasos como tarjetas
+ * numeradas (specs-008, RF-58). El video recorrido se muestra solo si el
+ * cliente dejó marcada la casilla del panel y cargó uno (RF-59).
+ */
 export default function Process() {
   const { data: site } = useSite()
   const { process } = site
 
+  // Oculta desde el panel, o sin pasos que mostrar: no se deja un título suelto
   if (!process.is_visible || process.steps.length === 0) return null
+
+  const showVideo = process.show_video && Boolean(process.video)
 
   return (
     <Section id="proceso" className="process">
-      <div className="process__intro-column">
+      <div className="process__header">
         <Reveal as="h2">{process.title}</Reveal>
         {process.intro && (
           <Reveal as="p" index={1} className="process__intro">
             {process.intro}
           </Reveal>
         )}
-        <Reveal index={2} className="process__media">
-          <ProcessMedia process={process} />
-        </Reveal>
       </div>
 
-      <ol className="process__steps">
+      {showVideo && (
+        <Reveal className="process__media">
+          {/* Con controles y sin reproducción automática: lo inicia el visitante */}
+          <video
+            className="process__video"
+            src={process.video}
+            poster={process.video_poster || undefined}
+            controls
+            preload="metadata"
+            playsInline
+          />
+        </Reveal>
+      )}
+
+      {/* <ol>: los pasos tienen un orden, y un lector de pantalla lo anuncia */}
+      <ol className="process__grid">
         {process.steps.map((step, position) => (
-          <Reveal as="li" key={step.id} index={position} className="process__step">
-            <span className="process__letter" aria-hidden="true">
-              {formatLetter(position)}
+          <Reveal as="li" key={step.id} index={position} className="process__card">
+            <span className="process__number" aria-hidden="true">
+              {formatNumber(position)}
             </span>
-            <div className="process__step-text">
-              <h3>{step.title}</h3>
-              <p className="process__step-description">{step.description}</p>
-            </div>
+            <h3 className="process__title">{step.title}</h3>
+            <p className="process__description">{step.description}</p>
           </Reveal>
         ))}
       </ol>

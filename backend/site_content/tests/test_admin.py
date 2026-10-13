@@ -123,6 +123,8 @@ class SiteContentAdminTests(TempMediaMixin, TestCase):
         self.assertContains(services, "Levantamiento de espacio")
         self.assertContains(services, 'name="cta_text"')
         self.assertContains(process, "Planimetría")
+        # specs-008: casilla para mostrar u ocultar el video del proceso
+        self.assertContains(process, 'name="show_video"')
 
     def section_form(self, prefix, items):
         """Datos del formulario de una sección con su tabla de elementos."""

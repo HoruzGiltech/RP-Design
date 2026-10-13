@@ -7,6 +7,7 @@ from site_content.models import (
     HeroSection,
     LegalPage,
     LegalSection,
+    ProcessSection,
     ProcessStep,
     QuoteFormField,
     Service,
@@ -56,7 +57,7 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         self.assertEqual(site["hero"]["eyebrow"], "ESTUDIO DE DISEÑO DE INTERIORES · CARACAS")
         self.assertEqual(site["hero"]["title"], "")
         self.assertEqual(site["hero"]["primary_cta_text"], "Agenda una reunión")
-        self.assertEqual(site["services"]["title"], "Un solo equipo para todo tu proyecto")
+        self.assertEqual(site["services"]["title"], "Servicios")
         self.assertEqual(
             [item["title"] for item in site["services"]["items"]],
             ["Levantamiento de espacio", "Proyecto de diseño", "Ejecución de obra"],
@@ -168,6 +169,23 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         SiteSettings.objects.update(show_estimate=False)
 
         self.assertFalse(self.get_site()["settings"]["show_estimate"])
+
+    # --- specs-008: proceso con el título general y casilla del video ---
+
+    def test_process_has_the_main_title_and_services_start_as_servicios(self):
+        site = self.get_site()
+
+        self.assertEqual(site["process"]["title"], "Un solo equipo para todo tu proyecto")
+        self.assertTrue(site["process"]["intro"])
+        self.assertEqual(site["services"]["title"], "Servicios")
+        self.assertEqual(site["services"]["intro"], "")
+
+    def test_process_video_is_shown_by_default_and_can_be_hidden(self):
+        self.assertTrue(self.get_site()["process"]["show_video"])
+
+        ProcessSection.objects.update(show_video=False)
+
+        self.assertFalse(self.get_site()["process"]["show_video"])
 
     def test_services_have_the_text_of_the_quote_button(self):
         self.assertEqual(self.get_site()["services"]["cta_text"], "Cotizar")

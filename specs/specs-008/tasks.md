@@ -25,16 +25,16 @@ Prefijo `S8-`. Se entrega por bloques, con una pausa ✋ al final de cada uno.
 - [x] **S8-B5** Panel: cotizaciones con los campos nuevos; se retiran "Áreas y precios" y el bloque "Calculadora". *(RF-63.3, RF-63.4, CA-63.1, CA-63.2)*
 - [x] **S8-B6** Frontend: formulario nuevo y limpieza de componentes y utilidades. *(RF-61 a RF-63, CA-62.1, CA-62.2)*
 - [x] **S8-B7** Prueba en el navegador con envío real y revisión a 360, 768 y 1280 px.
-- [ ] **S8-B8** ✋ **Prueba del bloque 1.**
+- [x] **S8-B8** ✋ **Prueba del bloque 1.** (El desarrollador pidió el campo de m² numérico con el ejemplo "10 m²" y, hecho eso, continuar: 2026-10-13.)
 
 ---
 
 ## Bloque 2 — Secciones del inicio
 
-- [ ] **S8-C1** `ProcessSection.intro` y `show_video`; migración de los títulos. *(RF-58.3, RF-59, RF-60.3)*
-- [ ] **S8-C2** Proceso en tarjetas numeradas, con el video según la casilla. *(RF-58, RF-59, CA-58.1, CA-58.2, CA-59.1)*
-- [ ] **S8-C3** Servicios sin números. *(RF-60, CA-60.1, CA-60.2)*
-- [ ] **S8-C4** Revisión responsive y de accesibilidad.
+- [x] **S8-C1** `ProcessSection.intro` y `show_video`; migración de los títulos. *(RF-58.3, RF-59, RF-60.3)*
+- [x] **S8-C2** Proceso en tarjetas numeradas, con el video según la casilla. *(RF-58, RF-59, CA-58.1, CA-58.2, CA-59.1)*
+- [x] **S8-C3** Servicios sin números. *(RF-60, CA-60.1, CA-60.2)*
+- [x] **S8-C4** Revisión responsive y de accesibilidad.
 - [ ] **S8-C5** ✋ **Prueba del bloque 2.**
 
 ---
