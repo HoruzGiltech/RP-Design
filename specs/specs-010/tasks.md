@@ -22,5 +22,5 @@ Las tareas llevan el prefijo `S10-`. Es un solo bloque, con una pausa ✋ al fin
 
 ## Fase C — Publicación y cierre
 
-- [ ] **S10-C1** Push y comprobación en `rpdesignve.com` (solo Vercel; el backend no cambia).
+- [x] **S10-C1** Push y comprobación en `rpdesignve.com` (solo Vercel; el backend no cambia). (2026-10-14: Vercel lo publicó en ~20 s.)
 - [x] **S10-C2** Actualizar `AGENTS.md` (RF-67, paquete cerrado).
