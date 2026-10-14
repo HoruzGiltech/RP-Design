@@ -220,6 +220,51 @@ En `https://<backend>/<nombre-del-panel>/`:
 
 ---
 
+## Parte 6 — Dominio propio (GoDaddy)
+
+Hecho el 2026-10-14 con `rpdesignve.com`, comprado en GoDaddy. El DNS se queda en GoDaddy; Vercel y Railway crean solos los certificados HTTPS (Let's Encrypt) y los renuevan.
+
+| Dirección | Apunta a |
+|---|---|
+| `rpdesignve.com` y `www.rpdesignve.com` | Vercel (el sitio) |
+| `api.rpdesignve.com` | Railway (backend y panel) |
+
+### 6.1 El sitio en Vercel
+1. Vercel → proyecto → *Settings → Domains* → agrega `rpdesignve.com` (Vercel ofrece agregar también `www`).
+2. GoDaddy → *Mis productos → DNS*:
+   - Registro **A** con nombre `@`: cambia el valor ("Parked") por la IP que muestra Vercel (fue `216.198.79.1`). Si hay más registros A con nombre `@`, bórralos.
+   - Registro **CNAME** con nombre `www`: puede quedar apuntando a `rpdesignve.com.` (GoDaddy lo trae así); Vercel lo acepta.
+   - **No toques** los registros NS ni SOA.
+3. Espera a que Vercel marque los dominios como *Valid Configuration*.
+
+### 6.2 El backend en Railway
+1. Railway → servicio del backend → *Settings → Networking → Custom Domain* → `api.rpdesignve.com`, puerto `8000`.
+2. En GoDaddy agrega los dos registros que muestra Railway: **CNAME** `api` → `xxxx.up.railway.app` y **TXT** `_railway-verify.api` → `railway-verify=…`.
+3. Railway tarda unos minutos en verificar. Mientras tanto, `https://api.rpdesignve.com` responde **400**: es normal hasta cambiar las variables.
+
+### 6.3 Variables
+Se agregan las direcciones nuevas **sin quitar las de la demo**, separadas por coma, sin espacios y sin `/` al final.
+
+En Railway:
+```
+DJANGO_ALLOWED_HOSTS=rp-design-production.up.railway.app,api.rpdesignve.com
+CSRF_TRUSTED_ORIGINS=https://rp-design-production.up.railway.app,https://api.rpdesignve.com
+CORS_ALLOWED_ORIGINS=https://rp-design-pi.vercel.app,https://rpdesignve.com,https://www.rpdesignve.com
+```
+
+En Vercel, `VITE_API_URL=https://api.rpdesignve.com/api` y después *Redeploy*.
+
+El panel queda en `https://api.rpdesignve.com/<ADMIN_URL>` (el valor está en las variables de Railway).
+
+### 6.4 Comprobar
+- `http://rpdesignve.com` lleva solo a `https://`.
+- Las fotos que entrega la API empiezan por `https://api.rpdesignve.com/media/`.
+- Si **tu** navegador dice "No seguro" o te lleva a `/lander` y en incógnito no pasa, es memoria del navegador (ver `docs/problemas-frecuentes.md`, número 16).
+
+`VITE_ROBOTS` pasó a `index, follow` el 2026-10-14, cuando los textos legales quedaron escritos. Si Vercel no deja guardarla ("Remove the public framework prefix…"), bórrala y créala de nuevo como **Config**; después, *Redeploy*.
+
+---
+
 ## Si algo sale mal
 
 | Qué ves | Causa probable | Qué hacer |

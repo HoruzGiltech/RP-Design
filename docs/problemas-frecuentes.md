@@ -212,6 +212,18 @@ Antes de publicar conviene construir desde una copia limpia; `git status --ignor
 
 Están en la tabla "Si algo sale mal" de `docs/despliegue-demo.md`: variables mal escritas, dirección interna de la base de datos, carpeta raíz sin confirmar y variables de Vercel creadas como `Secret`.
 
+## 16. Tras conectar el dominio, el navegador lleva a `http://rpdesignve.com/lander` o dice "No seguro"
+
+**Cuándo aparece:** en el navegador con el que se visitó el dominio antes de apuntarlo a Vercel. En incógnito o en otro equipo el sitio abre bien y con candado.
+
+**Causa:** `/lander` es la página de "dominio estacionado" de GoDaddy, que se servía por `http://`. El navegador guardó esa redirección y la sugiere en el autocompletado de la barra.
+
+**Solución:**
+1. Comprobar en incógnito que `https://rpdesignve.com` abre con candado (si no, el problema es del DNS: ver `docs/despliegue-demo.md`, Parte 6).
+2. Cerrar todas las pestañas del sitio.
+3. `chrome://net-internals/#dns` → *Clear host cache*; Ctrl + Shift + Supr → "Imágenes y archivos en caché" → "Desde siempre"; y `ipconfig /flushdns`.
+4. En la barra, escribir `rpdesignve`, pasar el mouse por la sugerencia `…/lander` y quitarla con la X (o Shift + Supr). Abrir escribiendo `https://rpdesignve.com` completo.
+
 ---
 
 ## Cómo agregar un problema nuevo

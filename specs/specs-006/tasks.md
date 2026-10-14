@@ -38,19 +38,30 @@ Las tareas llevan el prefijo `S6-`. Se entrega **por bloques**, con una pausa �
 ## Bloque 3 — Publicación
 
 - [x] **S6-D1** El desarrollador crea los servicios en Railway y el proyecto en Vercel siguiendo la guía. *(CA-55.1)* (Hecho el 2026-10-13: sitio en `rp-design-pi.vercel.app`, backend en `rp-design-production.up.railway.app`. Hizo falta ayuda en cinco puntos, que quedaron anotados en la guía.)
-- [~] **S6-D2** Copia de los datos y de los archivos; usuarios del panel. *(RF-54, CA-54.1, CA-54.2)* (Datos y archivos copiados el 2026-10-13. Faltan los usuarios del panel.)
-- [ ] **S6-D3** Prueba del sitio publicado: inicio, proyectos, recarga de una dirección interna, formulario con envío real, panel y etiqueta `robots`. *(CA-52.1, CA-53.1)*
-- [ ] **S6-D4** ✋ **Aprobación final** y enlace para el cliente.
+- [x] **S6-D2** Copia de los datos y de los archivos; usuarios del panel. *(RF-54, CA-54.1, CA-54.2)* (Datos y archivos copiados el 2026-10-13. El 2026-10-14 se creó desde el panel el usuario del cliente: staff, grupo Admin, sin superusuario.)
+- [x] **S6-D3** Prueba del sitio publicado: inicio, proyectos, recarga de una dirección interna, formulario con envío real, panel y etiqueta `robots`. *(CA-52.1, CA-53.1)* (2026-10-14, ya con el dominio propio: las páginas internas recargan, `/admin/` da 404 y `robots` sigue en `noindex,nofollow`. El desarrollador probó el formulario, WhatsApp, el panel y el usuario del cliente.)
+- [x] **S6-D4** ✋ **Aprobación final** y enlace para el cliente. (Aprobado el 2026-10-14. Enlace: `https://rpdesignve.com`.)
+
+---
+
+## Bloque 4 — Dominio propio *(agregado el 2026-10-14, a pedido del desarrollador)*
+
+> El cliente compró `rpdesignve.com` en GoDaddy. El desarrollador eligió conectarlo a lo que ya funciona (Vercel + Railway) en vez de mudarse antes a Cloudflare. No hubo cambios de código: solo DNS y variables. Los pasos están en `docs/despliegue-demo.md`, Parte 6.
+
+- [x] **S6-F1** `rpdesignve.com` y `www.rpdesignve.com` → Vercel (registros A y CNAME en GoDaddy), con HTTPS.
+- [x] **S6-F2** `api.rpdesignve.com` → Railway (CNAME y TXT de verificación en GoDaddy), con HTTPS.
+- [x] **S6-F3** Variables: `DJANGO_ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` y `CORS_ALLOWED_ORIGINS` en Railway (sin quitar las direcciones de la demo) y `VITE_API_URL` en Vercel.
+- [x] **S6-F4** Comprobación: `http://` redirige a `https://` en los tres dominios, los certificados son válidos y las fotos de la API salen con `https://api.rpdesignve.com/media/`.
 
 ---
 
 ## Fase E — Cierre
 
 - [x] **S6-E1** Actualizar `docs/problemas-frecuentes.md` con los errores que aparezcan al publicar.
-- [ ] **S6-E2** Anotar en `specs/tasks.md` (Fase 5) qué quedó adelantado por esta demo.
+- [x] **S6-E2** Anotar en `specs/tasks.md` (Fase 5) qué quedó adelantado por esta demo.
 
 ---
 
 ## Después de specs-006: despliegue definitivo
 
-> ⚠️ **Sigue pendiente.** `specs/tasks.md`, Fase 5: dominio, Cloudflare Pages, R2 (con su código), dominios propios, lista de seguridad completa, Lighthouse y guía del panel para el cliente. Ver `requirements.md` §6.
+> ⚠️ **Sigue pendiente.** `specs/tasks.md`, Fase 5: DNS en Cloudflare, Cloudflare Pages, R2 (con su código), lista de seguridad completa, Lighthouse y guía del panel para el cliente. El dominio propio ya está conectado (Bloque 4). Ver `requirements.md` §6.

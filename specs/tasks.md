@@ -139,7 +139,7 @@
 - [x] **T-4.10** `GET /api/legal/<slug>/` y `legal_pages` en `/api/site/`. *(RF-07.6)*
 - [x] **T-4.11** Casilla de aceptación: `privacy_accepted` obligatorio en `POST /api/quotes/` y `privacy_accepted_at` en la cotización. *(RF-07.4, CA-07.3)*
 - [x] **T-4.12** Frontend: páginas `/terminos` y `/privacidad`, enlaces y crédito en el pie, y casilla en el formulario. *(RF-07.4, RF-07.5)*
-- [ ] **T-4.13** El cliente o su abogado escriben los textos legales en el panel. *(RF-07.3, CA-07.4)* Bloquea la publicación del sitio, no el desarrollo.
+- [x] **T-4.13** El cliente o su abogado escriben los textos legales en el panel. *(RF-07.3, CA-07.4)* (Escritos el 2026-10-14; comprobado que no queda ningún `[TEXTO PENDIENTE]`.)
 
 - [x] **T-4.8** ✋ **Revisión de fin de fase** y revisión de accesibilidad: formulario con teclado, contraste y `alt`. *(RNF-04)* (Aprobada el 2026-10-06.)
 
@@ -153,6 +153,9 @@
 
 ## Fase 5 — Despliegue *(cuando el cliente compre el dominio)*
 
+> **Adelantado por specs-006 (2026-10-14).** El sitio ya funciona en `https://rpdesignve.com` (Vercel) y `https://api.rpdesignve.com` (Railway, con Postgres y los archivos en un volumen). El dominio se compró en **GoDaddy** y el DNS sigue ahí, no en Cloudflare. Hecho: el dominio (parte de T-5.1), el backend en Railway con `gunicorn` (T-5.3), las migraciones, los estáticos y los usuarios (T-5.4), los dominios propios y sus variables (T-5.6, con Vercel en lugar de Pages) y HTTPS en los tres dominios (parte de T-5.7).
+> **Sigue pendiente:** pasar el DNS a Cloudflare, R2 (T-5.2), Cloudflare Pages (T-5.5), el resto de T-5.7, T-5.8 y T-5.9. Al terminar la mudanza, quitar de las variables las direcciones `*.vercel.app` y `*.up.railway.app`.
+
 - [ ] **T-5.1** Comprar el dominio y agregarlo a Cloudflare (DNS).
 - [ ] **T-5.2** Crear el bucket en Cloudflare R2, el token de acceso con permisos mínimos y el dominio `media.<dominio>`.
 - [ ] **T-5.3** Railway: crear el servicio del backend y Postgres, configurar las variables de entorno de producción y usar `gunicorn`.
@@ -165,7 +168,7 @@
   - [ ] HTTPS en los tres dominios
   - [ ] El rate limit responde 429
   - [ ] La URL del panel no es `/admin/`
-  - [ ] Las páginas legales no tienen ningún `[TEXTO PENDIENTE]` (T-4.13)
+  - [x] Las páginas legales no tienen ningún `[TEXTO PENDIENTE]` (T-4.13)
   - [ ] Respaldos de Postgres activos
 - [ ] **T-5.8** Lighthouse en móvil: Performance ≥ 85, Accesibilidad ≥ 90. *(RNF-03)*
 - [ ] **T-5.9** Entrega al cliente: guía corta de uso del panel (cómo subir un proyecto, cambiar precios y ver cotizaciones).
