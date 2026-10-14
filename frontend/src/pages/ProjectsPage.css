@@ -35,3 +35,40 @@
   border-color: var(--color-on-dark);
   color: var(--color-on-dark);
 }
+
+/* --- "Volver" arriba del título (specs-010, RF-67) --- */
+
+.projects-page__back {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  /* Altura cómoda para tocar con el dedo */
+  min-height: 44px;
+  /* La página separa sus bloques con 48px; el enlace va más cerca del
+     título para leerse como parte del encabezado */
+  margin-bottom: calc(var(--space-16) - var(--space-48));
+  color: var(--color-on-dark);
+  font-size: var(--text-nav);
+  text-decoration: none;
+}
+
+.projects-page__back-arrow {
+  transition: transform var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .projects-page__back:hover .projects-page__back-arrow {
+    transform: translateX(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-page__back-arrow {
+    transition: none;
+  }
+
+  .projects-page__back:hover .projects-page__back-arrow {
+    transform: none;
+  }
+}

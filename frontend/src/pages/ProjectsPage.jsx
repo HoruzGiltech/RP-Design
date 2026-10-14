@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import { getProjectCategories, getProjects } from '../api/endpoints'
 import CategoryFilter from '../components/projects/CategoryFilter'
@@ -45,6 +45,15 @@ export default function ProjectsPage() {
 
   return (
     <Section variant="dark" className="projects-page">
+      {/* Vuelve al inicio, a la sección desde donde se entra (specs-010, RF-67).
+          Es un enlace y no el "atrás" del navegador: cada filtro cambia la
+          dirección, y "atrás" iría pasando por todos los filtros tocados */}
+      <Link to="/#proyectos" className="projects-page__back">
+        <span className="projects-page__back-arrow" aria-hidden="true">
+          ←
+        </span>
+        Volver
+      </Link>
       {/* key: al cambiar de categoría, el título vuelve a entrar con su animación */}
       <Reveal as="h1" key={title} className="projects-page__title">
         {title}
