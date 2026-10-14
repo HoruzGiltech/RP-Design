@@ -29,9 +29,9 @@ Las tareas llevan el prefijo `S9-`. Se entrega **por bloques**, con una pausa �
 - [x] **S9-C2** CSS: fondo a todo el ancho, capa oscura y alto en escritorio y celular. *(CA-65.4)*
 - [x] **S9-C3** Tests de Vitest (8 de `pickProjectsBackground`; sin librería de componentes, ver `design.md` §3.2). `npm run lint`, `npm test`, `npm run build` y `manage.py test` en verde.
 - [x] **S9-C4** Prueba en el navegador (escritorio y celular): con imagen, con video, sin archivos y con la casilla desmarcada. *(CA-65.3, CA-66.2)* (Playwright, 1440×900 y 390×844: el video se reproduce sin sonido; con "reducir movimiento" sale la imagen con su alt; la sección mide 60 % y 50 % de la pantalla; sin barra horizontal; desmarcada o sin archivos queda como antes y no descarga nada. La capa se oscureció a la derecha para que el enlace de Instagram se lea sobre fotos claras.)
-- [ ] **S9-C5** ✋ **Prueba del desarrollador.**
+- [x] **S9-C5** ✋ **Prueba del desarrollador.** (Aprobada el 2026-10-14.)
 
 ## Fase D — Publicación y cierre
 
-- [ ] **S9-D1** Push. Railway aplica la migración al arrancar y Vercel construye el sitio. Comprobar en `rpdesignve.com`.
-- [ ] **S9-D2** Actualizar `AGENTS.md` (RF-65 y RF-66, paquete cerrado).
+- [x] **S9-D1** Push. Railway aplica la migración al arrancar y Vercel construye el sitio. Comprobar en `rpdesignve.com`. (2026-10-14: Railway aplicó la migración en ~2 min y Vercel publicó el sitio; la API ya devuelve los campos nuevos con la casilla desmarcada.)
+- [x] **S9-D2** Actualizar `AGENTS.md` (RF-65 y RF-66, paquete cerrado).

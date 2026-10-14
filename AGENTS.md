@@ -49,8 +49,8 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-008/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
-- **Trabajo en curso:** `specs/specs-009/` (imagen o video de fondo en la sección Proyectos del inicio; aprobado; bloque 1 hecho). El siguiente paquete de cambios es `specs/specs-010/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-009/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
+- **Trabajo en curso:** ninguno. El siguiente paquete de cambios es `specs/specs-010/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: DNS en Cloudflare, Cloudflare Pages y R2). specs-006 adelanta una parte: el sitio ya funciona en `https://rpdesignve.com` (Vercel) y `https://api.rpdesignve.com` (Railway), con el DNS en GoDaddy. No se empieza sin que el desarrollador lo pida.
 
@@ -220,6 +220,11 @@ El detalle está en `specs/specs-008/requirements.md`. En resumen:
 - **RF-64 — Animaciones:** las entradas se repiten cada vez que el elemento vuelve a la pantalla.
 - **RF-61 a RF-63 — Formulario:** el tipo de remodelación es un texto libre, hay un solo campo de m² (opcional) y ya no se calcula ni se muestra ningún precio. Las cotizaciones anteriores conservan sus áreas y montos.
 
+### Cambios de specs-009 (RF-65 y RF-66)
+El detalle está en `specs/specs-009/requirements.md`. En resumen:
+- **RF-65 — Fondo de Proyectos:** la franja de Proyectos del inicio puede llevar una imagen o un video de fondo (el video gana; la imagen es su vista previa y el respaldo con "reducir movimiento"), con el texto encima.
+- **RF-66 — Casilla del fondo:** se muestra u oculta desde el panel sin borrar los archivos; viene desmarcada.
+
 ---
 
 ## 5. Stack técnico
@@ -269,7 +274,7 @@ El detalle está en `specs/specs-008/requirements.md`. En resumen:
 │   ├── specs-006/  # publicación temporal en Vercel y Railway y dominio propio (implementado)
 │   ├── specs-007/  # subida de archivos en el panel y texto alternativo automático (implementado)
 │   ├── specs-008/  # formulario sin precios y nuevas secciones de proceso y servicios (implementado)
-│   └── specs-009/  # imagen o video de fondo en la sección Proyectos (en curso)
+│   └── specs-009/  # imagen o video de fondo en la sección Proyectos (implementado)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -386,7 +391,8 @@ Al terminar cada tarea o fase, responde con:
 10. **specs-006:** publicación temporal (demo) en Vercel y Railway, con los archivos en un volumen de Railway. Desde el 2026-10-14, con el dominio `rpdesignve.com` conectado. Cerrado el 2026-10-14.
 11. **specs-007:** el panel revisa los archivos al elegirlos, para no perder los ya elegidos, y completa solo el texto alternativo. Implementado y cerrado el 2026-10-13.
 12. **specs-008:** sexto paquete de cambios del cliente (formulario con tipo en texto libre, un solo campo de m² y sin estimado; proceso en tarjetas numeradas; servicios en sección negra arriba de Proyectos; entradas que se repiten). Implementado y cerrado el 2026-10-13.
-13. **Despliegue definitivo:** Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
+13. **specs-009:** séptimo paquete de cambios del cliente (imagen o video de fondo en la sección Proyectos, con casilla para mostrarlo). Implementado y cerrado el 2026-10-14.
+14. **Despliegue definitivo:** Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 

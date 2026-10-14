@@ -2,7 +2,7 @@
 
 > **Qué** se construye. Séptimo paquete de cambios del cliente.
 
-**Estado:** Aprobado (v1, 2026-10-14)
+**Estado:** Implementado y cerrado (2026-10-14)
 
 **Reglas:** las mismas de `AGENTS.md`. Este paquete solo describe lo que cambia; lo demás sigue como en `specs/` y en los paquetes anteriores.
 
