@@ -83,7 +83,25 @@ class ServicesSectionSerializer(serializers.ModelSerializer):
 class ProjectsSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectsSection
-        fields = ["is_visible", "title", "instagram_link_text", "view_all_text"]
+        fields = [
+            "is_visible",
+            "title",
+            "instagram_link_text",
+            "view_all_text",
+            "show_background",
+            "background_image",
+            "background_image_alt",
+            "background_video",
+        ]
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Con el fondo oculto no se mandan las direcciones: así el navegador
+        # no descarga ni la imagen ni el video (specs-009, CA-66.1)
+        if not instance.show_background:
+            data["background_image"] = None
+            data["background_video"] = None
+        return data
 
 
 class ProcessSectionSerializer(serializers.ModelSerializer):

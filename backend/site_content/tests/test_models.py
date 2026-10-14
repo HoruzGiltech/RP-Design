@@ -128,3 +128,25 @@ class SectionFilesTests(TempMediaMixin, TestCase):
 
         self.assertFalse(hero.image)
         self.assertFalse(hero.video)
+
+    # --- specs-009: fondo de la sección Proyectos ---
+
+    def test_projects_background_image_is_reduced_and_renamed(self):
+        section = ProjectsSection.load()
+        section.background_image = make_image_file("obra.jpg", size=(4000, 3000))
+        section.save()
+
+        self.assertEqual(Image.open(section.background_image).size, (1920, 1440))
+        self.assertRegex(section.background_image.name, r"^site/\d{4}/[0-9a-f]{32}\.jpg$")
+
+    def test_projects_background_video_must_be_a_real_video(self):
+        section = ProjectsSection.load()
+        section.background_video = make_fake_file("fondo.mp4")
+
+        with self.assertRaises(ValidationError) as error:
+            section.full_clean()
+
+        self.assertIn("background_video", error.exception.message_dict)
+
+    def test_projects_background_starts_hidden(self):
+        self.assertFalse(ProjectsSection.load().show_background)

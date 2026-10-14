@@ -2,13 +2,14 @@ from django.core.cache import cache
 from django.test import TestCase
 from django.urls import reverse
 
-from core.tests.helpers import TempMediaMixin, make_font_file, make_image_file
+from core.tests.helpers import TempMediaMixin, make_font_file, make_image_file, make_video_file
 from site_content.models import (
     HeroSection,
     LegalPage,
     LegalSection,
     ProcessSection,
     ProcessStep,
+    ProjectsSection,
     QuoteFormField,
     Service,
     ServicesSection,
@@ -261,6 +262,44 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
                 {"slug": "privacidad", "title": "Política de privacidad"},
             ],
         )
+
+    # --- specs-009: fondo de la sección Proyectos ---
+
+    def save_projects_background(self, show_background):
+        section = ProjectsSection.load()
+        section.background_image = make_image_file()
+        section.background_video = make_video_file()
+        section.background_image_alt = "Obra terminada"
+        section.show_background = show_background
+        section.save()
+        return section
+
+    def test_hidden_projects_background_sends_no_files(self):
+        self.save_projects_background(show_background=False)
+
+        projects = self.get_site()["projects_section"]
+
+        self.assertFalse(projects["show_background"])
+        self.assertIsNone(projects["background_image"])
+        self.assertIsNone(projects["background_video"])
+
+    def test_visible_projects_background_sends_both_files(self):
+        section = self.save_projects_background(show_background=True)
+
+        projects = self.get_site()["projects_section"]
+
+        self.assertTrue(projects["show_background"])
+        self.assertEqual(projects["background_image"], f"http://testserver{section.background_image.url}")
+        self.assertEqual(projects["background_video"], f"http://testserver{section.background_video.url}")
+        self.assertEqual(projects["background_image_alt"], "Obra terminada")
+
+    def test_visible_projects_background_without_files_sends_null(self):
+        ProjectsSection.objects.update(show_background=True)
+
+        projects = self.get_site()["projects_section"]
+
+        self.assertIsNone(projects["background_image"])
+        self.assertIsNone(projects["background_video"])
 
 
 class LegalPageApiTests(TestCase):

@@ -244,6 +244,29 @@ class ProjectsSection(SingletonModel, VisibleModel):
     title = models.CharField("título", max_length=160)
     instagram_link_text = models.CharField("texto del enlace a Instagram", max_length=60)
     view_all_text = models.CharField('texto del botón "Ver todos"', max_length=60)
+    # Fondo de la franja del inicio (specs-009, RF-65 y RF-66)
+    background_image = site_image_field(
+        "imagen de fondo",
+        help_text=(
+            "Ocupa todo el ancho de la sección, con el título encima. "
+            "También es la vista previa del video."
+        ),
+    )
+    background_image_alt = models.CharField(
+        "texto alternativo de la imagen", max_length=150, blank=True
+    )
+    background_video = site_video_field(
+        "video de fondo",
+        help_text=(
+            "Opcional. Se reproduce en bucle y sin sonido en lugar de la imagen. "
+            "Súbelo corto y ya comprimido."
+        ),
+    )
+    show_background = models.BooleanField(
+        "mostrar la imagen o el video de fondo",
+        default=False,
+        help_text="Desmárcala para volver al fondo negro sin borrar los archivos.",
+    )
 
     class Meta:
         verbose_name = "proyectos (encabezado)"
@@ -251,6 +274,10 @@ class ProjectsSection(SingletonModel, VisibleModel):
 
     def __str__(self):
         return "Proyectos (encabezado)"
+
+    def save(self, *args, **kwargs):
+        optimize_image_field(self, "background_image")
+        super().save(*args, **kwargs)
 
 
 class ProcessSection(SingletonModel, VisibleModel):

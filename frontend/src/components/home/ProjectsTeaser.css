@@ -16,3 +16,16 @@
   color: var(--color-on-dark);
   font-size: var(--text-nav);
 }
+
+/* Con imagen o video de fondo, la franja crece para que el fondo se luzca,
+   sin llegar a la pantalla completa del hero (specs-009, P-65) */
+.projects-teaser--with-background {
+  justify-content: center;
+  min-height: 60vh;
+}
+
+@media (max-width: 767px) {
+  .projects-teaser--with-background {
+    min-height: 50vh;
+  }
+}

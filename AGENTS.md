@@ -49,10 +49,10 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-005/`, `specs/specs-007/` y `specs/specs-008/`, implementados.
-- **Trabajo en curso:** `specs/specs-006/` (la demo en Vercel y Railway ya está publicada; faltan los usuarios del panel y las comprobaciones finales). El siguiente paquete de cambios es `specs/specs-009/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-008/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
+- **Trabajo en curso:** `specs/specs-009/` (imagen o video de fondo en la sección Proyectos del inicio; aprobado; bloque 1 hecho). El siguiente paquete de cambios es `specs/specs-010/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
-- **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: dominio, Cloudflare Pages y R2). La demo de specs-006 adelanta una parte, pero no lo reemplaza. No se empieza sin que el desarrollador lo pida.
+- **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: DNS en Cloudflare, Cloudflare Pages y R2). specs-006 adelanta una parte: el sitio ya funciona en `https://rpdesignve.com` (Vercel) y `https://api.rpdesignve.com` (Railway), con el DNS en GoDaddy. No se empieza sin que el desarrollador lo pida.
 
 1. **Requisitos:** a partir de la sección 4 de este archivo, crea/actualiza `specs/requirements.md`.
 2. **Diseño:** documenta modelos de datos, endpoints y componentes en `specs/design.md`.
@@ -266,9 +266,10 @@ El detalle está en `specs/specs-008/requirements.md`. En resumen:
 │   ├── specs-003/  # tercer paquete de cambios (implementado)
 │   ├── specs-004/  # cuarto paquete de cambios (implementado)
 │   ├── specs-005/  # quinto paquete de cambios (implementado)
-│   ├── specs-006/  # publicación temporal en Vercel y Railway (trabajo en curso)
+│   ├── specs-006/  # publicación temporal en Vercel y Railway y dominio propio (implementado)
 │   ├── specs-007/  # subida de archivos en el panel y texto alternativo automático (implementado)
-│   └── specs-008/  # formulario sin precios y nuevas secciones de proceso y servicios (implementado)
+│   ├── specs-008/  # formulario sin precios y nuevas secciones de proceso y servicios (implementado)
+│   └── specs-009/  # imagen o video de fondo en la sección Proyectos (en curso)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -353,7 +354,7 @@ Al terminar cada tarea o fase, responde con:
 | Hosting | Cloudflare Pages (front) + R2 (media) + Railway o VPS (Django + Postgres) |
 | Contenido | Todas las secciones editables desde el panel |
 | WhatsApp | Enlace `wa.me`, y el mensaje se guarda en la base de datos |
-| Dominio | Aún no comprado; se define en la fase de despliegue |
+| Dominio | `rpdesignve.com`, comprado en GoDaddy (DNS en GoDaddy). Sitio en `rpdesignve.com` y `www`, backend y panel en `api.rpdesignve.com` (specs-006, 2026-10-14) |
 | Roles del panel | Admin (todo) y Viewer (solo lectura); por ahora un solo usuario Admin |
 | Animaciones | Referencia: sparquitectosve.com, adaptada a la maqueta. Solo CSS, sin librerías |
 | Páginas legales | Términos y Privacidad, editables en el panel y con `[TEXTO PENDIENTE]` hasta que el cliente dé los textos. Sin aviso de cookies: el sitio no las usa |
@@ -369,7 +370,7 @@ Al terminar cada tarea o fase, responde con:
 | Tipografía | Dos fuentes cargables desde el panel, con las originales de respaldo (specs-003) |
 | Servicios | Tarjetas con portada; la descripción y "Cotizar" salen en una capa sobre la foto (specs-004) |
 | Forma de entrega | Por bloques, con una pausa de prueba en cada uno (desde specs-004) |
-| Demo en internet | Vercel (sitio) y Railway (backend, base de datos y volumen de archivos). Temporal: el destino final sigue siendo Cloudflare Pages + R2 (specs-006) |
+| Demo en internet | Vercel (sitio) y Railway (backend, base de datos y volumen de archivos). Ya con el dominio propio. El destino final sigue siendo Cloudflare Pages + R2 (specs-006) |
 
 ## 11. Fases del proyecto
 
@@ -382,14 +383,14 @@ Al terminar cada tarea o fase, responde con:
 7. **specs-003:** tercer paquete (tipografía, categorías ocultables, video en el hero, formulario con varias áreas y pie con iconos). Implementado y cerrado el 2026-10-09.
 8. **specs-004:** cuarto paquete (servicios con portada, sección Proyectos con solo el botón, descripción en el detalle y ajustes del formulario). Implementado y cerrado el 2026-10-09.
 9. **specs-005:** quinto paquete (categorías en el formulario, ubicación obligatoria, servicios a 4 columnas, capas en celular, animaciones en móvil y encabezado). Implementado y cerrado el 2026-10-13.
-10. **specs-006:** publicación temporal (demo) en Vercel y Railway, con los archivos en un volumen de Railway. **Es la fase en curso.**
+10. **specs-006:** publicación temporal (demo) en Vercel y Railway, con los archivos en un volumen de Railway. Desde el 2026-10-14, con el dominio `rpdesignve.com` conectado. Cerrado el 2026-10-14.
 11. **specs-007:** el panel revisa los archivos al elegirlos, para no perder los ya elegidos, y completa solo el texto alternativo. Implementado y cerrado el 2026-10-13.
 12. **specs-008:** sexto paquete de cambios del cliente (formulario con tipo en texto libre, un solo campo de m² y sin estimado; proceso en tarjetas numeradas; servicios en sección negra arriba de Proyectos; entradas que se repiten). Implementado y cerrado el 2026-10-13.
-13. **Despliegue definitivo:** dominio, Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
+13. **Despliegue definitivo:** Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 
 1. ¿El cliente quiere secciones **Nosotros** y **Testimonios**? No están en la maqueta; hoy están fuera de alcance (`specs/requirements.md` §6).
-2. Los **textos legales** (Términos y Privacidad) los debe entregar el cliente o su abogado. Hasta entonces las páginas muestran `[TEXTO PENDIENTE]`; bloquea la publicación, no el desarrollo.
+2. ~~Textos legales~~: resuelta el 2026-10-14, el cliente los escribió en el panel y el sitio ya se puede indexar.
 
 Ninguna bloquea el desarrollo.
