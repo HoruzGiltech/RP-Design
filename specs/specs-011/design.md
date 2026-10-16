@@ -2,7 +2,7 @@
 
 > **Cómo** se construyen los requisitos de `specs/specs-011/requirements.md`.
 
-**Estado:** Aprobado (2026-10-16), en implementación
+**Estado:** Implementado y cerrado (2026-10-16)
 
 ---
 

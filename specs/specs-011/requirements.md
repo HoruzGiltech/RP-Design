@@ -2,7 +2,7 @@
 
 > **Qué** se construye. Noveno paquete de cambios del cliente.
 
-**Estado:** Aprobado (2026-10-16), en implementación
+**Estado:** Implementado y cerrado (2026-10-16)
 
 **Reglas:** las mismas de `AGENTS.md`. Este paquete solo describe lo que cambia; lo demás sigue como en `specs/` y en los paquetes anteriores.
 

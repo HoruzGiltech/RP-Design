@@ -49,8 +49,8 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-010/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
-- **Trabajo en curso:** `specs/specs-011/` (video de fondo en la sección Proceso), aprobado el 2026-10-16, en implementación. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-011/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
+- **Trabajo en curso:** ninguno. El siguiente paquete de cambios es `specs/specs-012/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: DNS en Cloudflare, Cloudflare Pages y R2). specs-006 adelanta una parte: el sitio ya funciona en `https://rpdesignve.com` (Vercel) y `https://api.rpdesignve.com` (Railway), con el DNS en GoDaddy. No se empieza sin que el desarrollador lo pida.
 
@@ -229,6 +229,11 @@ El detalle está en `specs/specs-009/requirements.md`. En resumen:
 El detalle está en `specs/specs-010/requirements.md`. En resumen:
 - **RF-67 — "Volver" en `/proyectos`:** "← Volver" en blanco arriba del título; lleva al inicio, a la sección Proyectos (`/#proyectos`), no al "atrás" del navegador.
 
+### Cambios de specs-011 (RF-68 y RF-69)
+El detalle está en `specs/specs-011/requirements.md`. En resumen:
+- **RF-68 — Video de fondo en Proceso:** el video cubre toda la sección, con una capa oscura; el texto pasa a blanco y las tarjetas a oscuras translúcidas. Sin video o con la casilla desmarcada, la sección queda clara.
+- **RF-69 — Reproducción:** empieza solo, en bucle, sin sonido y sin botones; con "reducir movimiento" se ve la vista previa fija.
+
 ---
 
 ## 5. Stack técnico
@@ -279,7 +284,8 @@ El detalle está en `specs/specs-010/requirements.md`. En resumen:
 │   ├── specs-007/  # subida de archivos en el panel y texto alternativo automático (implementado)
 │   ├── specs-008/  # formulario sin precios y nuevas secciones de proceso y servicios (implementado)
 │   ├── specs-009/  # imagen o video de fondo en la sección Proyectos (implementado)
-│   └── specs-010/  # botón "Volver" en la página de proyectos (implementado)
+│   ├── specs-010/  # botón "Volver" en la página de proyectos (implementado)
+│   └── specs-011/  # video de fondo en la sección Proceso (implementado)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -398,7 +404,8 @@ Al terminar cada tarea o fase, responde con:
 12. **specs-008:** sexto paquete de cambios del cliente (formulario con tipo en texto libre, un solo campo de m² y sin estimado; proceso en tarjetas numeradas; servicios en sección negra arriba de Proyectos; entradas que se repiten). Implementado y cerrado el 2026-10-13.
 13. **specs-009:** séptimo paquete de cambios del cliente (imagen o video de fondo en la sección Proyectos, con casilla para mostrarlo). Implementado y cerrado el 2026-10-14.
 14. **specs-010:** octavo paquete de cambios del cliente ("← Volver" en la página de proyectos). Implementado y cerrado el 2026-10-14.
-15. **Despliegue definitivo:** Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
+15. **specs-011:** noveno paquete de cambios del cliente (video de fondo en la sección Proceso, solo, sin sonido y sin controles). Implementado y cerrado el 2026-10-16.
+16. **Despliegue definitivo:** Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 

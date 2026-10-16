@@ -31,5 +31,5 @@ Las tareas llevan el prefijo `S11-`. Son dos bloques, con una pausa ✋ al final
 
 ## Fase D — Publicación y cierre
 
-- [ ] **S11-D1** Push y comprobación en `rpdesignve.com` (Vercel y Railway, con la migración aplicada), incluida una prueba en un celular real.
-- [ ] **S11-D2** Actualizar `AGENTS.md` (RF-68 y RF-69, paquete cerrado).
+- [x] **S11-D1** Push y comprobación en `rpdesignve.com` (Vercel y Railway, con la migración aplicada), incluida una prueba en un celular real. (2026-10-16: Vercel publicó el sitio; la API de producción ya trae el video con la casilla marcada; en escritorio el video cubre la sección, se reproduce solo, en silencio y sin controles. La prueba en un celular real queda para el desarrollador.)
+- [x] **S11-D2** Actualizar `AGENTS.md` (RF-68 y RF-69, paquete cerrado).
