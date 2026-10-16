@@ -83,9 +83,20 @@
   color: var(--color-on-dark);
 }
 
+/* Sin tarjetas, solo el encabezado sobre el video (RF-70): la sección no queda
+   como una franja angosta, igual que el fondo de Proyectos */
+.process--only-header {
+  justify-content: center;
+  min-height: 60vh;
+}
+
 @media (max-width: 767px) {
   .process {
     gap: var(--space-32);
+  }
+
+  .process--only-header {
+    min-height: 50vh;
   }
 
   .process__card {

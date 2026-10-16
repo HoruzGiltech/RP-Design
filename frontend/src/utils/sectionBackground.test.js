@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { pickProcessBackground, pickProjectsBackground } from './sectionBackground'
+import { pickProcessBackground, pickProjectsBackground, shouldShowProcess } from './sectionBackground'
 
 const IMAGE = 'https://api.example.com/media/site/fondo.jpg'
 const VIDEO = 'https://api.example.com/media/site/fondo.mp4'
@@ -94,5 +94,26 @@ describe('pickProcessBackground', () => {
 
   it('con "reducir movimiento" y sin vista previa no hay fondo', () => {
     expect(pickProcessBackground(process({ video_poster: null }), true)).toBeNull()
+  })
+})
+
+describe('shouldShowProcess', () => {
+  const STEP = { id: 1, title: 'Visita técnica', description: 'Medimos el espacio' }
+  const VIDEO_BACKGROUND = { type: 'video', src: VIDEO, poster: POSTER }
+
+  it('con pasos se muestra, aunque no haya fondo', () => {
+    expect(shouldShowProcess({ is_visible: true, steps: [STEP] }, null)).toBe(true)
+  })
+
+  it('sin pasos pero con fondo se muestra (título, introducción y video)', () => {
+    expect(shouldShowProcess({ is_visible: true, steps: [] }, VIDEO_BACKGROUND)).toBe(true)
+  })
+
+  it('sin pasos ni fondo no se muestra', () => {
+    expect(shouldShowProcess({ is_visible: true, steps: [] }, null)).toBe(false)
+  })
+
+  it('oculta desde el panel no se muestra, tenga lo que tenga', () => {
+    expect(shouldShowProcess({ is_visible: false, steps: [STEP] }, VIDEO_BACKGROUND)).toBe(false)
   })
 })

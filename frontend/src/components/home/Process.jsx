@@ -1,6 +1,6 @@
 import { useSite } from '../../context/SiteContext'
 import { prefersReducedMotion } from '../../hooks/useReveal'
-import { pickProcessBackground } from '../../utils/sectionBackground'
+import { pickProcessBackground, shouldShowProcess } from '../../utils/sectionBackground'
 import Reveal from '../ui/Reveal'
 import Section from '../ui/Section'
 import SectionBackground from '../ui/SectionBackground'
@@ -21,15 +21,21 @@ export default function Process() {
   const { data: site } = useSite()
   const { process } = site
 
-  // Oculta desde el panel, o sin pasos que mostrar: no se deja un título suelto
-  if (!process.is_visible || process.steps.length === 0) return null
-
   const background = pickProcessBackground(process, prefersReducedMotion())
+
+  // Oculta desde el panel, o sin pasos ni video: no se deja un título suelto (RF-70)
+  if (!shouldShowProcess(process, background)) return null
+
+  const hasSteps = process.steps.length > 0
+  const classNames = ['process']
+  if (background) classNames.push('process--with-background')
+  // Sin tarjetas, la sección crece para que el video se luzca
+  if (!hasSteps) classNames.push('process--only-header')
 
   return (
     <Section
       id="proceso"
-      className={background ? 'process process--with-background' : 'process'}
+      className={classNames.join(' ')}
       background={background && <SectionBackground background={background} />}
     >
       <div className="process__header">
@@ -42,17 +48,19 @@ export default function Process() {
       </div>
 
       {/* <ol>: los pasos tienen un orden, y un lector de pantalla lo anuncia */}
-      <ol className="process__grid">
-        {process.steps.map((step, position) => (
-          <Reveal as="li" key={step.id} index={position} className="process__card">
-            <span className="process__number" aria-hidden="true">
-              {formatNumber(position)}
-            </span>
-            <h3 className="process__title">{step.title}</h3>
-            <p className="process__description">{step.description}</p>
-          </Reveal>
-        ))}
-      </ol>
+      {hasSteps && (
+        <ol className="process__grid">
+          {process.steps.map((step, position) => (
+            <Reveal as="li" key={step.id} index={position} className="process__card">
+              <span className="process__number" aria-hidden="true">
+                {formatNumber(position)}
+              </span>
+              <h3 className="process__title">{step.title}</h3>
+              <p className="process__description">{step.description}</p>
+            </Reveal>
+          ))}
+        </ol>
+      )}
     </Section>
   )
 }

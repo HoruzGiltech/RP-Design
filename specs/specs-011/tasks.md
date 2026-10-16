@@ -33,3 +33,12 @@ Las tareas llevan el prefijo `S11-`. Son dos bloques, con una pausa ✋ al final
 
 - [x] **S11-D1** Push y comprobación en `rpdesignve.com` (Vercel y Railway, con la migración aplicada), incluida una prueba en un celular real. (2026-10-16: Vercel publicó el sitio; la API de producción ya trae el video con la casilla marcada; en escritorio el video cubre la sección, se reproduce solo, en silencio y sin controles. La prueba en un celular real queda para el desarrollador.)
 - [x] **S11-D2** Actualizar `AGENTS.md` (RF-68 y RF-69, paquete cerrado).
+
+## Fase E — Ajuste: la sección no desaparece sin tarjetas (RF-70)
+
+- [x] **S11-E1** Agregar RF-70 a `requirements.md` y `design.md`.
+- [x] **S11-E2** `shouldShowProcess` con sus tests; `Process.jsx` sin `<ol>` vacío; alto mínimo sin tarjetas. *(RF-70)*
+- [x] **S11-E3** `npm run lint`, `npm test` y `npm run build` en verde. (37 tests.)
+- [x] **S11-E4** Prueba con Playwright en local: pasos ocultos con y sin video, sección oculta, y pasos de vuelta. *(CA-70.1 a CA-70.4)* (Sin pasos y con video: título, introducción y video, sin `<ol>`, 540 px de alto en 1440×900 y 422 px en 390×844; sin pasos y con el video desmarcado, o con la sección oculta: no aparece; con los pasos de vuelta: 4 tarjetas.)
+- [x] **S11-E5** ✋ **Prueba del desarrollador** en local. (Aprobada el 2026-10-16.)
+- [ ] **S11-E6** Push, comprobación en `rpdesignve.com` y cierre en `AGENTS.md`.

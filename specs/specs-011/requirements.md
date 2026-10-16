@@ -2,7 +2,7 @@
 
 > **Qué** se construye. Noveno paquete de cambios del cliente.
 
-**Estado:** Implementado y cerrado (2026-10-16)
+**Estado:** Implementado y cerrado (2026-10-16), incluido RF-70
 
 **Reglas:** las mismas de `AGENTS.md`. Este paquete solo describe lo que cambia; lo demás sigue como en `specs/` y en los paquetes anteriores.
 
@@ -14,6 +14,7 @@
 |---|---|---|
 | 1 | El video de la sección Proceso ("Un solo equipo para todo tu proyecto") deja de ser un recuadro con controles: pasa a ser el **fondo de toda la sección** | RF-68 |
 | 2 | El video se reproduce **solo**, apenas carga la sección, **sin sonido** y **sin botones visibles** | RF-69 |
+| 3 | Al ocultar todas las tarjetas del proceso, la sección desaparece entera aunque "Mostrar en el sitio" esté marcado y haya video. Debe seguir viéndose con el título, la introducción y el video | RF-70 |
 
 Es el video que hoy se ve en la sección **Proceso** como un recuadro con controles (reproducir, tiempo, volumen, pantalla completa) debajo del título "Un solo equipo para todo tu proyecto". Se carga en el panel, en **Proceso**. La sección **Proyectos** no cambia: solo se reutiliza el código que ya hace su fondo (specs-009).
 
@@ -50,6 +51,22 @@ Es el video que hoy se ve en la sección **Proceso** como un recuadro con contro
 - [ ] CA-69.3 No hay controles visibles en ningún momento, ni con el cursor encima ni al tocarlo.
 - [ ] CA-69.4 Con "reducir movimiento" activo, el video no se reproduce y se ve la imagen fija.
 
+### RF-70 — La sección Proceso se muestra sin tarjetas si tiene video
+
+Hasta ahora la sección se ocultaba entera si no había pasos visibles (specs-008), para no dejar un título suelto. Con el video de fondo, la sección tiene contenido propio aunque no haya tarjetas.
+
+1. Con **"Mostrar en el sitio"** marcado, la sección se muestra si tiene **al menos un paso visible o un fondo** (el video, o su vista previa con "reducir movimiento").
+2. Sin pasos visibles y con fondo, se ven el título, la introducción y el video, sin la cuadrícula vacía.
+3. Sin pasos visibles y sin fondo, la sección sigue sin mostrarse (no se deja un título suelto sobre fondo claro).
+4. Con **"Mostrar en el sitio"** desmarcado, la sección no se muestra, tenga lo que tenga.
+5. Sin tarjetas, la sección no queda como una franja angosta: tiene una altura mínima para que el video se luzca, como el fondo de Proyectos (60 % de la pantalla; 50 % en el celular), con el título centrado en vertical.
+
+**Criterios de aceptación**
+- [ ] CA-70.1 Con todos los pasos ocultos, video cargado y las dos casillas marcadas, se ven el título, la introducción y el video.
+- [ ] CA-70.2 Con todos los pasos ocultos y sin video (o con "Mostrar el video" desmarcada), la sección no aparece.
+- [ ] CA-70.3 Con "Mostrar en el sitio" desmarcado, la sección no aparece.
+- [ ] CA-70.4 Al volver a mostrar los pasos, las tarjetas aparecen como antes.
+
 ---
 
 ## 3. Lo que no cambia
@@ -70,3 +87,4 @@ Es el video que hoy se ve en la sección **Proceso** como un recuadro con contro
 | P-72 | Cuándo empieza | Apenas carga la página, como el fondo de Proyectos | Es lo más simple y fiable; el bucle hace que se vea en movimiento cuando la persona llega a la sección |
 | P-73 | Sonido del archivo | Se silencia siempre en el sitio; no hace falta quitarle el audio al subirlo | Los navegadores solo reproducen solos los videos sin sonido |
 | P-74 | Peso del video | Misma regla de siempre (≤ 50 MB), con la ayuda del panel pidiendo un video corto y comprimido | Un fondo pesado hace lenta la página en el celular |
+| P-75 | Dónde va RF-70 | En este mismo paquete, reabierto, y no en un specs-012 | Es un ajuste del cambio que se acaba de publicar, no un pedido nuevo |

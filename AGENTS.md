@@ -229,10 +229,11 @@ El detalle está en `specs/specs-009/requirements.md`. En resumen:
 El detalle está en `specs/specs-010/requirements.md`. En resumen:
 - **RF-67 — "Volver" en `/proyectos`:** "← Volver" en blanco arriba del título; lleva al inicio, a la sección Proyectos (`/#proyectos`), no al "atrás" del navegador.
 
-### Cambios de specs-011 (RF-68 y RF-69)
+### Cambios de specs-011 (RF-68 a RF-70)
 El detalle está en `specs/specs-011/requirements.md`. En resumen:
 - **RF-68 — Video de fondo en Proceso:** el video cubre toda la sección, con una capa oscura; el texto pasa a blanco y las tarjetas a oscuras translúcidas. Sin video o con la casilla desmarcada, la sección queda clara.
 - **RF-69 — Reproducción:** empieza solo, en bucle, sin sonido y sin botones; con "reducir movimiento" se ve la vista previa fija.
+- **RF-70 — Sin tarjetas:** con "Mostrar en el sitio" marcado, la sección se ve si tiene al menos un paso o el video; sin tarjetas, solo el título y la introducción sobre el video.
 
 ---
 

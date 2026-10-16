@@ -2,7 +2,7 @@
 
 > **Cómo** se construyen los requisitos de `specs/specs-011/requirements.md`.
 
-**Estado:** Implementado y cerrado (2026-10-16)
+**Estado:** Implementado y cerrado (2026-10-16), incluido RF-70
 
 ---
 
@@ -76,6 +76,8 @@ El componente interno `ProjectsBackground` de `ProjectsTeaser.jsx` sale a `compo
 - Pasa a `<Section>` la propiedad `background={background && <SectionBackground background={background} />}` (ya existe desde specs-009) y la clase `process--with-background`.
 - Se quita el bloque `.process__media` con el `<video controls>`.
 - Sin fondo, el HTML queda como hoy (RF-68.5).
+- **RF-70:** la sección se oculta solo si `is_visible` es falso, o si no hay pasos **ni** fondo. La regla vive en `shouldShowProcess(process, background)` (`utils/sectionBackground.js`), para probarla con Vitest. Sin pasos, no se dibuja el `<ol>` vacío.
+- Sin pasos y con fondo, la clase `process--only-header` le da `min-height: 60vh` (`50vh` en el celular) y centra el encabezado en vertical, como `.projects-teaser--with-background`.
 
 ### 3.4 CSS (`Process.css`)
 

@@ -49,3 +49,14 @@ export function pickProcessBackground(process, reduceMotion) {
     reduceMotion,
   )
 }
+
+/**
+ * ¿Se muestra la sección Proceso? (specs-011, RF-70)
+ * Con el video de fondo, la sección tiene contenido propio aunque el cliente
+ * oculte todos los pasos. Sin pasos ni fondo, quedaría un título suelto.
+ */
+export function shouldShowProcess(process, background) {
+  if (!process.is_visible) return false
+
+  return process.steps.length > 0 || Boolean(background)
+}
