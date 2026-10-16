@@ -109,6 +109,15 @@ class ProcessSectionSerializer(serializers.ModelSerializer):
         model = ProcessSection
         fields = ["is_visible", "title", "intro", "video", "video_poster", "show_video"]
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Igual que el fondo de Proyectos: con el video oculto no se mandan las
+        # direcciones y el navegador no descarga nada (specs-011)
+        if not instance.show_video:
+            data["video"] = None
+            data["video_poster"] = None
+        return data
+
 
 class ContactSectionSerializer(serializers.ModelSerializer):
     form_fields = serializers.SerializerMethodField()

@@ -283,17 +283,25 @@ class ProjectsSection(SingletonModel, VisibleModel):
 class ProcessSection(SingletonModel, VisibleModel):
     title = models.CharField("título", max_length=160)
     intro = models.TextField("introducción", blank=True)
-    video = site_video_field("video recorrido")
+    # Desde specs-011 el video es el fondo de toda la sección, sin controles
+    video = site_video_field(
+        "video de fondo",
+        help_text=(
+            "Cubre toda la sección, detrás del título y las tarjetas. Se reproduce "
+            "solo, en bucle y sin sonido. Súbelo corto y ya comprimido."
+        ),
+    )
     video_poster = site_image_field(
-        "vista previa del video", help_text="Imagen que se ve antes de reproducir."
+        "vista previa del video",
+        help_text=(
+            "Imagen que se ve mientras carga el video, y en lugar del video para "
+            "quien pidió menos movimiento en su equipo."
+        ),
     )
     show_video = models.BooleanField(
         "mostrar el video",
         default=True,
-        help_text=(
-            "Desmárcala para ocultar el video sin borrarlo. "
-            "Sin un video cargado, la sección se ve solo con las tarjetas."
-        ),
+        help_text="Desmárcala para volver al fondo claro sin borrar el video.",
     )
 
     class Meta:

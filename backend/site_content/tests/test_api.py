@@ -301,6 +301,34 @@ class SiteContentApiTests(TempMediaMixin, TestCase):
         self.assertIsNone(projects["background_image"])
         self.assertIsNone(projects["background_video"])
 
+    # --- specs-011: video de fondo de la sección Proceso ---
+
+    def save_process_video(self, show_video):
+        section = ProcessSection.load()
+        section.video = make_video_file()
+        section.video_poster = make_image_file()
+        section.show_video = show_video
+        section.save()
+        return section
+
+    def test_hidden_process_video_sends_no_files(self):
+        self.save_process_video(show_video=False)
+
+        process = self.get_site()["process"]
+
+        self.assertFalse(process["show_video"])
+        self.assertIsNone(process["video"])
+        self.assertIsNone(process["video_poster"])
+
+    def test_visible_process_video_sends_both_files(self):
+        section = self.save_process_video(show_video=True)
+
+        process = self.get_site()["process"]
+
+        self.assertTrue(process["show_video"])
+        self.assertEqual(process["video"], f"http://testserver{section.video.url}")
+        self.assertEqual(process["video_poster"], f"http://testserver{section.video_poster.url}")
+
 
 class LegalPageApiTests(TestCase):
     """Las dos páginas las crea la migración site_content.0005_initial_legal_pages."""

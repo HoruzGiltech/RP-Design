@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { pickProjectsBackground } from './projectsBackground'
+import { pickProcessBackground, pickProjectsBackground } from './sectionBackground'
 
 const IMAGE = 'https://api.example.com/media/site/fondo.jpg'
 const VIDEO = 'https://api.example.com/media/site/fondo.mp4'
@@ -62,5 +62,37 @@ describe('pickProjectsBackground', () => {
 
   it('con "reducir movimiento" y solo video no hay fondo', () => {
     expect(pickProjectsBackground(section({ background_image: null }), true)).toBeNull()
+  })
+})
+
+const POSTER = 'https://api.example.com/media/site/vista-previa.jpg'
+
+function process(overrides = {}) {
+  return { show_video: true, video: VIDEO, video_poster: POSTER, ...overrides }
+}
+
+describe('pickProcessBackground', () => {
+  it('con la casilla desmarcada no hay fondo', () => {
+    expect(pickProcessBackground(process({ show_video: false }), false)).toBeNull()
+  })
+
+  it('sin video ni vista previa no hay fondo', () => {
+    expect(pickProcessBackground(process({ video: null, video_poster: null }), false)).toBeNull()
+  })
+
+  it('con video y vista previa muestra el video, con la vista previa de poster', () => {
+    expect(pickProcessBackground(process(), false)).toEqual({
+      type: 'video',
+      src: VIDEO,
+      poster: POSTER,
+    })
+  })
+
+  it('con "reducir movimiento" muestra la vista previa fija, sin texto alternativo', () => {
+    expect(pickProcessBackground(process(), true)).toEqual({ type: 'image', src: POSTER, alt: '' })
+  })
+
+  it('con "reducir movimiento" y sin vista previa no hay fondo', () => {
+    expect(pickProcessBackground(process({ video_poster: null }), true)).toBeNull()
   })
 })

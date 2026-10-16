@@ -50,7 +50,7 @@ specs/
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
 - **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-010/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
-- **Trabajo en curso:** ninguno. El siguiente paquete de cambios es `specs/specs-011/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Trabajo en curso:** `specs/specs-011/` (video de fondo en la sección Proceso), aprobado el 2026-10-16, en implementación. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: DNS en Cloudflare, Cloudflare Pages y R2). specs-006 adelanta una parte: el sitio ya funciona en `https://rpdesignve.com` (Vercel) y `https://api.rpdesignve.com` (Railway), con el DNS en GoDaddy. No se empieza sin que el desarrollador lo pida.
 

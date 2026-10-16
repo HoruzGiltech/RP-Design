@@ -17,21 +17,6 @@
   color: var(--color-text-secondary);
 }
 
-/* --- Video recorrido (opcional) --- */
-
-.process__media {
-  aspect-ratio: 16 / 9;
-  /* En pantallas grandes no debe ocupar más que la altura de la ventana */
-  max-height: 70vh;
-  background: var(--color-dark);
-}
-
-.process__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* --- Tarjetas numeradas --- */
 
 /*
@@ -72,6 +57,30 @@
 
 .process__description {
   color: var(--color-text-secondary);
+}
+
+/* --- Con el video de fondo (specs-011) ---
+   El video y la capa oscura los pone Section (.section__background y su ::after).
+   Aquí solo se pasa el texto a claro y las tarjetas a oscuras y translúcidas,
+   para que el video se vea a través de ellas sin perder la lectura. */
+
+.process--with-background {
+  color: var(--color-on-dark);
+}
+
+.process--with-background .process__intro,
+.process--with-background .process__description {
+  color: var(--color-on-dark-secondary);
+}
+
+.process--with-background .process__card {
+  background: color-mix(in srgb, var(--color-dark) 55%, transparent);
+  outline-color: color-mix(in srgb, var(--color-on-dark) 25%, transparent);
+}
+
+/* El acento de la maqueta es casi negro: sobre oscuro el número va en claro */
+.process--with-background .process__number {
+  color: var(--color-on-dark);
 }
 
 @media (max-width: 767px) {

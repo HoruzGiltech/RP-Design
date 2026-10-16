@@ -1,9 +1,10 @@
 import { useSite } from '../../context/SiteContext'
 import { prefersReducedMotion } from '../../hooks/useReveal'
-import { pickProjectsBackground } from '../../utils/projectsBackground'
+import { pickProjectsBackground } from '../../utils/sectionBackground'
 import Button from '../ui/Button'
 import Reveal from '../ui/Reveal'
 import Section from '../ui/Section'
+import SectionBackground from '../ui/SectionBackground'
 import './ProjectsTeaser.css'
 
 /**
@@ -25,7 +26,7 @@ export default function ProjectsTeaser() {
       id="proyectos"
       variant="dark"
       className={background ? 'projects-teaser projects-teaser--with-background' : 'projects-teaser'}
-      background={background && <ProjectsBackground background={background} />}
+      background={background && <SectionBackground background={background} />}
     >
       <div className="projects-teaser__header">
         <Reveal as="h2">{section.title}</Reveal>
@@ -56,28 +57,4 @@ export default function ProjectsTeaser() {
       )}
     </Section>
   )
-}
-
-/** Dibuja el fondo que eligió pickProjectsBackground: un video o una imagen. */
-function ProjectsBackground({ background }) {
-  if (background.type === 'video') {
-    return (
-      <video
-        className="section__background"
-        src={background.src}
-        poster={background.poster || undefined}
-        // Sin sonido: es la condición de los navegadores para reproducir un video solo
-        muted
-        autoPlay
-        loop
-        playsInline
-        // Solo pide los datos básicos hasta que empieza a reproducirse
-        preload="metadata"
-        // Es decoración: el título ya dice de qué trata la sección
-        aria-hidden="true"
-      />
-    )
-  }
-
-  return <img className="section__background" src={background.src} alt={background.alt} decoding="async" />
 }
