@@ -41,4 +41,4 @@ Las tareas llevan el prefijo `S11-`. Son dos bloques, con una pausa ✋ al final
 - [x] **S11-E3** `npm run lint`, `npm test` y `npm run build` en verde. (37 tests.)
 - [x] **S11-E4** Prueba con Playwright en local: pasos ocultos con y sin video, sección oculta, y pasos de vuelta. *(CA-70.1 a CA-70.4)* (Sin pasos y con video: título, introducción y video, sin `<ol>`, 540 px de alto en 1440×900 y 422 px en 390×844; sin pasos y con el video desmarcado, o con la sección oculta: no aparece; con los pasos de vuelta: 4 tarjetas.)
 - [x] **S11-E5** ✋ **Prueba del desarrollador** en local. (Aprobada el 2026-10-16.)
-- [ ] **S11-E6** Push, comprobación en `rpdesignve.com` y cierre en `AGENTS.md`.
+- [x] **S11-E6** Push, comprobación en `rpdesignve.com` y cierre en `AGENTS.md`. (2026-10-16: Vercel lo publicó; en producción los pasos están ocultos y la sección se ve con el título, la introducción y el video corriendo sin controles (antes desaparecía).)
