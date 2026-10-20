@@ -1,61 +1,61 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-import { createQuote } from '../../api/endpoints'
-import { useSite } from '../../context/SiteContext'
-import { keepNumberCharacters, parseDecimal } from '../../utils/numbers'
-import { MAX_MESSAGE_LENGTH, validateQuote } from '../../utils/quoteValidation'
-import Button from '../ui/Button'
-import CheckboxField from './CheckboxField'
-import Field from './Field'
-import QuoteSuccess from './QuoteSuccess'
-import './QuoteCalculator.css'
+import { createQuote } from "../../api/endpoints";
+import { useSite } from "../../context/SiteContext";
+import { keepNumberCharacters, parseDecimal } from "../../utils/numbers";
+import { MAX_MESSAGE_LENGTH, validateQuote } from "../../utils/quoteValidation";
+import Button from "../ui/Button";
+import CheckboxField from "./CheckboxField";
+import Field from "./Field";
+import "./QuoteCalculator.css";
+import QuoteSuccess from "./QuoteSuccess";
 
 const EMPTY_FORM = {
-  name: '',
-  phone: '',
-  email: '',
+  name: "",
+  phone: "",
+  email: "",
   // Texto libre: lo que la persona quiere remodelar (specs-008)
-  remodel_type: '',
-  location: '',
-  square_meters: '',
+  remodel_type: "",
+  location: "",
+  square_meters: "",
   needs_visit: false,
   has_photos: false,
-  message: '',
+  message: "",
   privacy_accepted: false,
   // Campo trampa para bots (honeypot). Una persona nunca lo ve ni lo llena.
-  website: '',
-}
+  website: "",
+};
 
 // Orden de los campos en pantalla: sirve para llevar el foco al primero con error.
 // Son también los campos que el cliente puede retitular desde el panel (RF-31),
 // salvo la casilla de privacidad.
 const FIELD_ORDER = [
-  'name',
-  'phone',
-  'email',
-  'remodel_type',
-  'location',
-  'square_meters',
-  'needs_visit',
-  'has_photos',
-  'message',
-  'privacy_accepted',
-]
+  "name",
+  "phone",
+  "email",
+  "remodel_type",
+  "location",
+  "square_meters",
+  "needs_visit",
+  "has_photos",
+  "message",
+  "privacy_accepted",
+];
 
-const BAD_REQUEST = 400
-const TOO_MANY_REQUESTS = 429
+const BAD_REQUEST = 400;
+const TOO_MANY_REQUESTS = 429;
 
 /**
  * Título y texto de ejemplo de cada campo, tal como están en el panel.
  * Si faltara alguno, queda vacío en lugar de romper el formulario.
  */
 function getFieldTexts(formFields = {}) {
-  const texts = {}
+  const texts = {};
   for (const key of FIELD_ORDER) {
-    texts[key] = { label: '', placeholder: '', ...formFields[key] }
+    texts[key] = { label: "", placeholder: "", ...formFields[key] };
   }
-  return texts
+  return texts;
 }
 
 /**
@@ -64,100 +64,104 @@ function getFieldTexts(formFields = {}) {
  * (El nombre del componente viene de cuando tenía una calculadora.)
  */
 export default function QuoteCalculator() {
-  const { data: site } = useSite()
+  const { data: site } = useSite();
 
-  const [values, setValues] = useState(EMPTY_FORM)
-  const [errors, setErrors] = useState({})
+  const [values, setValues] = useState(EMPTY_FORM);
+  const [errors, setErrors] = useState({});
   // Error que no es de un campo concreto: sin conexión, demasiados envíos...
-  const [formError, setFormError] = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formError, setFormError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // Respuesta del backend cuando la cotización se guardó
-  const [result, setResult] = useState(null)
+  const [result, setResult] = useState(null);
 
-  const { settings, contact } = site
+  const { settings, contact } = site;
 
-  if (result) return <QuoteSuccess result={result} onReset={resetForm} />
+  if (result) return <QuoteSuccess result={result} onReset={resetForm} />;
 
-  const texts = getFieldTexts(contact.form_fields)
+  const texts = getFieldTexts(contact.form_fields);
 
   function handleChange(event) {
-    const { name, type, checked, value } = event.target
+    const { name, type, checked, value } = event.target;
     // Una casilla no tiene texto: su valor es si está marcada o no
-    let newValue = type === 'checkbox' ? checked : value
+    let newValue = type === "checkbox" ? checked : value;
     // Los metros son un campo numérico: lo que no sea cifra, coma o punto no se escribe
-    if (name === 'square_meters') newValue = keepNumberCharacters(value)
-    setValues((current) => ({ ...current, [name]: newValue }))
+    if (name === "square_meters") newValue = keepNumberCharacters(value);
+    setValues((current) => ({ ...current, [name]: newValue }));
     // Al corregir un campo, su mensaje de error desaparece
     if (errors[name]) {
-      setErrors((current) => ({ ...current, [name]: undefined }))
+      setErrors((current) => ({ ...current, [name]: undefined }));
     }
   }
 
   function showErrors(newErrors) {
-    setErrors(newErrors)
-    const firstInvalid = FIELD_ORDER.find((name) => newErrors[name])
+    setErrors(newErrors);
+    const firstInvalid = FIELD_ORDER.find((name) => newErrors[name]);
     // El foco va al primer campo con error, para corregirlo sin buscarlo
-    if (firstInvalid) document.getElementById(`quote-${firstInvalid}`)?.focus()
+    if (firstInvalid) document.getElementById(`quote-${firstInvalid}`)?.focus();
   }
 
   function resetForm() {
-    setValues(EMPTY_FORM)
-    setErrors({})
-    setFormError(null)
-    setResult(null)
+    setValues(EMPTY_FORM);
+    setErrors({});
+    setFormError(null);
+    setResult(null);
   }
 
   /** Lo que se envía al backend. */
   function buildPayload() {
-    const wroteSquareMeters = values.square_meters.trim() !== ''
-    const sendsSquareMeters = wroteSquareMeters && !values.needs_visit
+    const wroteSquareMeters = values.square_meters.trim() !== "";
+    const sendsSquareMeters = wroteSquareMeters && !values.needs_visit;
     return {
       ...values,
       // Sin metros (o con visita pedida) se envía vacío. Si los hay, el backend
       // espera el decimal con punto: "12,5" -> "12.5"
-      square_meters: sendsSquareMeters ? String(parseDecimal(values.square_meters)) : null,
-    }
+      square_meters: sendsSquareMeters
+        ? String(parseDecimal(values.square_meters))
+        : null,
+    };
   }
 
   async function handleSubmit(event) {
-    event.preventDefault()
-    setFormError(null)
+    event.preventDefault();
+    setFormError(null);
 
-    const validationErrors = validateQuote(values)
+    const validationErrors = validateQuote(values);
     if (Object.keys(validationErrors).length > 0) {
-      showErrors(validationErrors)
-      return
+      showErrors(validationErrors);
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
-      const response = await createQuote(buildPayload())
-      setResult(response)
+      const response = await createQuote(buildPayload());
+      setResult(response);
       // Misma pestaña (y no una ventana nueva): los navegadores bloquean las
       // ventanas que se abren después de esperar una respuesta del servidor.
-      window.location.assign(response.whatsapp_url)
+      window.location.assign(response.whatsapp_url);
     } catch (submitError) {
-      handleSubmitError(submitError)
+      handleSubmitError(submitError);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
   function handleSubmitError(submitError) {
     if (submitError.status === BAD_REQUEST && submitError.data) {
       // El backend responde { campo: ["mensaje"] }: se muestra el primero de cada campo
-      const serverErrors = {}
+      const serverErrors = {};
       for (const [field, messages] of Object.entries(submitError.data)) {
-        serverErrors[field] = Array.isArray(messages) ? String(messages[0]) : String(messages)
+        serverErrors[field] = Array.isArray(messages)
+          ? String(messages[0])
+          : String(messages);
       }
-      showErrors(serverErrors)
-      return
+      showErrors(serverErrors);
+      return;
     }
     if (submitError.status === TOO_MANY_REQUESTS) {
-      setFormError('too-many')
-      return
+      setFormError("too-many");
+      return;
     }
-    setFormError(submitError.message)
+    setFormError(submitError.message);
   }
 
   return (
@@ -223,7 +227,7 @@ export default function QuoteCalculator() {
         autoComplete="off"
         // Quien pide una visita no sabe los metros: el campo no aplica
         disabled={values.needs_visit}
-        value={values.needs_visit ? '' : values.square_meters}
+        value={values.needs_visit ? "" : values.square_meters}
         onChange={handleChange}
         error={errors.square_meters}
       />
@@ -269,11 +273,11 @@ export default function QuoteCalculator() {
         onChange={handleChange}
         error={errors.privacy_accepted}
       >
-        Acepto la{' '}
+        Acepto las{" "}
         {/* Se abre en otra pestaña para no perder lo que ya se escribió en el formulario */}
         <Link to="/privacidad" target="_blank" rel="noopener noreferrer">
-          política de privacidad
-        </Link>{' '}
+          políticas de privacidad
+        </Link>{" "}
         y el tratamiento de mis datos para recibir la cotización.
       </CheckboxField>
 
@@ -296,9 +300,9 @@ export default function QuoteCalculator() {
 
       {formError && (
         <p className="quote-form__error" role="alert">
-          {formError === 'too-many' ? (
+          {formError === "too-many" ? (
             <>
-              Has enviado muchas solicitudes. Intenta más tarde o{' '}
+              Has enviado muchas solicitudes. Intenta más tarde o{" "}
               <a
                 href={`https://wa.me/${settings.whatsapp_number}`}
                 target="_blank"
@@ -314,9 +318,13 @@ export default function QuoteCalculator() {
         </p>
       )}
 
-      <Button type="submit" className="quote-form__submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Enviando…' : contact.submit_text}
+      <Button
+        type="submit"
+        className="quote-form__submit"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Enviando…" : contact.submit_text}
       </Button>
     </form>
-  )
+  );
 }
