@@ -2,7 +2,7 @@
 
 > **Qué** se construye. Décimo paquete de cambios.
 
-**Estado:** Pendiente de aprobación
+**Estado:** Implementado y cerrado (2026-10-20)
 
 **Reglas:** las mismas de `AGENTS.md`. Este paquete solo describe lo que cambia; lo demás sigue como en `specs/` y en los paquetes anteriores.
 
@@ -32,10 +32,10 @@
 - Sin librerías nuevas: se usa Django (`django.contrib.sitemaps` o una vista simple).
 
 **Criterios de aceptación**
-- [ ] CA-71.1 Publicar un proyecto en el panel lo agrega al sitemap al recargar, sin redeploy.
-- [ ] CA-71.2 Despublicarlo o borrarlo lo quita.
-- [ ] CA-71.3 Un proyecto en borrador nunca aparece.
-- [ ] CA-71.4 Las URLs son absolutas, usan `FRONTEND_URL` y no llevan doble barra.
+- [x] CA-71.1 Publicar un proyecto en el panel lo agrega al sitemap al recargar, sin redeploy.
+- [x] CA-71.2 Despublicarlo o borrarlo lo quita.
+- [x] CA-71.3 Un proyecto en borrador nunca aparece.
+- [x] CA-71.4 Las URLs son absolutas, usan `FRONTEND_URL` y no llevan doble barra.
 
 ### RF-72 — Misma dirección que el sitio
 
@@ -43,8 +43,8 @@
 - Se elimina el archivo estático `frontend/public/sitemap.xml` para que no haya dos versiones.
 
 **Criterios de aceptación**
-- [ ] CA-72.1 `https://rpdesignve.com/sitemap.xml` devuelve XML (no la página del sitio).
-- [ ] CA-72.2 Search Console lo acepta con estado "Correcto".
+- [x] CA-72.1 `https://rpdesignve.com/sitemap.xml` devuelve XML (no la página del sitio).
+- [x] CA-72.2 Search Console lo acepta con estado "Correcto".
 
 ### RF-73 — `robots.txt` y backend fuera del índice
 
@@ -53,8 +53,8 @@
 - El panel y la API (`api.rpdesignve.com`) no se indexan: el backend agrega la cabecera `X-Robots-Tag: noindex` a todas sus respuestas, excepto a `/sitemap.xml`.
 
 **Criterios de aceptación**
-- [ ] CA-73.1 `/robots.txt` responde `text/plain` con la línea `Sitemap:`.
-- [ ] CA-73.2 El panel y la API responden con `X-Robots-Tag: noindex`.
+- [x] CA-73.1 `/robots.txt` responde `text/plain` con la línea `Sitemap:`.
+- [x] CA-73.2 El panel y la API responden con `X-Robots-Tag: noindex`.
 
 ---
 

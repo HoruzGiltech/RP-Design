@@ -49,8 +49,8 @@ specs/
 **Paquetes de cambios.** `specs/` es la base del proyecto. Los cambios que pide el cliente después van **dentro de `specs/`**, en subcarpetas numeradas (`specs/specs-001/`, `specs/specs-002/`…), cada una con sus tres archivos. Reglas:
 - Un paquete solo describe **lo que cambia**; lo demás sigue como en `specs/`.
 - Si un paquete contradice a los archivos base de `specs/`, **manda el paquete** (y, entre paquetes, el de número más alto).
-- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-011/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
-- **Trabajo en curso:** ninguno. El siguiente paquete de cambios es `specs/specs-012/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
+- **Paquetes cerrados:** `specs/specs-001/` a `specs/specs-012/`, implementados (specs-006 es la publicación en Vercel y Railway, ya con el dominio `rpdesignve.com`).
+- **Trabajo en curso:** ninguno. El siguiente paquete de cambios es `specs/specs-013/`. Empieza cada sesión leyendo este archivo, `specs/` y los paquetes.
 - **Forma de entrega preferida:** por bloques pequeños, con una pausa para que el desarrollador pruebe cada uno (así se hizo specs-004).
 - **El despliegue definitivo sigue pendiente** (`specs/tasks.md`, Fase 5: DNS en Cloudflare, Cloudflare Pages y R2). specs-006 adelanta una parte: el sitio ya funciona en `https://rpdesignve.com` (Vercel) y `https://api.rpdesignve.com` (Railway), con el DNS en GoDaddy. No se empieza sin que el desarrollador lo pida.
 
@@ -235,6 +235,12 @@ El detalle está en `specs/specs-011/requirements.md`. En resumen:
 - **RF-69 — Reproducción:** empieza solo, en bucle, sin sonido y sin botones; con "reducir movimiento" se ve la vista previa fija.
 - **RF-70 — Sin tarjetas:** con "Mostrar en el sitio" marcado, la sección se ve si tiene al menos un paso o el video; sin tarjetas, solo el título y la introducción sobre el video.
 
+### Cambios de specs-012 (RF-71 a RF-73)
+El detalle está en `specs/specs-012/requirements.md`. En resumen:
+- **RF-71 — Sitemap dinámico:** el backend genera `/sitemap.xml` con las páginas fijas y los proyectos publicados (con `lastmod`); usa `FRONTEND_URL`, que debe ser `https://rpdesignve.com` en Railway.
+- **RF-72 — Misma dirección que el sitio:** Vercel reescribe `rpdesignve.com/sitemap.xml` hacia el backend (`frontend/vercel.json`).
+- **RF-73 — `robots.txt`:** archivo estático con la línea `Sitemap:`; el panel y la API llevan `X-Robots-Tag: noindex` (no el sitemap ni `/media/`).
+
 ---
 
 ## 5. Stack técnico
@@ -286,7 +292,8 @@ El detalle está en `specs/specs-011/requirements.md`. En resumen:
 │   ├── specs-008/  # formulario sin precios y nuevas secciones de proceso y servicios (implementado)
 │   ├── specs-009/  # imagen o video de fondo en la sección Proyectos (implementado)
 │   ├── specs-010/  # botón "Volver" en la página de proyectos (implementado)
-│   └── specs-011/  # video de fondo en la sección Proceso (implementado)
+│   ├── specs-011/  # video de fondo en la sección Proceso (implementado)
+│   └── specs-012/  # sitemap dinámico, robots.txt y noindex en el backend (implementado)
 ├── backend/        # Django (apps: core, projects, quotes, site_content)
 └── frontend/       # React + Vite
 ```
@@ -406,7 +413,8 @@ Al terminar cada tarea o fase, responde con:
 13. **specs-009:** séptimo paquete de cambios del cliente (imagen o video de fondo en la sección Proyectos, con casilla para mostrarlo). Implementado y cerrado el 2026-10-14.
 14. **specs-010:** octavo paquete de cambios del cliente ("← Volver" en la página de proyectos). Implementado y cerrado el 2026-10-14.
 15. **specs-011:** noveno paquete de cambios del cliente (video de fondo en la sección Proceso, solo, sin sonido y sin controles). Implementado y cerrado el 2026-10-16.
-16. **Despliegue definitivo:** Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
+16. **specs-012:** sitemap dinámico para Google (pdesignve.com/sitemap.xml, generado por el backend), obots.txt y 
+oindex en el panel y la API. Implementado y cerrado el 2026-10-20.. **Despliegue definitivo:** Cloudflare (Pages, R2, DNS), Railway y checklist de seguridad en producción. **Pendiente.** No se empieza sin que el desarrollador lo pida.
 
 **Preguntas abiertas** (si aparece una nueva, agrégala aquí y pregunta antes de decidir):
 
