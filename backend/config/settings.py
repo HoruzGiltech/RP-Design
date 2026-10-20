@@ -60,6 +60,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Cuenta los intentos fallidos de login; debe ir al final
     "axes.middleware.AxesMiddleware",
+    # Evita que Google indexe el panel y la API (el sitio público sí se indexa)
+    "core.middleware.NoIndexMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -143,6 +145,9 @@ NUM_PROXIES = env.int("NUM_PROXIES", default=0)
 
 # Solo estos sitios pueden llamar a la API desde el navegador (el frontend)
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
+
+# Dirección pública del sitio; el sitemap arma sus enlaces con ella
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:5173")
 
 REST_FRAMEWORK = {
     # La API solo habla JSON

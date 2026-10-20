@@ -1,3 +1,8 @@
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.views.decorators.cache import cache_control
+from django.views.decorators.http import require_GET
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,6 +18,31 @@ from projects.serializers import (
 def published_projects():
     """Los borradores nunca salen por la API pública."""
     return Project.objects.filter(is_published=True).select_related("category")
+
+
+SITEMAP_FIXED_PATHS = ["/", "/proyectos", "/terminos", "/privacidad"]
+
+
+@require_GET
+@cache_control(public=True, max_age=3600)
+def sitemap_xml(request):
+    """
+    Lista para Google las páginas del sitio y los proyectos publicados.
+    Se arma en cada petición (con caché de 1 hora), así que publicar o
+    despublicar un proyecto en el panel se refleja solo, sin redeploy.
+    """
+    base_url = settings.FRONTEND_URL.rstrip("/")
+    urls = [{"loc": f"{base_url}{path}", "lastmod": None} for path in SITEMAP_FIXED_PATHS]
+    for slug, updated_at in published_projects().values_list("slug", "updated_at"):
+        urls.append(
+            {
+                "loc": f"{base_url}/proyectos/{slug}",
+                "lastmod": updated_at.date().isoformat(),
+            }
+        )
+
+    xml = render_to_string("projects/sitemap.xml", {"urls": urls})
+    return HttpResponse(xml, content_type="application/xml; charset=utf-8")
 
 
 def visible_categories():
