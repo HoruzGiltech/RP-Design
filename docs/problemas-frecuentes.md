@@ -224,6 +224,22 @@ Están en la tabla "Si algo sale mal" de `docs/despliegue-demo.md`: variables ma
 3. `chrome://net-internals/#dns` → *Clear host cache*; Ctrl + Shift + Supr → "Imágenes y archivos en caché" → "Desde siempre"; y `ipconfig /flushdns`.
 4. En la barra, escribir `rpdesignve`, pasar el mouse por la sugerencia `…/lander` y quitarla con la X (o Shift + Supr). Abrir escribiendo `https://rpdesignve.com` completo.
 
+## 17. PowerShell bloquea `npm` por la política de ejecución
+
+**Cuándo aparece:** al ejecutar `npm run ...` en PowerShell, con un mensaje que indica que no se puede cargar `npm.ps1` porque la ejecución de scripts está deshabilitada.
+
+**Causa:** PowerShell intenta ejecutar el script `npm.ps1`, pero la política de ejecución de Windows lo bloquea.
+
+**Solución:** usar el ejecutable por lotes de Windows:
+
+```powershell
+npm.cmd run lint
+npm.cmd test
+npm.cmd run build
+```
+
+No hace falta cambiar la política de ejecución del equipo.
+
 ---
 
 ## Cómo agregar un problema nuevo
