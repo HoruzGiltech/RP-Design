@@ -5,6 +5,7 @@ import { useAccentColor } from '../../hooks/useAccentColor'
 import { useCustomFonts } from '../../hooks/useCustomFonts'
 import { useFavicon } from '../../hooks/useFavicon'
 import { useScrollToHash } from '../../hooks/useScrollToHash'
+import { preventImageContextMenu, preventImageDrag } from '../../utils/imageProtection'
 import ErrorMessage from '../ui/ErrorMessage'
 import Spinner from '../ui/Spinner'
 import Footer from './Footer'
@@ -38,7 +39,11 @@ function SiteFrame() {
   useScrollToHash()
 
   return (
-    <div className="layout">
+    <div
+      className="layout"
+      onContextMenu={preventImageContextMenu}
+      onDragStart={preventImageDrag}
+    >
       {/* Primer elemento al tabular: deja saltar el menú a quien navega con teclado */}
       <a className="layout__skip-link" href={`#${MAIN_ID}`}>
         Saltar al contenido
